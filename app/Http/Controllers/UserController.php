@@ -16,15 +16,7 @@ class UserController extends Controller
     public function index()
     {
         //getting the list of user by latest and passing to length aware paginator instance
-        $usersList = User::latest()->paginate();
-
-        dd(User:: generateAlphaNumericSeries( 'MODEL','USER',['App','Models'],'name','1000','CUS-','SERIES'));
-
-        dd((new User)-> getTableColumns());
-
-        dd( User::FindByColumn( 'name', 'Manoj'));
-
-        
+        $usersList = User::latest()->paginate();        
 
         //now we are collecting the list of variables that need to passes to view
         $viewShare = compact( 'usersList');
