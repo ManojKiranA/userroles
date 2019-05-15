@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class RoleController extends Controller
 {
@@ -14,7 +15,15 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        //getting the list of roles by latest and passing to length aware paginator instance
+        $rolesList = Role::latest()->paginate();
+
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = compact('rolesList');
+
+        //now we are returning the view
+
+        return  View::make('admin.access.roles.index', $viewShare);
     }
 
     /**

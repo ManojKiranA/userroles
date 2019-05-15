@@ -19,11 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin/')->middleware(['auth','web'])->name('admin.')->group(function(){
+Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(function(){
 
     Route::prefix('access/')->name('access.')->group(function () { 
 
         Route::resource('users', 'UserController');
+        Route::resource('roles', 'RoleController');
 
     });
 

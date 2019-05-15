@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\{Request as HttpRequest};
 use Illuminate\Support\Facades\View;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Users.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(HttpRequest $request)
     {
+        
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()->paginate();        
 
