@@ -33,5 +33,29 @@ class BaseModel extends Model
     public function scopeWithoutRelations($query)
     {
         return $query->setEagerLoads([]);
-    }
+    }   
+
+    /**
+     * The relations to eager load on every query of Model.
+     *
+     * @var array
+     */
+    protected $with = ['creator','updater'];
+
+    /**
+     * The number of models to return for pagination.
+     * Works For all the model that extending the class.
+     *
+     * @var int
+     */
+    protected $perPage = 20;
+    
+    /**
+     * The attributes that should be mutated to dates.
+     * Works For all the model that extending the class.
+     *
+     * @var array
+     */
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    
 }

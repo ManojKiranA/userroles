@@ -31,7 +31,7 @@
              <td>{{ $userValue->name }}</td>
              <td>{{ $userValue->email }}</td>
              <td>{{ $userValue->created_at }}</td>
-             <td>{{ $userValue->creator->name }}</td>
+             <td>{{ $userValue->name }}</td>
           </tr>
           @endforeach
 

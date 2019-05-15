@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Relations\RoleRelation;
+
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation;
+    use SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -21,19 +21,6 @@ class Role extends BaseModel
      * @var array
      */
     protected $fillable = [ 'name', 'description'];
-    
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-
-    /**
-     * The number of models to return for pagination.
-     *
-     * @var int
-     */
-    protected $perPage = 20;
+        
 
 }

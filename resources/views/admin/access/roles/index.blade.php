@@ -18,6 +18,7 @@
                   <td>#</td>
                  <td>Name</td>
                  <td>Created At</td>  
+                 <td>Created By</td>  
                </tr>
             </thead>
             <tbody>
@@ -27,6 +28,7 @@
              <td>@include('comman.serialnumber', ['serNo' => $rolesList])</td>
              <td>{{ $item->name }}</td>
              <td>{{ $item->created_at }}</td>
+             <td>{{ $item->created_by_name }}</td>
           </tr>
           @endforeach
 

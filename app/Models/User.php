@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\Models\Relations\UserRelation;
+use App\Models\Relations\{UserRelation,BaseRelation};
+use Illuminate\Database\Eloquent\Model;
 
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
-    use UserRelation;
+    // use UserRelation;
 
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmailTrait;
 
@@ -68,5 +69,33 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
     return $query->where($column, $value)->first();
     }
+
+     /**
+     * Accessor for formatting the created_at field
+     *
+     * Formats the created_at attribute with carbon
+     *
+     * @author Manojkiran.A <manojkiran1003199@gmail.com>
+     * @return string
+     **/
+    public function getCreatedByAttribute()
+    {
+        
+    }
+
+    /**
+     * The user that Created the model.
+     * 
+     * Belongs-to relations with User.
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    
 
 }
