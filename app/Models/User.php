@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use Illuminate\Auth\{MustVerifyEmail as MustVerifyEmailTrait, Authenticatable};
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
+use Illuminate\Auth\{
+    MustVerifyEmail as MustVerifyEmailTrait,
+    Authenticatable
+};
 use Illuminate\Contracts\Auth\{
-    Authenticatable as AuthenticatableContract, Authorizable as AuthorizableContract,
+    Authenticatable as AuthenticatableContract,
+    Authorizable as AuthorizableContract,
     CanResetPassword as CanResetPasswordContract
 };
 

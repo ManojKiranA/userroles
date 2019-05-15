@@ -3,12 +3,14 @@
 namespace App\Models\Relations;
 
 use App\Models\{Role,Permission};
+use App\Models\Relations\BaseRelation;
 
 /**
  *  Handles all the relations of the User Model
  */
 trait UserRelation
 {
+    use BaseRelation;
     /**
      * The roles that belongs to the user.
      * 
