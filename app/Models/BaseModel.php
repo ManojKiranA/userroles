@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use App\Models\Relations\BaseRelation;
+use App\Models\Accessors\BaseAccessor;
 
 class BaseModel extends Model
 {
+    use BaseRelation,BaseAccessor;
     /**
      * Shows All the columns of the Corresponding Table of Model
      *
@@ -19,19 +22,7 @@ class BaseModel extends Model
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
-
-    /**
-     * Accessor for formatting the created_at field
-     *
-     * Formats the created_at attribute with carbon
-     *
-     * @author Manojkiran.A <manojkiran1003199@gmail.com>
-     * @return string
-     **/
-    public function getCreatedAtAttribute()
-    {
-        return Carbon::createFromDate($this->attributes['created_at'])->toFormattedDateString();
-    }
+    
 
     /**
      * Scope a query to Disable EagerLoading

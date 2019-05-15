@@ -2,15 +2,16 @@
 
 namespace App\Models\Relations;
 
-use App\Models\{Role,Permission};
+use App\Models\{Role, User};
 
 /**
  *  Handles all the relations of the User Model
  */
-trait UserRelation
+trait PermissionRelation
 {
-    /**
-     * The roles that belongs to the user.
+
+   /**
+     * The roles that belongs to the permissions.
      * 
      * Belongs-to-Many relations with Role.
      *
@@ -20,11 +21,10 @@ trait UserRelation
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class);        
     }
-
-    /**
-     * The permissions that belongs to the user.
+   /**
+     * The users that belongs to the permissions.
      * 
      * Belongs-to-Many relations with Permission.
      *
@@ -32,10 +32,12 @@ trait UserRelation
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions()
+    public function users()
     {
-        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
+        return $this->belongsToMany(User::class);
     }
 
 }
+
+
 

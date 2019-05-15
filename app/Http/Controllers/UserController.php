@@ -16,7 +16,6 @@ class UserController extends Controller
      */
     public function index(HttpRequest $request)
     {
-        
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()->paginate();        
 

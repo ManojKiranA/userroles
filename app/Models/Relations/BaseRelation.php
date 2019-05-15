@@ -10,7 +10,7 @@ use App\Models\{User};
 trait BaseRelation
 {
     /**
-     * The user that Created the model
+     * The user that Created the model.
      * 
      * Belongs-to relations with User.
      *
@@ -24,7 +24,7 @@ trait BaseRelation
     }
 
     /**
-     * The user that Created the model
+     * The user that Updated the model.
      * 
      * Belongs-to relations with User.
      *

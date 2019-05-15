@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class PermissionController extends Controller
 {
@@ -14,7 +15,14 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        //getting the list of user by latest and passing to length aware paginator instance
+        $permissionList = Permission::latest()->paginate();        
+
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = compact( 'permissionList');
+
+        //now we are returning the view
+        return  View::make('admin.access.permissions.index', $viewShare);
     }
 
     /**
