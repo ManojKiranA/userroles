@@ -20,6 +20,7 @@ trait BaseRelation
      */
     public function creator()
     {
+        
         return $this->belongsTo(User::class, 'created_by');
     }
 
@@ -36,6 +37,5 @@ trait BaseRelation
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-
-    
+   
 }

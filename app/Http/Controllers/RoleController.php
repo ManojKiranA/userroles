@@ -16,8 +16,8 @@ class RoleController extends Controller
     public function index()
     {
         //getting the list of roles by latest and passing to length aware paginator instance
-        $rolesList = Role::latest()->paginate(); 
-        dd($rolesList)       ;
+        $rolesList = Role::latest()->WithoutRelations()->paginate(); 
+        
 
         //now we are collecting the list of variables that need to passes to view
         $viewShare = compact('rolesList');

@@ -37,6 +37,8 @@ class BaseModel extends Model
 
     /**
      * The relations to eager load on every query of Model.
+     * Works For all the model that extending the class.
+     * If You need the Custom relation add in the respective model.
      *
      * @var array
      */
@@ -45,6 +47,7 @@ class BaseModel extends Model
     /**
      * The number of models to return for pagination.
      * Works For all the model that extending the class.
+     * If You need the Custom pagination add in the respective model.
      *
      * @var int
      */
@@ -53,6 +56,7 @@ class BaseModel extends Model
     /**
      * The attributes that should be mutated to dates.
      * Works For all the model that extending the class.
+     * If You need the Custom date mutators add in the respective model.
      *
      * @var array
      */

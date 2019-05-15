@@ -28,7 +28,7 @@
              <td>@include('comman.serialnumber', ['serNo' => $rolesList])</td>
              <td>{{ $item->name }}</td>
              <td>{{ $item->created_at }}</td>
-             <td>{{ $item->created_by_name }}</td>
+             <td>{{ $item->created_by_email }}</td>
           </tr>
           @endforeach
 

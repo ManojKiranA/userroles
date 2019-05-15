@@ -32,7 +32,7 @@ trait BaseAccessor
      **/
     public function getCreatedByNameAttribute()
     {
-        return $this->creator->name;
+        return $this->creator->name ?? null;
     }
 
     /**
@@ -45,7 +45,7 @@ trait BaseAccessor
      **/
     public function getCreatedByEmailAttribute()
     {
-        return $this->creator->email;
+        return $this->creator->email ?? null;
     }
 
     /**
@@ -58,7 +58,7 @@ trait BaseAccessor
      **/
     public function getUpdatedByNameAttribute()
     {
-        return $this->updater->name;
+        return $this->updater->name ?? null;
     }
 
     /**
@@ -71,6 +71,6 @@ trait BaseAccessor
      **/
     public function getUpdatedByEmailAttribute()
     {
-        return $this->updater->email;
+        return $this->updater->email ?? null;
     }
 }
