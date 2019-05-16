@@ -12,6 +12,6 @@ class CheckForMaintenanceMode extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // The URIs that should be reachable while maintenance mode is enabled.
     ];
 }

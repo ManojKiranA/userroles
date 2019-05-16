@@ -12,11 +12,10 @@ trait RoleRelation
 
     /**
      * The permissions that belongs to the role.
-     * 
+     *
      * Belongs-to-Many relations with Permission.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function permissions()
@@ -25,11 +24,10 @@ trait RoleRelation
     }
     /**
      * The users that belongs to the role.
-     * 
+     *
      * Belongs-to-Many relations with Role.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
@@ -38,6 +36,3 @@ trait RoleRelation
     }
 
 }
-
-
-

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\{Request as HttpRequest};
 
 class HomeController extends Controller
 {
@@ -21,8 +21,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index( HttpRequest $request)
     {
+        $request = $request;
         return view('home');
     }
 }

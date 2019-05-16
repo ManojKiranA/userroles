@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\RoleRelation;
 
@@ -22,6 +21,4 @@ class Role extends BaseModel
      * @var array
      */
     protected $fillable = [ 'name', 'description'];
-        
-
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models\Accessors;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 /**
  *  Handle all the Comman Accessor across the application
@@ -25,7 +25,7 @@ trait BaseAccessor
     /**
      * Accessor for formatting the created_by field
      *
-     * Formats the created_by attribute with the user model 
+     * Formats the created_by attribute with the user model.
      *
      * @author Manojkiran.A <manojkiran1003199@gmail.com>
      * @return string
@@ -38,7 +38,7 @@ trait BaseAccessor
     /**
      * Accessor for formatting the created_at field
      *
-     * Formats the created_by attribute with the user model 
+     * Formats the created_by attribute with the user model.
      *
      * @author Manojkiran.A <manojkiran1003199@gmail.com>
      * @return string
@@ -51,7 +51,7 @@ trait BaseAccessor
     /**
      * Accessor for formatting the updated_by field
      *
-     * Formats the updated_by attribute with the user model 
+     * Formats the updated_by attribute with the user model.
      *
      * @author Manojkiran.A <manojkiran1003199@gmail.com>
      * @return string
@@ -64,7 +64,7 @@ trait BaseAccessor
     /**
      * Accessor for formatting the updated_by field
      *
-     * Formats the updated_by attribute with the user model 
+     * Formats the updated_by attribute with the user model.
      *
      * @author Manojkiran.A <manojkiran1003199@gmail.com>
      * @return string

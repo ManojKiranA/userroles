@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\BaseModel;
 use App\Models\Relations\PermissionRelation;
 
 class Permission extends BaseModel
@@ -15,7 +14,7 @@ class Permission extends BaseModel
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'permissions';
     /**
      * The attributes that are mass assignable.
      *
