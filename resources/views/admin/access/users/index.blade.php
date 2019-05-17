@@ -32,6 +32,7 @@
              <td>{{ $userValue->email }}</td>
              <td>{{ $userValue->created_at }}</td>
              <td>{{ $userValue->name }}</td>
+             <td>{{ $userValue->editButton(['buttonText' => 'Edit']) }}</td>
           </tr>
           @endforeach
 

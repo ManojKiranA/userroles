@@ -12,14 +12,31 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
+use App\Models\Comman\Html\Buttons\TableActionButtons;
 
+/**
+ * Class User
+ *
+ * @package     App\Models
+ * @property    int     $id
+ * @property    string  $name
+ * @property    string  $email
+ * @property    string  $email_verified_at
+ * @property    string  $password
+ * @property    string  $remember_token
+ * @property    int     $created_by
+ * @property    int     $updated_by
+ * @property    string  $created_at
+ * @property    string  $updated_at
+ * @property    string  $deleted_at
+ */
 class User extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
-    use SoftDeletes, UserFinder, UserRelation;
+    use SoftDeletes, UserFinder, UserRelation, TableActionButtons;
 
     /**
      * The table associated with the model.
@@ -27,6 +44,13 @@ class User extends BaseModel implements
      * @var string
      */
     protected $table = 'users';
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $editRoute = 'admin.access.users.edit';
 
     /**
     * The attributes that are mass assignable.

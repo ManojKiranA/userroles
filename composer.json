@@ -1,10 +1,12 @@
 {
-    "name": "laravel/laravel",
+    "name": "manojkiran/laravel-5.8-boilerplatelaravel",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "The Laravel Boilerplate Project.",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "boilerplate",
+        "php"
     ],
     "license": "MIT",
     "require": {
