@@ -11,6 +11,7 @@ namespace App\Models\Comman\Html\Buttons;
 
 trait RouteGuesser
 {
+    use MissingRouteCatcher;
     /**
      * The Delete Route of the Current Model
      *
@@ -22,8 +23,11 @@ trait RouteGuesser
      **/
     public function deleteRouteName(): string
     {
-        if (is_null($this->getProperty('deleteRoute'))) {
-            return $this->routeName() . '.destroy';
+        if (is_null($this->getProperty('deleteRoute')))
+        {
+            $routeName = $this->routeName() . '.destroy';
+            $this->catchMissingRoute($routeName);
+            return $routeName;
         }
         return $this->getProperty('deleteRoute');
     }
@@ -33,14 +37,14 @@ trait RouteGuesser
      *
      * This Will Generate the Delete Route Name
      *
-     * @param Type $var Description
-     * @return type
      * @throws conditon
      **/
     public function editRouteName(): string
     {
         if (is_null($this->getProperty('editRoute'))) {
-            return $this->routeName() . '.edit';
+            $routeName = $this->routeName() . '.edit';
+            $this->catchMissingRoute($routeName);
+            return $routeName;
         }
         return $this->getProperty('editRoute');
     }
@@ -57,7 +61,9 @@ trait RouteGuesser
     public function showRouteName(): string
     {
         if (is_null($this->getProperty('showRoute'))) {
-            return $this->routeName() . '.show';
+            $routeName = $this->routeName() . '.show';
+            $this->catchMissingRoute($routeName);
+            return $routeName;
         }
         return $this->getProperty('showRoute');
     }

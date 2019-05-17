@@ -4,6 +4,7 @@ namespace App\Models\Comman\Html\Buttons;
 
 use Illuminate\Support\Facades\Crypt;
 use Collective\Html\FormFacade as Form;
+use Illuminate\Support\HtmlString;
 
 /*
  * This file is part of Table Action Buttons.

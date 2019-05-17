@@ -53,6 +53,13 @@ class User extends BaseModel implements
     protected $editRoute = 'admin.access.users.edit';
 
     /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $deleteRoute = 'admin.access.users.destroy';
+
+    /**
     * The attributes that are mass assignable.
     *
     * @var array
