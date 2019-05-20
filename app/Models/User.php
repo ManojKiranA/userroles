@@ -87,4 +87,11 @@ class User extends BaseModel implements
      */
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    /**
+     * The number of models to return for pagination.
+     *
+     * @var int
+     */
+    protected $perPage = 20;
+
 }

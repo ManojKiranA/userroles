@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\{User,Role,Permission};
 use Illuminate\Http\{Request as HttpRequest};
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Request;
+use Collective\Html\FormFacade as Form;
+
+use Illuminate\Database\Eloquent\Collection;
+
 
 class UserController extends Controller
 {
@@ -16,9 +22,9 @@ class UserController extends Controller
      */
     public function index( HttpRequest $request)
     {
-        $request = $request;
+        // dump($request->all());
         //getting the list of user by latest and passing to length aware paginator instance
-        $usersList = User::latest()->paginate();
+        $usersList = User::latest()->paginate(null,['*'],'userPage');       
 
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
@@ -26,6 +32,25 @@ class UserController extends Controller
         //now we are returning the view
 
         return View::make('admin.access.users.index', $viewShare);
+    }
+
+    public  function addValuesToArray($array = [], $needToAdded = '', $addIn = 'PREFIX')
+    {
+        if ($addIn == 'PREFIX') {
+            return array_map(
+                function ($value) use ($needToAdded) {
+                    return $needToAdded . $value;
+                },
+                $array
+            );
+        } elseif ($addIn == 'SUFFIX') {
+            return array_map(
+                function ($value) use ($needToAdded) {
+                    return $value . $needToAdded;
+                },
+                $array
+            );
+        }
     }
 
     /**

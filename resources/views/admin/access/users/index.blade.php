@@ -11,6 +11,7 @@
             <a href="{{ route('admin.access.users.create') }}" class="btn btn-primary btn-sm"> <i class="glyphicon glyphicon-plus-sign"></i> Create Users</a>
          </div>
       </div>
+
       <div class="table-responsive">
          <table class="table">
             <thead>
@@ -45,7 +46,8 @@
          </table>
       </div>
       <div class="text-center">
-         {{ $usersList->links() }}
+         {{ $usersList->appends(request()->input())->links() }}
+         
       </div>
    </div>
 </div>
