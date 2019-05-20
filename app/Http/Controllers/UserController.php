@@ -34,25 +34,6 @@ class UserController extends Controller
         return View::make('admin.access.users.index', $viewShare);
     }
 
-    public  function addValuesToArray($array = [], $needToAdded = '', $addIn = 'PREFIX')
-    {
-        if ($addIn == 'PREFIX') {
-            return array_map(
-                function ($value) use ($needToAdded) {
-                    return $needToAdded . $value;
-                },
-                $array
-            );
-        } elseif ($addIn == 'SUFFIX') {
-            return array_map(
-                function ($value) use ($needToAdded) {
-                    return $value . $needToAdded;
-                },
-                $array
-            );
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
