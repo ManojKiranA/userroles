@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Comman\Html\Buttons;
+namespace App\Models\Comman\Html\Buttons\Actionbutton;
 
 /*
  * This file is part of Table Action Buttons.
@@ -17,7 +17,7 @@ trait MissingRouteCatcher
      * @param string $routeName Name of the Route
      * @throws Exception
      **/
-    public function catchMissingRoute(string $routeName)
+    public function catchMissingRoute(string $routeName,string $routeProperty)
     {
         try {
             route($routeName);
@@ -27,7 +27,7 @@ trait MissingRouteCatcher
             $exceptionMessage = $exception->getMessage();
 
             if ($preparedMessage  === $exceptionMessage) {
-                throw new \Exception('Unable Guess the Route Name.Try Setting   deleteRoute  property in ' . class_basename($this). '', 1);
+                throw new \Exception('Unable Guess the Route Name.Try Setting   '.$routeProperty.'  property in ' . class_basename($this). '', 1);
             }
         }
 

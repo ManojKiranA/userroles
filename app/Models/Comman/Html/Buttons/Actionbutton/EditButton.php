@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Comman\Html\Buttons;
+namespace App\Models\Comman\Html\Buttons\Actionbutton;
 
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Crypt;
