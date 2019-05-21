@@ -15,7 +15,7 @@ use App\Models\Relations\UserRelation;
 use App\Models\Comman\Html\Buttons\TableActionButtons;
 
 /**
- * Class User
+ * Class App\Models\User
  *
  * @package     App\Models
  * @property    int     $id
