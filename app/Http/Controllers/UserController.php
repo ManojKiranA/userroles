@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{User,Role,Permission};
 use Illuminate\Http\{Request as HttpRequest};
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -19,6 +20,7 @@ class UserController extends Controller
      */
     public function index( HttpRequest $request)
     {
+        abort_unless(Gate::allows('user_access'),403);
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()->paginate(null, ['*'], 'userPage')->onEachSide(2);       
         //now we are collecting the list of variables that need to passes to view
@@ -54,8 +56,10 @@ class UserController extends Controller
     public function create()
     {
         $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
+
+        $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = [ 'roleList' => $roleList];
+        $viewShare = [ 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
         return View::make('admin.access.users.create', $viewShare);
     }
@@ -97,8 +101,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = ['user' => $user, 'roleList' => $roleList];
+        $viewShare = ['user' => $user, 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
         return View::make('admin.access.users.edit', $viewShare);
     }
@@ -113,8 +118,10 @@ class UserController extends Controller
      */
     public function update( UserUpdateRequest $request, User $user)
     {
+        
         $user->update($request->all());
-        $user->giveRoleById($request->input('roles'));
+        $user-> modifyRoleById($request->input('roles'));
+        $user-> modifyPermissionById($request->input('permissions'));
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Updated Successfully');
     }

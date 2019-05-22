@@ -6,7 +6,7 @@ use App\Models\Role;
 use Illuminate\Http\{Request as HttpRequest};
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\{View,Auth,Gate};
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Permission;
 
@@ -92,6 +92,7 @@ class RoleController extends Controller
     public function update( RoleUpdateRequest $request, Role $role)
     {
         $role->update($request->all());
+        $role-> modifyPermissionById($request->input('permissions'));
         return Redirect::route('admin.access.roles.index')
                         ->with('success', 'Role Updated Successfully');
     }

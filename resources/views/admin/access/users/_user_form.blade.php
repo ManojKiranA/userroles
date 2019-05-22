@@ -50,6 +50,18 @@
          </div>
       </div>
       {{--  Field roles Ends  --}}
+
+      {{--  Field permissions Starts  --}}
+      <div class="col-sm-4">
+         <div class="form-group @error('permissions') has-error @enderror">
+            {!! Form::label('permissions','Permissions') !!}
+            {!! Form::select('permissions[]',$permissionList,old('permissions'), ['class' =>'form-control rounded','id' =>'permissions','multiple' => 'multiple']) !!}
+            @error('permissions') 
+            <p class="help-block">{{ $message }}</p>
+            @enderror
+         </div>
+      </div>
+      {{--  Field permissions Ends  --}}
    </div>
    {{-- Row Two Ends --}}
 

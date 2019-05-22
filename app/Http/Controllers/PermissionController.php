@@ -51,8 +51,8 @@ class PermissionController extends Controller
      */
     public function store(PermissionStoreRequest $request)
     {
-        $permision = Permission::create($request->all());
-        $permision-> giveRoleById($request->input( 'roles'));
+        $permission = Permission::create($request->all());
+        $permission-> giveRoleById($request->input( 'roles'));
         return Redirect::route('admin.access.permissions.index')
             ->with('success', 'Permissions Created Successfully');
     }
