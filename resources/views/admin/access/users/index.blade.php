@@ -21,6 +21,9 @@
                  <td>Email</td>
                  <td>Created At</td>  
                  <td>Created By</td>  
+                 <td class="text-center">
+                 Actions
+                 </td>
                </tr>
             </thead>
             <tbody>

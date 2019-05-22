@@ -21,12 +21,9 @@ class UserController extends Controller
     {
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()->paginate(null, ['*'], 'userPage')->onEachSide(2);       
-
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
-
         //now we are returning the view
-
         return View::make('admin.access.users.index', $viewShare);
     }
 

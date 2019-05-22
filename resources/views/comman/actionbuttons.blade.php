@@ -3,9 +3,9 @@
         {{ $modelObject->editButton(['buttonText' => 'Edit']) }}
     @endif
     @if ($buttonName === 'DELETE')
-        {{ $userValue->deleteButton(['buttonText' => 'Delete']) }}
+        {{ $modelObject->deleteButton(['buttonText' => 'Delete']) }}
     @endif
     @if ($buttonName === 'SHOW')
-        {{ $userValue->showButton(['buttonText' => 'Show']) }}
+        {{ $modelObject->showButton(['buttonText' => 'Show']) }}
     @endif
 @endforeach

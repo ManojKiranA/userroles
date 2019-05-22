@@ -35,4 +35,25 @@ class Role extends BaseModel
      * @var array
      */
     protected $fillable = [ 'name', 'description'];
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $editRoute = 'admin.access.roles.edit';
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $deleteRoute = 'admin.access.roles.destroy';
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $showRoute = 'admin.access.roles.show';
 }
