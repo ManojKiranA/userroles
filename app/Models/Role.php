@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\RoleRelation;
-
+use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 /**
  * Class App\Models\Role
  *
@@ -21,7 +21,7 @@ use App\Models\Relations\RoleRelation;
 
 class Role extends BaseModel
 {
-    use SoftDeletes,RoleRelation;
+    use SoftDeletes, RoleRelation, TableActionButtons;
 
     /**
      * The table associated with the model.

@@ -12,7 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
-use App\Models\Comman\Html\Buttons\TableActionButtons;
+use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 /**
  * Class App\Models\User
