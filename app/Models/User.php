@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
+use App\Models\Accessors\UserAccessor;
 
 /**
  * Class App\Models\User
@@ -36,7 +37,7 @@ class User extends BaseModel implements
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
-    use SoftDeletes, UserFinder, UserRelation, TableActionButtons;
+    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor;
 
     /**
      * The table associated with the model.
@@ -58,6 +59,14 @@ class User extends BaseModel implements
      * @var string
      */
     protected $deleteRoute = 'admin.access.users.destroy';
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $showRoute = 'admin.access.users.show';
+
 
     /**
     * The attributes that are mass assignable.

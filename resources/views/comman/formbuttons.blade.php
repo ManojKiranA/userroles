@@ -1,0 +1,3 @@
+{!! Form::button('Save',['type' => 'submit','class' => 'btn btn-primary','name' => '_SUBMIT_BUTTON_','value' => '_SAVE_']) !!}
+{!! Form::button('Save And Edit',['type' => 'submit','class' => 'btn btn-primary','name' => '_SUBMIT_BUTTON_','value' => '_SAVE_EDIT_']) !!}
+{!! Form::button('Save And Add New',['type' => 'submit','class' => 'btn btn-primary','name' => '_SUBMIT_BUTTON_','value' => '_SAVE_NEW_']) !!}

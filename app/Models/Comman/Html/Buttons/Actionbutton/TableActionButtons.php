@@ -28,7 +28,7 @@ trait TableActionButtons
     }
 
     /**
-     * The Delete Route of the Current Model
+     * The Delete Route key of the Current Model
      *
      * This Will Generate the Delete Route Name
      *
@@ -38,7 +38,10 @@ trait TableActionButtons
      **/
     public function deleteActionFieldName(): string
     {
-        if (is_null($this->getProperty('deleteActionField'))) {
+        return $this->getRouteKeyName();
+
+        if (is_null($this->getProperty('deleteActionField'))) 
+        {
             return 'id';
         }
         return $this->getProperty('deleteActionField');
@@ -55,6 +58,8 @@ trait TableActionButtons
      **/
     public function editActionFieldName(): string
     {
+        return $this->getRouteKeyName();
+
         if (is_null($this->getProperty('editActionField'))) {
             return 'id';
         }
@@ -72,6 +77,8 @@ trait TableActionButtons
      **/
     public function showActionFieldName(): string
     {
+        return $this->getRouteKeyName();
+        
         if (is_null($this->getProperty('showActionField'))) {
             return 'id';
         }

@@ -27,21 +27,16 @@
 
             @foreach($usersList as $userKey =>  $userValue)
           <tr>
-          
              <td>@include('comman.serialnumber', ['serNo' => $usersList])</td>
              <td>{{ $userValue->name }}</td>
              <td>{{ $userValue->email }}</td>
              <td>{{ $userValue->created_at }}</td>
              <td>{{ $userValue->name }}</td>
-             <td>{{ $userValue->editButton(['buttonText' => 'Edit']) }}</td>
-             <td>{{ $userValue->deleteButton(['buttonText' => 'Delete']) }}</td>
+            <td class="text-center">
+              @include('comman.actionbuttons', ['modelObject' => $userValue,'buttonsList' => ['EDIT','DELETE','SHOW']])
+            </td>
           </tr>
-          @endforeach
-
-              
-
-
-               
+          @endforeach               
             </tbody>
          </table>
       </div>
