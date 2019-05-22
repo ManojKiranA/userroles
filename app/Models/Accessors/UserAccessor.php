@@ -16,7 +16,7 @@ trait UserAccessor
      * @param string $password The Password Filed Value
      * @return void
      **/
-    public function setPasswordAttribute(string $password = null):void
+    public function setPasswordAttribute(string $password = null)
     {
         if (!is_null($password)) 
         {

@@ -19,31 +19,38 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $this-> mapPermissions();
+        return $next($request);
+    }
+
+    /**
+     * Assiggn the permission to the roles and users
+     *
+     *
+     * @return void
+     **/
+    public function mapPermissions()
+    {
         $user = Auth::user();
-       
-        if (!app()->runningInConsole() && $user) 
+
+        if (!app()->runningInConsole() && !is_null($user)) 
         {
             $roles = Role::with('permissions')->get();
 
-            if($roles->isNotEmpty())
-            {
+            if ($roles->isNotEmpty()) {
                 foreach ($roles as $role) {
                     foreach ($role->permissions as $permissions) {
                         $permissionsArray[$permissions->name][] = $role->id;
-                   }
+                    }
                 }
-
-                foreach ($permissionsArray as $title => $roles) {
-                Gate::define($title, function (\App\Models\User $user) use ($roles) {
-                    return count(array_intersect($user->roles->pluck('id')->toArray(), $roles)) > 0;
-                });
+                
+                foreach ($permissionsArray as $title => $roleId) {
+                    
+                    Gate::define($title, function (\App\Models\User $user) use ( $roleId) {
+                        return count(array_intersect($user->roles->pluck('id')->toArray(), $roleId)) > 0;
+                    });
                 }
             }
-            
-            
-            
-            
         }
-        return $next($request);
     }
 }
