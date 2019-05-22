@@ -8,6 +8,7 @@ use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -34,8 +35,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $permissionList = Permission::pluckWithPlaceHolder('name','id','Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = [''];
+        $viewShare = [ 'permissionList' => $permissionList];
         //now we are returning the view
         return View::make('admin.access.roles.create', $viewShare);
     }
@@ -48,7 +50,8 @@ class RoleController extends Controller
      */
     public function store( RoleStoreRequest $request)
     {
-        Role::create($request->all());
+        $role = Role::create($request->all());
+        $role-> givePermissionById($request->input( 'permissions'));
         return Redirect::route('admin.access.roles.index')
             ->with('success', 'Role Created Successfully');
     }
@@ -72,8 +75,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = [ 'role' => $role];
+        $viewShare = [ 'role' => $role, 'permissionList' => $permissionList];
         //now we are returning the view
         return View::make('admin.access.roles.edit', $viewShare);
     }

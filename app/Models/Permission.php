@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
+use App\Models\AclManager\AclManagement;
 
 /**
  * Class App\Models\Permission
@@ -22,7 +23,7 @@ use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 class Permission extends BaseModel
 {
-    use SoftDeletes, PermissionRelation, TableActionButtons;
+    use SoftDeletes, PermissionRelation, TableActionButtons, AclManagement;
 
     /**
      * The table associated with the model.
@@ -36,4 +37,25 @@ class Permission extends BaseModel
      * @var array
      */
     protected $fillable = [ 'name', 'description'];
+
+    /**
+     * The edit route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $editRoute = 'admin.access.permissions.edit';
+
+    /**
+     * The delete route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $deleteRoute = 'admin.access.permissions.destroy';
+
+    /**
+     * The show route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $showRoute = 'admin.access.permissions.show';
 }

@@ -50,6 +50,19 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     *End Web Routes For RoleController
     */
 
-        Route::resource('permissions', 'PermissionController');
+    /*
+    *Start Web Routes For PermissionController  
+    */
+        Route::get( '/permissions/index',  'PermissionController@index')->name( 'permissions.index');
+        Route::get('/permissions/create',  'PermissionController@create')->name( 'permissions.create');
+        Route::post( '/permissions/store',  'PermissionController@store')->name( 'permissions.store');
+        Route::get('/permissions/{permission}/show',  'PermissionController@show')->name( 'permissions.show');
+        Route::get( '/permissions/{permission}/edit',  'PermissionController@edit')->name( 'permissions.edit');
+        Route::put( '/permissions/{permission}/update',  'PermissionController@update')->name( 'permissions.update');
+        Route::delete( '/permissions/{permission}/delete',  'PermissionController@destroy')->name( 'permissions.destroy');
+    /*
+    *End Web Routes For RoleController
+    */
+
     });
 });

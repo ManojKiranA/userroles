@@ -8,7 +8,7 @@
             <h4 class="card-title">Permissions</h4>
          </div>
          <div class="col-md-7 page-action text-right">
-            <a href="{{ route('admin.access.roles.create') }}" class="btn btn-primary btn-sm"> <i class="glyphicon glyphicon-plus-sign"></i> Create Users</a>
+            <a href="{{ route('admin.access.permissions.create') }}" class="btn btn-primary btn-sm"> <i class="glyphicon glyphicon-plus-sign"></i> Create Permission</a>
          </div>
       </div>
       <div class="table-responsive">
@@ -17,16 +17,22 @@
                <tr>
                   <td>#</td>
                  <td>Name</td>
-                 <td>Created At</td>  
+                 <td>Description</td>
+                 <td>Created At</td> 
+                 <td class="text-center">Actions</td> 
                </tr>
             </thead>
             <tbody>
 
-            @foreach($permissionList as $item)
+            @foreach($permissionList as $permissionKey => $permissionValue)
           <tr>
              <td>@include('comman.serialnumber', ['serNo' => $permissionList])</td>
-             <td>{{ $item->name }}</td>
-             <td>{{ $item->created_at }}</td>
+             <td>{{ $permissionValue->name }}</td>
+             <td>{{ $permissionValue->description }}</td>
+             <td>{{ $permissionValue->created_at }}</td>
+             <td class="text-center">
+                 @include('comman.actionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT','DELETE','SHOW']])
+             </td>
           </tr>
           @endforeach
 

@@ -36,5 +36,23 @@
       {{--  Field Password Ends  --}}
    </div>
    {{-- Row One Ends --}}
+
+   {{-- Row  Two Starts --}}
+   <div class="row">
+      {{--  Field roles Starts  --}}
+      <div class="col-sm-4">
+         <div class="form-group @error('roles') has-error @enderror">
+            {!! Form::label('roles','Roles') !!}
+            {!! Form::select('roles[]',$roleList,old('roles'), ['class' =>'form-control rounded','id' =>'roles','multiple' => 'multiple']) !!}
+            @error('roles') 
+            <p class="help-block">{{ $message }}</p>
+            @enderror
+         </div>
+      </div>
+      {{--  Field roles Ends  --}}
+   </div>
+   {{-- Row Two Ends --}}
+
+   
 </div>
 @include('comman.formbuttons')

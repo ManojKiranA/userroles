@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\RoleRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
+use App\Models\AclManager\AclManagement;
+
 /**
  * Class App\Models\Role
  *
@@ -21,7 +23,7 @@ use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons;
+    use SoftDeletes, RoleRelation, TableActionButtons, AclManagement;
 
     /**
      * The table associated with the model.
@@ -44,14 +46,14 @@ class Role extends BaseModel
     protected $editRoute = 'admin.access.roles.edit';
 
     /**
-     * The edit route that is used for the Model.
+     * The delete route that is used for the Model.
      *
      * @var string
      */
     protected $deleteRoute = 'admin.access.roles.destroy';
 
     /**
-     * The edit route that is used for the Model.
+     * The show route that is used for the Model.
      *
      * @var string
      */

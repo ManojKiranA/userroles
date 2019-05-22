@@ -39,7 +39,6 @@ class RoleUpdateRequest extends FormRequest
         return [
             'name.required' => ':attribute is Required',
             'name.unique'  => ':attribute  Already Exists',
-            'email.email'  => ':attribute is Not Valid Email',
             'description.required'  => ':attribute is Required',
         ];
     }

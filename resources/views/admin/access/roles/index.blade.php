@@ -32,7 +32,6 @@
              <td>@include('comman.serialnumber', ['serNo' => $rolesList])</td>
              <td>{{ $roleListValue->name }}</td>
              <td>{{ $roleListValue->description }}</td>
-             
              <td>{{ $roleListValue->created_at }}</td>
              <td>{{ $roleListValue->created_by_name }}</td>
              <td class="text-center">

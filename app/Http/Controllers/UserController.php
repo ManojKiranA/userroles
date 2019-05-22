@@ -53,8 +53,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = [''];
+        $viewShare = [ 'roleList' => $roleList];
         //now we are returning the view
         return View::make('admin.access.users.create', $viewShare);
     }
@@ -68,7 +69,8 @@ class UserController extends Controller
      */
     public function store( UserStoreRequest $request)
     {
-        User::create($request->all());
+        $user = User::create($request->all());
+        $user->giveRoleById($request->input('roles'));
         return Redirect::route('admin.access.users.index')
                         ->with( 'success','User Created Successfully');
     }
@@ -94,11 +96,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are collecting the list of variables that need to passes to view
-        $viewShare = ['user' => $user];
-
+        $viewShare = ['user' => $user, 'roleList' => $roleList];
         //now we are returning the view
-
         return View::make('admin.access.users.edit', $viewShare);
     }
 
@@ -113,6 +114,7 @@ class UserController extends Controller
     public function update( UserUpdateRequest $request, User $user)
     {
         $user->update($request->all());
+        $user->giveRoleById($request->input('roles'));
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Updated Successfully');
     }

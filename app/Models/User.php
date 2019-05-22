@@ -14,6 +14,7 @@ use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Accessors\UserAccessor;
+use App\Models\AclManager\AclManagement;
 
 /**
  * Class App\Models\User
@@ -37,7 +38,7 @@ class User extends BaseModel implements
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
-    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor;
+    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor, AclManagement;
 
     /**
      * The table associated with the model.
@@ -54,14 +55,14 @@ class User extends BaseModel implements
     protected $editRoute = 'admin.access.users.edit';
 
     /**
-     * The edit route that is used for the Model.
+     * The delete route that is used for the Model.
      *
      * @var string
      */
     protected $deleteRoute = 'admin.access.users.destroy';
 
     /**
-     * The edit route that is used for the Model.
+     * The show route that is used for the Model.
      *
      * @var string
      */
