@@ -103,9 +103,6 @@ class User extends BaseModel implements
      * @var int
      */
     protected $perPage = 20;
-
-    protected $with = ['permissions'];
-
     
 
 }

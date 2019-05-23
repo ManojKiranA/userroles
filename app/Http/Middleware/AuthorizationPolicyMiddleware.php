@@ -93,9 +93,7 @@ class AuthorizationPolicyMiddleware
                     });
                 }
             }
-        }
-
-        
+        }        
     }
 
     /**
