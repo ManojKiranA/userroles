@@ -81,21 +81,21 @@ class AuthorizationPolicyMiddleware
                     $userPermissionViaRole[] =  $roleWithPermisison->permissions->pluck('name')->toArray();
                 }
             }
-        }
 
-        $uniqued =  array_keys(array_flip(Arr::collapse($userPermissionViaRole)));
+            $uniqued =  array_keys(array_flip(Arr::collapse($userPermissionViaRole)));
 
-        $arrayCount = count($uniqued);
+            $arrayCount = count($uniqued);
 
-        if ($arrayCount !== 0) 
-        {
-            foreach ($uniqued as $permissionName) 
-            {
-                Gate::define($permissionName, function () {
-                    return true;
-                });
+            if ($arrayCount !== 0) {
+                foreach ($uniqued as $permissionName) {
+                    Gate::define($permissionName, function () {
+                        return true;
+                    });
+                }
             }
         }
+
+        
     }
 
     /**
