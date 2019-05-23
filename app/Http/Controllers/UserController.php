@@ -55,6 +55,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        
+        abort_unless(Gate::allows( 'user_create'), 403);
         $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
 
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
@@ -88,6 +90,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        abort_unless(Gate::allows( 'user_show'), 403);
         return $user;
     }
 
@@ -100,6 +103,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        abort_unless(Gate::allows( 'user_edit'), 403);
         $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
@@ -118,7 +122,7 @@ class UserController extends Controller
      */
     public function update( UserUpdateRequest $request, User $user)
     {
-        
+        abort_unless(Gate::allows( 'user_delete'), 403);
         $user->update($request->all());
         $user-> modifyRoleById($request->input('roles'));
         $user-> modifyPermissionById($request->input('permissions'));

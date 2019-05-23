@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Role;
-
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 
 class AuthorizationPolicyMiddleware
 {
@@ -19,38 +19,94 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this-> mapPermissions();
+        $this-> setPermissionToRole();
+        $this-> setPermissionToUser();
         return $next($request);
     }
 
     /**
-     * Assiggn the permission to the roles and users
+     * Sets all the Permission that is granted to the specific User
      *
-     *
-     * @return void
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      **/
-    public function mapPermissions()
+    public function setPermissionToUser()
     {
-        $user = Auth::user();
+        $authorizedUser = Auth::user();
 
-        if (!app()->runningInConsole() && !is_null($user)) 
+        if ($this->checkApplicationState()) 
         {
-            $roles = Role::with('permissions')->get();
+            $permissionToUser = [];
+            
+            if ($authorizedUser->permissions->isNotEmpty()) 
+            {
+                $permissionToUser[] = $authorizedUser->permissions->pluck('name')->toArray();
+            }
 
-            if ($roles->isNotEmpty()) {
-                foreach ($roles as $role) {
-                    foreach ($role->permissions as $permissions) {
-                        $permissionsArray[$permissions->name][] = $role->id;
-                    }
-                }
-                
-                foreach ($permissionsArray as $title => $roleId) {
-                    
-                    Gate::define($title, function (\App\Models\User $user) use ( $roleId) {
-                        return count(array_intersect($user->roles->pluck('id')->toArray(), $roleId)) > 0;
+            $uniqued =  array_keys(array_flip(Arr::collapse($permissionToUser)));
+
+            $arrayCount = count($uniqued);
+
+            if ($arrayCount !== 0) 
+            {
+                foreach ($uniqued as $permissionName) 
+                {
+                    Gate::define($permissionName, function () {
+                        return true;
                     });
                 }
             }
         }
+    }
+
+    /**
+     * Set the Permission to user via role
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     **/
+    public function setPermissionToRole()
+    {
+        $authorizedUser = Auth::user();
+
+        if ($this->checkApplicationState()) 
+        {
+            $userPermissionViaRole = [];
+
+            $rolesOfUser = $authorizedUser->roles;
+
+            if ($rolesOfUser->isNotEmpty()) 
+            {
+                foreach ($rolesOfUser as  $userRole) 
+                {
+                    $roleWithPermisison = $userRole->load('permissions');
+                    $userPermissionViaRole[] =  $roleWithPermisison->permissions->pluck('name')->toArray();
+                }
+            }
+        }
+
+        $uniqued =  array_keys(array_flip(Arr::collapse($userPermissionViaRole)));
+
+        $arrayCount = count($uniqued);
+
+        if ($arrayCount !== 0) 
+        {
+            foreach ($uniqued as $permissionName) 
+            {
+                Gate::define($permissionName, function () {
+                    return true;
+                });
+            }
+        }
+    }
+
+    /**
+     * Check the Current State to map the Permission
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return bool
+     **/
+    public function checkApplicationState()
+    {
+        $authorizedUser = Auth::user();
+        return !App::runningInConsole() && !is_null($authorizedUser);
     }
 }
