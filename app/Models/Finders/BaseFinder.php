@@ -36,7 +36,7 @@ trait BaseFinder
      **/
     public static function findOrFailByColumn(string $columnName, string $value)
     {
-        return self::where($columnName, $value)->first() ?? abort(404);
+        return self::where($columnName, $value)->firstOrFail();
     }
 
     /**
@@ -69,6 +69,6 @@ trait BaseFinder
      **/
     public static function findOrFailByColumnWithTrashed(string $columnName, string $value)
     {
-        return self::withTrashed()->where($columnName, $value)->first() ?? abort(404);
+        return self::withTrashed()->where($columnName, $value)->firstOrFail();;
     }
 }
