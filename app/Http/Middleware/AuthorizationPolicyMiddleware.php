@@ -8,6 +8,7 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
 class AuthorizationPolicyMiddleware
 {
@@ -31,6 +32,8 @@ class AuthorizationPolicyMiddleware
      **/
     public function setPermissionToRole()
     {
+        $rootUserRoleName = Config::get( 'useraccess.rootUserRoleName');
+        
         $authorizedUser = Auth::user();
 
         if ($this->checkApplicationState()) {
@@ -39,35 +42,43 @@ class AuthorizationPolicyMiddleware
                                 ->whereIn('id', $authorizedUser->roles->pluck('id'))
                                 ->get();
 
-            $permissionsOfUser = Permission::with('users')
-                                            ->whereIn('id', $authorizedUser->permissions->pluck('id'))
-                                            ->pluck('name');
-
-            $permissionsRole = $specialAccess = [];
-
-            if ($rolesOfUser->isNotEmpty()) 
+            if( $rolesOfUser->pluck('name')->contains($rootUserRoleName))
             {
-                foreach ($rolesOfUser as  $userRole) 
-                {
-                    if ($userRole->permissions->pluck( 'name')->toArray() !== []) 
-                    {
-                        $permissionsRole[] =  $userRole->permissions->pluck( 'name')->toArray();
-                    }
-                }
-            }
-
-            $specialAccess = $permissionsOfUser->toArray();
-            $permissionsRole = array_unique(array_reduce($permissionsRole, 'array_merge', []));
-            $uniquePermission = array_unique(array_merge( $specialAccess, $permissionsRole));
-
-            if (isset( $uniquePermission)) 
-            {
-                foreach ( $uniquePermission as $permissionName) {
-                    Gate::define($permissionName, function () {
+                $allPermissions = Permission::pluck('name')->toArray();
+                foreach ( $allPermissions as $allPermission) {
+                    Gate::define( $allPermission, function () {
                         return true;
                     });
                 }
-            }
+
+            }else {
+
+                $permissionsOfUser = Permission::with('users')
+                    ->whereIn('id', $authorizedUser->permissions->pluck('id'))
+                    ->pluck('name');
+
+                $permissionsRole = $specialAccess = [];
+
+                if ($rolesOfUser->isNotEmpty()) {
+                    foreach ($rolesOfUser as  $userRole) {
+                        if ($userRole->permissions->pluck('name')->toArray() !== []) {
+                            $permissionsRole[] =  $userRole->permissions->pluck('name')->toArray();
+                        }
+                    }
+                }
+
+                $specialAccess = $permissionsOfUser->toArray();
+                $permissionsRole = array_unique(array_reduce($permissionsRole, 'array_merge', []));
+                $uniquePermission = array_unique(array_merge($specialAccess, $permissionsRole));
+
+                if (isset($uniquePermission)) {
+                    foreach ($uniquePermission as $permissionName) {
+                        Gate::define($permissionName, function () {
+                            return true;
+                        });
+                    }
+                }
+            }            
         }
     }
 

@@ -1,5 +1,8 @@
 <?php
 
+//if You are not developer don't change this
+$rootUserRoleName = 'ROOT_USER';
+
 return [
 
     /*
@@ -53,6 +56,10 @@ return [
 
     'rolePermissionsTable' => 'permission_role',
 
+    //if You are not developer don't change after this part
+
+    'rootUserRoleName' => $rootUserRoleName,
+
     //here we are defining the superadminstrator of the application
     'seeders' => [
         
@@ -66,11 +73,8 @@ return [
         ],
 
         'rolesTable' => [
-
-            'superUserData' => [
-                'name' => 'ROOT_USER',
-            ],
-            
+                $rootUserRoleName => 'Root User of the Application',
+                'ADMIN' => 'Adminstrator of the Application',
         ],
         'permissionsTable' => [
 
