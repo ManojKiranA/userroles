@@ -13,17 +13,7 @@ class PermissionUserTableSeeder extends Seeder
     public function run()
     {
         
-
         \DB::table('permission_user')->delete();
-        
-        \DB::table('permission_user')->insert(array (
-            0 => 
-            array (
-                'user_id' => 2,
-                'permission_id' => 5,
-            ),
-        ));
-        
         
     }
 }

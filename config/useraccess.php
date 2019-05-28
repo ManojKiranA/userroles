@@ -1,6 +1,5 @@
 <?php
 
-
 //kindly Change this configuration
 
 //determines the root user  name
@@ -76,12 +75,12 @@ return [
 
     //here we are defining the superadminstrator of the application
     'seeders' => [
-        
         'usersTable' => [
             'superUserData' => [
-                'name' => 'Super Administrator',
-                'email' => 'superuser@application.com',
+                'name' => $rootUserName,
+                'email' => $rootUserEmail,
                 'email_verified_at' => now(),
+                'password' => $rootUserPassword,
             ],
         ],
 
