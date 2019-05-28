@@ -1,6 +1,20 @@
 <?php
 
+
+//kindly Change this configuration
+
+//determines the root user  name
+$rootUserName = 'Root';
+
+//determines the root user email
+$rootUserEmail = 'superuser@application.com';
+
+//determines the root user password
+$rootUserPassword = 'superuser@welcome123';
+
+
 //if You are not developer don't change this
+//determines the root user role name
 $rootUserRoleName = 'ROOT_USER';
 
 return [
@@ -64,7 +78,6 @@ return [
     'seeders' => [
         
         'usersTable' => [
-
             'superUserData' => [
                 'name' => 'Super Administrator',
                 'email' => 'superuser@application.com',
