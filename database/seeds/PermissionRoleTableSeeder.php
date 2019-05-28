@@ -1,27 +1,23 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Config;
+use App\Models\Permission;
 
 class PermissionRoleTableSeeder extends Seeder
 {
-
     /**
-     * Auto generated seed file
+     * Run the database seeds.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return void
      */
     public function run()
     {
-        \DB::table('permission_role')->delete();
-        
-        \DB::table('permission_role')->insert(array (
-            0 => 
-            array (
-                'permission_id' => 3,
-                'role_id' => 2,
-            ),
-        ));
-        
-        
+        $allPermisisons = Permission::pluck('id')->toArray();
+        $rootUserRoleName = Config::get('useraccess.rootUserRoleName');
+        $rootRole = Role::findByname( $rootUserRoleName);
+        $rootRole->permissions()->sync( $allPermisisons);
     }
 }

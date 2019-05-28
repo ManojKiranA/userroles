@@ -7,6 +7,7 @@ use App\Models\Relations\RoleRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\AclManager\AclManagement;
 use Illuminate\Support\Facades\Config;
+use App\Models\Finders\RoleFinder;
 
 /**
  * Class App\Models\Role
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Config;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons, AclManagement;
+    use SoftDeletes, RoleRelation, TableActionButtons, AclManagement, RoleFinder;
 
     /**
      * The table associated with the model.
