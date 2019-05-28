@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\Permission;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View as IlluminateView;
 use App\Http\Requests\PermissionStoreRequest;
-use Illuminate\Http\{Request as HttpRequest};
+use Illuminate\Http\Request as HttpRequest;
 use App\Http\Requests\PermissionUpdateRequest;
 use Illuminate\Support\Facades\View as ViewFacade;
 

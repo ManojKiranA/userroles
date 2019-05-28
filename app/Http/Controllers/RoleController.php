@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use Illuminate\Http\{Request as HttpRequest};
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
-use Illuminate\Support\Facades\{View,Config};
-use Illuminate\Support\Facades\Redirect;
 use App\Models\Permission;
-
+use App\Models\Role;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 class RoleController extends Controller
 {
     protected $rootRoleName;
