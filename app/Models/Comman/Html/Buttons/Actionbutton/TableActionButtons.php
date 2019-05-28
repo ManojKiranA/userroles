@@ -14,7 +14,7 @@ use Illuminate\Support\HtmlString;
 
 trait TableActionButtons
 {
-    use EditButton,DeleteButton,ShowButton, RouteGuesser;
+    use EditButton,DeleteButton,ShowButton, RouteGuesser, ForceDeleteButton, RestoreButton;
 
     /**
      * Transform the string to an Html serializable object
@@ -32,9 +32,8 @@ trait TableActionButtons
      *
      * This Will Generate the Delete Route Name
      *
-     * @param Type $var Description
-     * @return type
-     * @throws conditon
+     * @return string
+     * @throws Exception
      **/
     public function deleteActionFieldName(): string
     {
@@ -48,13 +47,49 @@ trait TableActionButtons
     }
 
     /**
+     * The Force Delete Route key of the Current Model
+     *
+     * This Will Generate the Force Delete Route Name
+     *
+     * @return string
+     * @throws Exception
+     **/
+    public function forceDeleteActionFieldName(): string
+    {
+        return $this->getRouteKeyName();
+
+        if (is_null($this->getProperty( 'forceDeleteActionField'))) 
+        {
+            return 'id';
+        }
+        return $this->getProperty( 'forceDeleteActionField');
+    }
+
+    /**
+     * The Restore Route key of the Current Model
+     *
+     * This Will Generate the Restore Route Name
+     *
+     * @return string
+     * @throws Exception
+     **/
+    public function restoreActionFieldName(): string
+    {
+        return $this->getRouteKeyName();
+
+        if (is_null($this->getProperty('restoreActionField'))) {
+            return 'id';
+        }
+        return $this->getProperty( 'restoreActionField');
+    }
+
+    /**
      * The Edit Route Action Filed of the Current Model
      *
      * This Will Generate the Delete Route Name
      *
-     * @param Type $var Description
-     * @return type
-     * @throws conditon
+     * @return string
+     * @throws Exception
      **/
     public function editActionFieldName(): string
     {
@@ -71,9 +106,8 @@ trait TableActionButtons
      *
      * This Will Generate the Delete Route Name
      *
-     * @param Type $var Description
-     * @return type
-     * @throws conditon
+     * @return string
+     * @throws Exception
      **/
     public function showActionFieldName(): string
     {
@@ -84,12 +118,18 @@ trait TableActionButtons
         }
         return $this->getProperty('showActionField');
     }
-
+    /**
+     * Get the Property from the object
+     *
+     *
+     * @param string $var Object Property
+     * @return mixed
+     * @throws Exception
+     **/
     public function getProperty($var)
     {
         return $this->$var;
     }
-
     /**
      * This Is used To determine the base route name of the Model
      *

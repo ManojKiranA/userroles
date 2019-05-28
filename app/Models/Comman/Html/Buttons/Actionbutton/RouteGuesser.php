@@ -32,6 +32,42 @@ trait RouteGuesser
     }
 
     /**
+     * The Delete Route of the Current Model
+     *
+     * This Will Generate the Delete Route Name
+     *
+     * @return string
+     * @throws Exception
+     **/
+    public function forceDeleteRouteName(): string
+    {
+        if (is_null($this->getProperty( 'forceDeleteRoute'))) {
+            $routeName = $this->routeName() . '.forcedelete';
+            $this->catchMissingRoute($routeName, 'forceDeleteRoute');
+            return $routeName;
+        }
+        return $this->getProperty( 'forceDeleteRoute');
+    }
+
+    /**
+     * The Restore Route of the Current Model
+     *
+     * This Will Generate the Restore Route Name
+     *
+     * @return string
+     * @throws Exception
+     **/
+    public function restoreRouteName(): string
+    {
+        if (is_null($this->getProperty('restoreRoute'))) {
+            $routeName = $this->routeName() . '.restoreRoute';
+            $this->catchMissingRoute($routeName, 'restoreRoute');
+            return $routeName;
+        }
+        return $this->getProperty( 'restoreRoute');
+    }
+
+    /**
      * The Edit Route of the Current Model
      *
      * This Will Generate the Delete Route Name

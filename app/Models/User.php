@@ -67,7 +67,23 @@ class User extends BaseModel implements
      */
     protected $showRoute = 'admin.access.users.show';
 
+    /**
+     * The force delete route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $forceDeleteRoute = 'admin.access.users.forcedelete';
 
+    /**
+     * The force delete route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $restoreRoute = 'admin.access.users.restore';
+
+    
+
+    
     /**
     * The attributes that are mass assignable.
     *

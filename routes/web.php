@@ -22,12 +22,17 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     *Start Web Routes For UserController
     */
     Route::get('/users/index',  'UserController@index')->name('users.index');
+    Route::get('/users/deleted/index',  'UserController@deleted')->name('users.deleted');
     Route::get('/users/create',  'UserController@create')->name('users.create');
     Route::post('/users/store',  'UserController@store')->name('users.store');
     Route::get('/users/{user}/show',  'UserController@show')->name('users.show');
     Route::get('/users/{user}/edit',  'UserController@edit')->name('users.edit');
     Route::put('/users/{user}/update',  'UserController@update')->name('users.update');
     Route::delete('/users/{user}/delete',  'UserController@destroy')->name('users.destroy');
+    Route::delete( '/users/deleted/{user}/delete',  'UserController@forceDelete')->name( 'users.forcedelete');
+    Route::any('/users/deleted/{user}/restore',  'UserController@restore')->name( 'users.restore');
+        
+
     /*
     *End Web Routes For UserController
     */

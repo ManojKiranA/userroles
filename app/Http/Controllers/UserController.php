@@ -55,14 +55,14 @@ class UserController extends Controller
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return \Illuminate\Http\Response
      **/
-    public function trashed( HttpRequest $request)
+    public function deleted( HttpRequest $request)
     {
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User:: onlyTrashed()->latest()->paginate(null, ['*'], 'userTrashedPage')->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
-        return ViewFacade::make('admin.access.users.index', $viewShare);
+        return ViewFacade::make('admin.access.users.deleted', $viewShare);
     }
 
     /**
@@ -179,6 +179,38 @@ class UserController extends Controller
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Deleted Successfully');
     }
+
+    /**
+     * Force Deleted the softdeleted model
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param HttpRequest $request Current Request Instance
+     * @param string $userId The id that need to be force deleted
+     * @return Redirect
+     **/
+    public function forceDelete( HttpRequest $request,$userId)
+    {
+        User::withTrashed()->findOrFail($userId)->forceDelete();
+        return Redirect::route( 'admin.access.users.deleted')
+            ->with('success', 'User Permanently Deleted Successfully');
+    }
+
+    /**
+     * Restore the softdeleted model
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param HttpRequest $request Current Request Instance
+     * @param string $userId The id that need to be restored
+     * @return Redirect
+     **/
+    public function restore(HttpRequest $request, $userId)
+    {
+        User::withTrashed()->findOrFail($userId)-> restore();
+        return Redirect::route('admin.access.users.deleted')
+            ->with('success', 'User Restored Successfully');
+    }
+
+     
 
     /**
      * Set the Unique Permission Based on the role 
