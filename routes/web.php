@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static function(){
     Route::prefix('access/')->name('access.')->group( static function () {
-        
+  
     /*
     *Start Web Routes For UserController
     */
@@ -49,7 +49,7 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     /*
     *End Web Routes For RoleController
     */
-
+    
     /*
     *Start Web Routes For PermissionController  
     */
@@ -63,6 +63,5 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     /*
     *End Web Routes For RoleController
     */
-
     });
 });

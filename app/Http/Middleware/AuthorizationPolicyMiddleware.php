@@ -8,8 +8,6 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class AuthorizationPolicyMiddleware
 {
