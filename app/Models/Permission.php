@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
-use App\Models\AclManager\AclManagement;
 
 /**
  * Class App\Models\Permission
@@ -23,7 +22,7 @@ use App\Models\AclManager\AclManagement;
 
 class Permission extends BaseModel
 {
-    use SoftDeletes, PermissionRelation, TableActionButtons, AclManagement;
+    use SoftDeletes, PermissionRelation, TableActionButtons;
 
     /**
      * The table associated with the model.
