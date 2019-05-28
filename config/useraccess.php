@@ -73,11 +73,33 @@ return [
             
         ],
         'permissionsTable' => [
-            'user_access' => 'Show a user list',
+
+            'user_access' => 'Show a User List',
             'user_create' => 'Create New User',
-            'user_edit' => 'Edit a user',
             'user_show' => 'Show a user',
-            'user_delete' => 'Show a user',            
+            'user_edit' => 'Edit a user',
+            'user_delete' => 'Delete a user',
+            'user_deleted_access' => 'Show Deleted User List',
+            'user_force_delete' => 'Permanently Deltes the Deleted User',
+            'user_restore' => 'Restores the Deleted User',
+
+            'role_access' => 'Show a Role List',
+            'role_create' => 'Create New Role',
+            'role_show' => 'Show a role',
+            'role_edit' => 'Edit a role',
+            'role_delete' => 'Edit a role',
+            'role_deleted_access' => 'Show Deleted Role List',
+            'role_force_delete' => 'Permanently Deltes the Deleted Role',
+            'role_restore' => 'Restores the Deleted Role',
+
+            'permission_access' => 'Show a Permission List',
+            'permission_create' => 'Create New Permission',
+            'permission_show' => 'Show a permission',
+            'permission_edit' => 'Edit a permission',
+            'permission_delete' => 'Edit a permission',
+            'permission_deleted_access' => 'Show Deleted Permission List',
+            'permission_force_delete' => 'Permanently Deltes the Deleted Permission',
+            'permission_restore' => 'Restores the Deleted Permission',
         ],
     ],
 
