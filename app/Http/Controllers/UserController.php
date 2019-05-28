@@ -115,8 +115,9 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize('user_access');
-        $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
-        $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
+        $roleList = Role::excludeRootRole()
+                        ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['user' => $user, 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
@@ -173,7 +174,10 @@ class UserController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_deleted_access');
         //getting the list of user by latest and passing to length aware paginator instance
-        $usersList = User::onlyTrashed()->latest()->paginate(null, ['*'], 'userTrashedPage')->onEachSide(2);
+        $usersList = User::onlyTrashed()
+                        ->latest()
+                        ->paginate(null, ['*'], 'userDeletedPage')
+                        ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view

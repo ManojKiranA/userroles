@@ -169,7 +169,7 @@ class PermissionController extends Controller
         //getting the list of user by latest and passing to length aware paginator instance
         $permissionList = Permission::onlyTrashed()
                             ->latest()
-                            ->paginate(null, ['*'], 'permissionPageDeleted')
+                            ->paginate(null, ['*'], 'permissionDeletedPage')
                             ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permissionList' => $permissionList];

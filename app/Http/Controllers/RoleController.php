@@ -32,7 +32,10 @@ class RoleController extends Controller
     {
         $request = $request;
         //getting the list of roles by latest and passing to length aware paginator instance
-        $rolesList = Role::excludeRootRole()->latest()->paginate(null,['*'],'rolePage');
+        $rolesList = Role::excludeRootRole()
+                        ->latest()
+                        ->paginate(null,['*'],'rolePage')
+                        ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = compact('rolesList');
         //now we are returning the view
