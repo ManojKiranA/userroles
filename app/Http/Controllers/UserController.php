@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User,Role,Permission};
-use Illuminate\Http\{Request as HttpRequest};
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\{Request as HttpRequest};
+use Illuminate\Support\Facades\View as ViewFacade;
+use Illuminate\View\View as IlluminateView;
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -18,7 +22,7 @@ class UserController extends Controller
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return \Illuminate\Http\Response
      */
-    public function index( HttpRequest $request)
+    public function index( HttpRequest $request): IlluminateView
     {
         abort_unless(Gate::allows('user_access'),403);
         //getting the list of user by latest and passing to length aware paginator instance
@@ -26,7 +30,7 @@ class UserController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
-        return View::make('admin.access.users.index', $viewShare);
+        return ViewFacade::make('admin.access.users.index', $viewShare);
     }
 
     /**
@@ -44,7 +48,7 @@ class UserController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
-        return View::make('admin.access.users.index', $viewShare);
+        return ViewFacade::make('admin.access.users.index', $viewShare);
     }
 
     /**
@@ -63,7 +67,7 @@ class UserController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
-        return View::make('admin.access.users.create', $viewShare);
+        return ViewFacade::make('admin.access.users.create', $viewShare);
     }
 
     /**
@@ -109,7 +113,7 @@ class UserController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['user' => $user, 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
-        return View::make('admin.access.users.edit', $viewShare);
+        return ViewFacade::make('admin.access.users.edit', $viewShare);
     }
 
     /**
