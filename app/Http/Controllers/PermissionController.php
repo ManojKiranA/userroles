@@ -36,7 +36,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $roleList = Role:: PluckWithPlaceHolder('name','id','Choose Role');
+        $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name','id','Choose Role');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList];
         //now we are returning the view
@@ -52,7 +52,7 @@ class PermissionController extends Controller
     public function store(PermissionStoreRequest $request)
     {
         $permission = Permission::create($request->all());
-        $permission-> giveRoleById($request->input( 'roles'));
+        $permission->roles()->sync(array_filter($request->input('roles', [])));
         return Redirect::route('admin.access.permissions.index')
             ->with('success', 'Permissions Created Successfully');
     }
@@ -76,7 +76,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permission' => $permission, 'roleList' => $roleList];
         //now we are returning the view
@@ -93,7 +93,7 @@ class PermissionController extends Controller
     public function update( PermissionUpdateRequest $request, Permission $permission)
     {
         $permission->update($request->all());
-        $permission->modifyRoleById( $request->input('roles'));
+        $permission->roles()->sync(array_filter($request->input('roles', [])));
         return Redirect::route('admin.access.permissions.index')
             ->with('success', 'Permission Updated Successfully');
     }

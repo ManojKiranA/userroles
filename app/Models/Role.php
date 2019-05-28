@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\RoleRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\AclManager\AclManagement;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Class App\Models\Role
@@ -58,4 +59,16 @@ class Role extends BaseModel
      * @var string
      */
     protected $showRoute = 'admin.access.roles.show';
+
+    /**
+     * Scope a query to only exclude the root user role in list
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeExcludeRootRole($query)
+    {
+        return $query->where('name','!=',Config::get('useraccess.rootUserRoleName'));
+    }
 }

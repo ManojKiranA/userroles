@@ -12,12 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    protected $unAuthorized = 403;
-
     /**
      * Create a new controller instance.
      *
@@ -38,7 +35,7 @@ class UserController extends Controller
     public function index( HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access', Auth::user());
+        $this->authorize('user_access');
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
                         ->paginate(null, ['*'], 'userPage')
@@ -58,7 +55,7 @@ class UserController extends Controller
     public function create(): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_create', Auth::user());
+        $this->authorize('user_access');
         //now we are plucking the roles with place holder
         $roleList = Role::pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are plucking the permissions with place holder
@@ -79,7 +76,7 @@ class UserController extends Controller
     public function store( UserStoreRequest $request)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_create', Auth::user());
+        $this->authorize('user_access');
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
@@ -101,7 +98,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_show', Auth::user());
+        $this->authorize('user_access');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['user' => $user];
         return ViewFacade::make('admin.access.users.show', $viewShare);
@@ -117,8 +114,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_edit', Auth::user());
-        $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $this->authorize('user_access');
+        $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['user' => $user, 'roleList' => $roleList, 'permissionList' => $permissionList];
@@ -137,7 +134,7 @@ class UserController extends Controller
     public function update( UserUpdateRequest $request, User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_edit', Auth::user());
+        $this->authorize( 'user_edit');
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
         $user->roles()->sync(array_filter($request->input('roles', [])));
@@ -173,6 +170,8 @@ class UserController extends Controller
      **/
     public function deleted(HttpRequest $request)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_deleted_access');
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::onlyTrashed()->latest()->paginate(null, ['*'], 'userTrashedPage')->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
@@ -191,6 +190,8 @@ class UserController extends Controller
      **/
     public function forceDelete( HttpRequest $request,$userId)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_force_delete');
         User::withTrashed()->findOrFail($userId)->forceDelete();
         return Redirect::route( 'admin.access.users.deleted')
             ->with('success', 'User Permanently Deleted Successfully');
@@ -206,6 +207,8 @@ class UserController extends Controller
      **/
     public function restore(HttpRequest $request, $userId)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_restore');
         User::withTrashed()->findOrFail($userId)-> restore();
         return Redirect::route('admin.access.users.deleted')
             ->with('success', 'User Restored Successfully');

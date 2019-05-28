@@ -6,12 +6,23 @@ use App\Models\Role;
 use Illuminate\Http\{Request as HttpRequest};
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
-use Illuminate\Support\Facades\{View,Auth,Gate};
+use Illuminate\Support\Facades\{View,Config};
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Permission;
 
 class RoleController extends Controller
 {
+    protected $rootRoleName;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->rootRoleName = Config::get('useraccess.rootUserRoleName');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +32,7 @@ class RoleController extends Controller
     {
         $request = $request;
         //getting the list of roles by latest and passing to length aware paginator instance
-        $rolesList = Role::latest()->paginate(null,['*'],'rolePage');
+        $rolesList = Role::excludeRootRole()->latest()->paginate(null,['*'],'rolePage');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = compact('rolesList');
         //now we are returning the view
@@ -51,7 +62,7 @@ class RoleController extends Controller
     public function store( RoleStoreRequest $request)
     {
         $role = Role::create($request->all());
-        $role-> givePermissionById($request->input( 'permissions'));
+        $role->givePermissionById($request->input( 'permissions'));
         return Redirect::route('admin.access.roles.index')
             ->with('success', 'Role Created Successfully');
     }
@@ -64,6 +75,8 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        //if the user is trying to view the root role we need to deny that
+        abort_if( $this->rootRoleName === $role->name,403,"Whoops You Can't Show that");
         return $role;
     }
 
@@ -75,6 +88,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        //if the user is trying to edit the root role we need to deny that
+        abort_if( $this->rootRoleName === $role->name, 403, "Whoops You Can't Edit that");
+
         $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'role' => $role, 'permissionList' => $permissionList];
@@ -91,6 +107,8 @@ class RoleController extends Controller
      */
     public function update( RoleUpdateRequest $request, Role $role)
     {
+        //if the user is trying to update the root role we need to deny that
+        abort_if($this->rootRoleName === $role->name, 403, "Whoops You Can't Edit that");
         $role->update($request->all());
         $role-> modifyPermissionById($request->input('permissions'));
         return Redirect::route('admin.access.roles.index')
@@ -105,6 +123,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        //if the user is trying to delete the root role we need to deny that
+        abort_if($this->rootRoleName === $role->name, 403, "Whoops You Can't Delete that");
         $role->delete();
         return Redirect::route('admin.access.roles.index')
             ->with('success', 'Role Deleted Successfully');
