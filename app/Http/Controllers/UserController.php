@@ -118,7 +118,9 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_show', Auth::user());
-        return $user;
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = ['user' => $user];
+        return ViewFacade::make('admin.access.users.show', $viewShare);
     }
 
     /**
@@ -153,8 +155,11 @@ class UserController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_edit', Auth::user());
         $user->update($request->all());
-        $user-> modifyRoleById($request->input('roles'));
-        $user-> modifyPermissionById($request->input('permissions'));
+        //after that we need to sync the user roles in the relation table
+        $user->roles()->sync(array_filter($request->input('roles', [])));
+        //after that we need to sync the user permissions in the relation table
+        $user->permissions()->sync($this->setUniquePermisison($request->input('roles') ?? [], $request->input('permissions') ?? [], 'UPDATE'));
+        //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Updated Successfully');
     }
@@ -187,22 +192,17 @@ class UserController extends Controller
      * @param array $permissions Array of Permissions
      * @param string $method The Method
      * @return array
-     * @throws conditon
      **/
     private function setUniquePermisison($roles = [],$permissions = [],$method)
     {
         $roles = array_filter($roles);
         $permissions = array_filter( $permissions);
 
-        if( $roles === [] && $permissions === [] || $roles !== [] && $permissions === [])
-        {
+        if( $roles === [] && $permissions === [] || $roles !== [] && $permissions === []){
             return [];
-
-        }elseif ( $roles === [] && $permissions !== []) 
-        {
+        }elseif ( $roles === [] && $permissions !== []){
             return $permissions;
         }
-
         if (is_array($roles)) {
             foreach ($roles as $roleV) {
                 $perToEachRole = Role::findOrFail($roleV);
@@ -211,10 +211,8 @@ class UserController extends Controller
                     $totPermList[] = $perArrToRoleVal['id'];
                 }
             }
-
             $dirPermToRole = array_unique($totPermList);
         }
-
         if ($method == 'STORE') {
             $difference = array_merge(array_diff($dirPermToRole, $permissions), array_diff($permissions, $dirPermToRole));
         } elseif ($method == 'UPDATE') {
@@ -222,6 +220,4 @@ class UserController extends Controller
         }
         return $difference;
     }
-
-    
 }
