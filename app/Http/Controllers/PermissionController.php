@@ -2,40 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Permission, Role};
-use Illuminate\Support\Facades\View;
+use App\Models\Role;
+use App\Models\Permission;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View as IlluminateView;
+use App\Http\Requests\PermissionStoreRequest;
 use Illuminate\Http\{Request as HttpRequest};
 use App\Http\Requests\PermissionUpdateRequest;
-use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\PermissionStoreRequest;
+use Illuminate\Support\Facades\View as ViewFacade;
+
 
 class PermissionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index( HttpRequest $request)
+    public function __construct()
     {
-        $request = $request;
-        //getting the list of user by latest and passing to length aware paginator instance
-        $permissionList = Permission::latest()->paginate();
-
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare = compact( 'permissionList');
-
-        //now we are returning the view
-        return View::make('admin.access.permissions.index', $viewShare);
+        $this->middleware('auth');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the Permissions.
      *
-     * @return \Illuminate\Http\Response
+     * @param HttpRequest $request Current Request Instance
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return IlluminateView
      */
-    public function create()
+    public function index( HttpRequest $request): IlluminateView
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_access');
+        //getting the list of user by latest and passing to length aware paginator instance
+        $permissionList = Permission::latest()->paginate();
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = [ 'permissionList' => $permissionList];
+        //now we are returning the view
+        return ViewFacade::make('admin.access.permissions.index', $viewShare);
+    }
+
+    /**
+     * Show the form for creating a new Permission.
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return IlluminateView
+     */
+    public function create(): IlluminateView
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_create');
+        //plucking the role name and id with place holder
         $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name','id','Choose Role');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList];
@@ -51,22 +70,29 @@ class PermissionController extends Controller
      */
     public function store(PermissionStoreRequest $request)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize('permission_create');
+        //create the new permission for the form request
         $permission = Permission::create($request->all());
+        //syncing the roles associated with the permisisons
         $permission->roles()->sync(array_filter($request->input('roles', [])));
+        //now we are redirecting to the index page with message
         return Redirect::route('admin.access.permissions.index')
             ->with('success', 'Permissions Created Successfully');
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  \App\Models\Permission  $permission
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Permission $permission)
-    // {
-    //     //
-    // }
+    /**
+     * Display the specified Permission.
+     *
+     * @param  \App\Models\Permission  $permission
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Permission $permission)
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_show');
+        return $permission->load('roles');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -76,6 +102,8 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_edit');
         $roleList = Role::excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permission' => $permission, 'roleList' => $roleList];
@@ -92,6 +120,9 @@ class PermissionController extends Controller
      */
     public function update( PermissionUpdateRequest $request, Permission $permission)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize('permission_edit');
+
         $permission->update($request->all());
         $permission->roles()->sync(array_filter($request->input('roles', [])));
         return Redirect::route('admin.access.permissions.index')
@@ -106,6 +137,8 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_delete');
         $permission->delete();
         return Redirect::route('admin.access.permissions.index')
             ->with('success', 'Permission Deleted Successfully');

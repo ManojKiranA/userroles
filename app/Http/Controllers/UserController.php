@@ -47,7 +47,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new User.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return IlluminateView
