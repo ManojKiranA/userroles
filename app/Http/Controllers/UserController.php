@@ -57,7 +57,7 @@ class UserController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize('user_access');
         //now we are plucking the roles with place holder
-        $roleList = Role::pluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $roleList = Role:: excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are plucking the permissions with place holder
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view

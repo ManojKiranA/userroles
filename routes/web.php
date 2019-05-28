@@ -61,6 +61,9 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     Route::get( '/permissions/{permission}/edit',  'PermissionController@edit')->name( 'permissions.edit');
     Route::put( '/permissions/{permission}/update',  'PermissionController@update')->name( 'permissions.update');
     Route::delete( '/permissions/{permission}/delete',  'PermissionController@destroy')->name( 'permissions.destroy');
+    Route::get( '/permissions/deleted/index',  'PermissionController@deleted')->name( 'permissions.deleted');
+    Route::delete( '/permissions/deleted/{permission}/delete',  'PermissionController@forceDelete')->name( 'permissions.forcedelete');
+    Route::patch( '/permissions/deleted/{permission}/restore',  'PermissionController@restore')->name( 'permissions.restore');
     /*
     *End Web Routes For RoleController
     */

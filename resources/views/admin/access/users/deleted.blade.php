@@ -36,9 +36,7 @@
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
                   <td class="text-center">
-                      {{$userValue->forceDeleteButton()}}
-                      {{$userValue->restoreButton()}}
-                  @include('comman.actionbuttons', ['modelObject' => $userValue,'buttonsList' => ['DELETE']])
+                  @include('comman.gatetrashedbuttons', ['modelObject' => $userValue,'buttonsList' => ['FORCE_DELETE' => 'user_force_delete','RESTORE' => 'user_restore']])
                   </td>
                </tr>
             @empty

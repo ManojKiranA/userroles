@@ -139,9 +139,75 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'permission_delete');
-        $permission->delete();
-        return Redirect::route('admin.access.permissions.index')
-            ->with('success', 'Permission Deleted Successfully');
+        $this->authorize('permission_delete');
+        if( $permission-> isDeletable())
+        {
+            $permission->delete();
+            return Redirect::route('admin.access.permissions.index')
+                ->with('success', 'Permission Deleted Successfully');
+        }
+        else 
+        {
+            return Redirect::route('admin.access.permissions.index')
+                ->with('error', 'Permission is Assigned to Role or User');
+        }        
+        
+    }
+
+
+    /**
+     * Show all the softdeleted Model
+     *
+     * @param HttpRequest $request Current Request Instance
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return \Illuminate\Http\Response
+     **/
+    public function deleted(HttpRequest $request)
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_deleted_access');
+        //getting the list of user by latest and passing to length aware paginator instance
+        $permissionList = Permission::onlyTrashed()
+                            ->latest()
+                            ->paginate(null, ['*'], 'permissionPageDeleted')
+                            ->onEachSide(2);
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = [ 'permissionList' => $permissionList];
+        //now we are returning the view
+        return ViewFacade::make( 'admin.access.permissions.deleted', $viewShare);
+    }
+
+    /**
+     * Force Deleted the softdeleted model
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param HttpRequest $request Current Request Instance
+     * @param string $permissionId The id that need to be force deleted
+     * @return Redirect
+     **/
+    public function forceDelete(HttpRequest $request, $permissionId)
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_force_delete');
+        Permission::withTrashed()->findOrFail( $permissionId)->forceDelete();
+        return Redirect::route( 'admin.access.permissions.deleted')
+                        ->with('success', 'Permissions Permanently Deleted Successfully');
+    }
+
+    /**
+     * Restore the softdeleted model
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param HttpRequest $request Current Request Instance
+     * @param string $permissionId The id that need to be restored
+     * @return Redirect
+     **/
+    public function restore(HttpRequest $request, $permissionId)
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'permission_restore');
+        Permission::withTrashed()->findOrFail( $permissionId)->restore();
+        return Redirect::route( 'admin.access.permissions.deleted')
+            ->with('success', 'Permission Restored Successfully');
     }
 }

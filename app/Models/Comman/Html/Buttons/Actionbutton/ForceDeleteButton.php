@@ -31,7 +31,7 @@ trait ForceDeleteButton
         $forceDeleteFunctionTitle = 'Delete'; //title for delete functions
         $forceDeleteButtonClass = 'btn btn-danger btn-circle'; //class name for the deletebutton
         $forceDeleteButtonIcon = 'fa fa-trash'; //Icon for the delete Button
-        $forceDeleteButtonText  = 'Force Delete'; //text for the delete button
+        $forceDeleteButtonText  = ''; //text for the delete button
         $deleteConfirmationDialog = 'Are You Sure you wnat to delete it. It Cannot Be RECORVED??'; //dialog Which needs to be displayes while deleting the record
         $forceDeleteButtonTooltopPostion = 'top'; //here you can specify the position of tooltip
         $delteButtonVal = $alternateParms + ['routeMethod' => $forceDeleteButtonRoute, 'routeMethodValue' => $actionId, 'popUpDialog' => $deleteConfirmationDialog, 'buttonIcon' => $forceDeleteButtonIcon, 'buttonText' => $forceDeleteButtonText, 'buttonClass' => $forceDeleteButtonClass, 'toolTipPosition' => $forceDeleteButtonTooltopPostion, 'toolTipValue' => $forceDeleteFunctionTitle, 'parmEncryption' => false];

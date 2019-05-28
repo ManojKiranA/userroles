@@ -59,9 +59,34 @@ class Permission extends BaseModel
     protected $showRoute = 'admin.access.permissions.show';
 
     /**
+     * The force delete route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $forceDeleteRoute = 'admin.access.permissions.forcedelete';
+
+    /**
+     * The restore route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $restoreRoute = 'admin.access.permissions.restore';
+
+    /**
      * The number of models to return for pagination.
      *
      * @var int
      */
     protected $perPage = 20;
+
+    /**
+     * Check if the permisison object can be deleted
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return bool
+     **/
+    public function isDeletable()
+    {
+        return $this->roles->isEmpty() && $this->users->isEmpty();
+    }
 }

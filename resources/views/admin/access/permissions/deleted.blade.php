@@ -16,24 +16,28 @@
             <thead>
                <tr>
                   <td>#</td>
-                  <td>Name</td>
-                  <td>Description</td>
-                  <td>Created At</td>
-                  <td class="text-center">Actions</td>
+                 <td>Name</td>
+                 <td>Description</td>
+                 <td>Created At</td> 
+                 <td class="text-center">Actions</td> 
                </tr>
             </thead>
             <tbody>
-               @foreach($permissionList as $permissionKey => $permissionValue)
-               <tr>
-                  <td>@include('comman.serialnumber', ['serNo' => $permissionList])</td>
-                  <td>{{ $permissionValue->name }}</td>
-                  <td>{{ $permissionValue->description }}</td>
-                  <td>{{ $permissionValue->created_at }}</td>
-                  <td class="text-center">
-                     @include('comman.gateactionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT' => 'permission_edit','DELETE' => 'permission_delete','SHOW' => 'permission_show']])
-                  </td>
-               </tr>
-               @endforeach
+
+            @foreach($permissionList as $permissionKey => $permissionValue)
+          <tr>
+             <td>@include('comman.serialnumber', ['serNo' => $permissionList])</td>
+             <td>{{ $permissionValue->name }}</td>
+             <td>{{ $permissionValue->description }}</td>
+             <td>{{ $permissionValue->created_at }}</td>
+             <td class="text-center">
+                 @include('comman.gatetrashedbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['FORCE_DELETE' => 'permission_force_delete','RESTORE' => 'permission_restore']])
+             </td>
+          </tr>
+          @endforeach
+
+              
+               
             </tbody>
          </table>
       </div>
@@ -43,3 +47,4 @@
    </div>
 </div>
 @endsection
+

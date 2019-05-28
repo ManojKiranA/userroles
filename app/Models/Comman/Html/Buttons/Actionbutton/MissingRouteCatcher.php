@@ -27,7 +27,7 @@ trait MissingRouteCatcher
             $exceptionMessage = $exception->getMessage();
 
             if ($preparedMessage  === $exceptionMessage) {
-                throw new \Exception('Unable Guess the Route Name.Try Setting   '.$routeProperty.'  property in ' . class_basename($this). '', 1);
+                throw new \Exception('Unable Guess the Route Name.Try Setting   '.$routeProperty.'  property in ' . get_class($this). '', 1);
             }
         }
 
