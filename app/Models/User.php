@@ -75,14 +75,11 @@ class User extends BaseModel implements
     protected $forceDeleteRoute = 'admin.access.users.forcedelete';
 
     /**
-     * The force delete route that is used for the Model.
+     * The restore route that is used for the Model.
      *
      * @var string
      */
     protected $restoreRoute = 'admin.access.users.restore';
-
-    
-
     
     /**
     * The attributes that are mass assignable.

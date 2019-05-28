@@ -36,7 +36,7 @@
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
                   <td class="text-center">
-                  @include('comman.actionbuttons', ['modelObject' => $userValue,'buttonsList' => ['EDIT','DELETE','SHOW']])
+                  @include('comman.gateactionbuttons', ['modelObject' => $userValue,'buttonsList' => ['EDIT' => 'user_edit','DELETE' => 'user_delete','SHOW' => 'user_show']])
                   </td>
                </tr>
             @empty

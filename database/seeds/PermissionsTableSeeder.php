@@ -20,8 +20,8 @@ class PermissionsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'user_create',
-                'description' => 'Create User',
+                'name' => 'user_access',
+                'description' => 'Show User Lits',
                 'created_by' => NULL,
                 'updated_by' => NULL,
                 'created_at' => '2019-05-22 11:26:47',
@@ -31,8 +31,8 @@ class PermissionsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'user_edit',
-                'description' => 'Edit User',
+                'name' => 'user_create',
+                'description' => 'Create New User',
                 'created_by' => NULL,
                 'updated_by' => NULL,
                 'created_at' => '2019-05-22 11:26:56',
@@ -43,7 +43,7 @@ class PermissionsTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'name' => 'user_show',
-                'description' => 'Show User',
+                'description' => 'Show a user',
                 'created_by' => NULL,
                 'updated_by' => NULL,
                 'created_at' => '2019-05-22 11:27:11',
@@ -53,8 +53,8 @@ class PermissionsTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'user_delete',
-                'description' => 'Delete User',
+                'name' => 'user_edit',
+                'description' => 'Edit a user',
                 'created_by' => NULL,
                 'updated_by' => NULL,
                 'created_at' => '2019-05-22 11:27:53',
@@ -64,12 +64,45 @@ class PermissionsTableSeeder extends Seeder
             4 => 
             array (
                 'id' => 5,
-                'name' => 'user_access',
-                'description' => 'Access User List',
+                'name' => 'user_delete',
+                'description' => 'Delete a user',
                 'created_by' => NULL,
                 'updated_by' => NULL,
                 'created_at' => '2019-05-22 11:28:08',
                 'updated_at' => '2019-05-22 11:28:08',
+                'deleted_at' => NULL,
+            ),
+            5 => 
+            array (
+                'id' => 6,
+                'name' => 'user_deleted_access',
+                'description' => 'Show Deleted User Lits',
+                'created_by' => NULL,
+                'updated_by' => NULL,
+                'created_at' => '2019-05-28 10:54:15',
+                'updated_at' => '2019-05-28 10:54:15',
+                'deleted_at' => NULL,
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'name' => 'user_force_delete',
+                'description' => 'Permanently Deltes the Deleted User',
+                'created_by' => NULL,
+                'updated_by' => NULL,
+                'created_at' => '2019-05-28 10:55:21',
+                'updated_at' => '2019-05-28 10:55:21',
+                'deleted_at' => NULL,
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'name' => 'user_restore',
+                'description' => 'Restores the Deleted User',
+                'created_by' => NULL,
+                'updated_by' => NULL,
+                'created_at' => '2019-05-28 10:55:49',
+                'updated_at' => '2019-05-28 10:55:49',
                 'deleted_at' => NULL,
             ),
         ));

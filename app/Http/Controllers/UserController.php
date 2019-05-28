@@ -27,6 +27,7 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the Users.
      *
@@ -46,23 +47,6 @@ class UserController extends Controller
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
         return ViewFacade::make('admin.access.users.index', $viewShare);
-    }
-
-    /**
-     * Show all the softdeleted Model
-     *
-     * @param HttpRequest $request Current Request Instance
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return \Illuminate\Http\Response
-     **/
-    public function deleted( HttpRequest $request)
-    {
-        //getting the list of user by latest and passing to length aware paginator instance
-        $usersList = User:: onlyTrashed()->latest()->paginate(null, ['*'], 'userTrashedPage')->onEachSide(2);
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare = ['usersList' => $usersList];
-        //now we are returning the view
-        return ViewFacade::make('admin.access.users.deleted', $viewShare);
     }
 
     /**
@@ -181,6 +165,23 @@ class UserController extends Controller
     }
 
     /**
+     * Show all the softdeleted Model
+     *
+     * @param HttpRequest $request Current Request Instance
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return \Illuminate\Http\Response
+     **/
+    public function deleted(HttpRequest $request)
+    {
+        //getting the list of user by latest and passing to length aware paginator instance
+        $usersList = User::onlyTrashed()->latest()->paginate(null, ['*'], 'userTrashedPage')->onEachSide(2);
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = ['usersList' => $usersList];
+        //now we are returning the view
+        return ViewFacade::make('admin.access.users.deleted', $viewShare);
+    }
+
+    /**
      * Force Deleted the softdeleted model
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
@@ -209,9 +210,7 @@ class UserController extends Controller
         return Redirect::route('admin.access.users.deleted')
             ->with('success', 'User Restored Successfully');
     }
-
-     
-
+    
     /**
      * Set the Unique Permission Based on the role 
      *
