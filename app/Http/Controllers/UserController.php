@@ -11,22 +11,27 @@ use Illuminate\Http\{Request as HttpRequest};
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 use Illuminate\Support\Facades\Gate;
-
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    protected $unAuthorized = 403;
     /**
      * Display a listing of the Users.
      *
+     * @param HttpRequest $request Current Request Instance
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return \Illuminate\Http\Response
+     * @return IlluminateView
      */
     public function index( HttpRequest $request): IlluminateView
     {
-        abort_unless(Gate::allows('user_access'),403);
+        //if the user dont have access abort with unauthorized
+        abort_unless(Gate::allows('user_access'), $this->unAuthorized);
         //getting the list of user by latest and passing to length aware paginator instance
-        $usersList = User::latest()->paginate(null, ['*'], 'userPage')->onEachSide(2);       
+        $usersList = User::latest()
+                        ->paginate(null, ['*'], 'userPage')
+                        ->onEachSide(2);       
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
@@ -34,10 +39,9 @@ class UserController extends Controller
     }
 
     /**
-     * Show all the softdeleted model
+     * Show all the softdeleted Model
      *
-     *
-     * @param HttpRequest $request The Request Variable
+     * @param HttpRequest $request Current Request Instance
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return \Illuminate\Http\Response
      **/
@@ -55,14 +59,15 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return \Illuminate\Http\Response
+     * @return IlluminateView
      */
-    public function create()
+    public function create(): IlluminateView
     {
-        
-        abort_unless(Gate::allows( 'user_create'), 403);
-        $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
-
+        //if the user dont have access abort with unauthorized
+        abort_unless(Gate::allows( 'user_create'), $this->unAuthorized);
+        //now we are plucking the roles with place holder
+        $roleList = Role::pluckWithPlaceHolder('name', 'id', 'Choose Role');
+        //now we are plucking the permissions with place holder
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList, 'permissionList' => $permissionList];
@@ -74,13 +79,18 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\UserStoreRequest  $request
      * @return Illuminate\Support\Facades\Redirect
      */
     public function store( UserStoreRequest $request)
     {
+        //now we are creating the user from the form parameters
         $user = User::create($request->all());
-        $user->giveRoleById($request->input('roles'));
+        //after that we need to sync the user roles in the relation table
+        $user->roles()->sync(array_filter($request->input('roles', [])));
+        //after that we need to sync the user permissions in the relation table
+        $user->permissions()->sync( $this->setUniquePermisison($request->input('roles') ?? [], $request->input('permissions') ?? [], 'STORE'));
+        //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with( 'success','User Created Successfully');
     }
@@ -147,4 +157,54 @@ class UserController extends Controller
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Deleted Successfully');
     }
+
+    /**
+     * Set the Unique Permission Based on the role 
+     *
+     * If the User selects the multiple roles and permissions
+     * and if the if the user seleted permisisons exits in the
+     *  selected role then we are removing it
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param array $roles Array of Roles
+     * @param array $permissions Array of Permissions
+     * @param string $method The Method
+     * @return array
+     * @throws conditon
+     **/
+    private function setUniquePermisison($roles = [],$permissions = [],$method)
+    {
+        $roles = array_filter($roles);
+        $permissions = array_filter( $permissions);
+
+        if( $roles === [] && $permissions === [] || $roles !== [] && $permissions === [])
+        {
+            return [];
+
+        }elseif ( $roles === [] && $permissions !== []) 
+        {
+            return $permissions;
+        }
+
+        if (is_array($roles)) {
+            foreach ($roles as $roleV) {
+                $perToEachRole = Role::findOrFail($roleV);
+                $perArrToRoles = $perToEachRole->permissions->toArray();
+                foreach ($perArrToRoles as $perArrToRoleVal) {
+                    $totPermList[] = $perArrToRoleVal['id'];
+                }
+            }
+
+            $dirPermToRole = array_unique($totPermList);
+        }
+
+        if ($method == 'STORE') {
+            $difference = array_merge(array_diff($dirPermToRole, $permissions), array_diff($permissions, $dirPermToRole));
+        } elseif ($method == 'UPDATE') {
+            $difference = array_merge(array_diff($permissions, $dirPermToRole));
+        }
+        return $difference;
+    }
+
+    
 }

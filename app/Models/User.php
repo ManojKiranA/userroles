@@ -14,7 +14,6 @@ use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Accessors\UserAccessor;
-use App\Models\AclManager\AclManagement;
 
 /**
  * Class App\Models\User
@@ -38,7 +37,7 @@ class User extends BaseModel implements
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
-    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor, AclManagement;
+    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor;
 
     /**
      * The table associated with the model.
