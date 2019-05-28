@@ -37,7 +37,9 @@ class PermissionController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize( 'permission_access');
         //getting the list of user by latest and passing to length aware paginator instance
-        $permissionList = Permission::latest()->paginate();
+        $permissionList = Permission::latest()
+                            ->paginate(null, ['*'], 'permissionPage')
+                            ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permissionList' => $permissionList];
         //now we are returning the view
@@ -59,7 +61,7 @@ class PermissionController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList];
         //now we are returning the view
-        return View::make('admin.access.permissions.create', $viewShare);
+        return ViewFacade::make('admin.access.permissions.create', $viewShare);
     }
 
     /**
@@ -100,7 +102,7 @@ class PermissionController extends Controller
      * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission)
+    public function edit(Permission $permission): IlluminateView
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'permission_edit');
@@ -108,7 +110,7 @@ class PermissionController extends Controller
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permission' => $permission, 'roleList' => $roleList];
         //now we are returning the view
-        return View::make('admin.access.permissions.edit', $viewShare);
+        return ViewFacade::make('admin.access.permissions.edit', $viewShare);
     }
 
     /**
@@ -122,7 +124,6 @@ class PermissionController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize('permission_edit');
-
         $permission->update($request->all());
         $permission->roles()->sync(array_filter($request->input('roles', [])));
         return Redirect::route('admin.access.permissions.index')

@@ -57,4 +57,11 @@ class Permission extends BaseModel
      * @var string
      */
     protected $showRoute = 'admin.access.permissions.show';
+
+    /**
+     * The number of models to return for pagination.
+     *
+     * @var int
+     */
+    protected $perPage = 20;
 }
