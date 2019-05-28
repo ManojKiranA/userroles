@@ -8,15 +8,25 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\{Request as HttpRequest};
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     protected $unAuthorized = 403;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the Users.
      *
@@ -27,7 +37,7 @@ class UserController extends Controller
     public function index( HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        abort_unless(Gate::allows('user_access'), $this->unAuthorized);
+        $this->authorize('user_access', Auth::user());
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
                         ->paginate(null, ['*'], 'userPage')
@@ -64,7 +74,7 @@ class UserController extends Controller
     public function create(): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        abort_unless(Gate::allows( 'user_create'), $this->unAuthorized);
+        $this->authorize( 'user_create', Auth::user());
         //now we are plucking the roles with place holder
         $roleList = Role::pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are plucking the permissions with place holder
@@ -84,6 +94,8 @@ class UserController extends Controller
      */
     public function store( UserStoreRequest $request)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize('user_create', Auth::user());
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
@@ -104,7 +116,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        abort_unless(Gate::allows( 'user_show'), 403);
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_show', Auth::user());
         return $user;
     }
 
@@ -117,7 +130,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        abort_unless(Gate::allows( 'user_edit'), 403);
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_edit', Auth::user());
         $roleList = Role::PluckWithPlaceHolder('name', 'id', 'Choose Role');
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
@@ -136,7 +150,8 @@ class UserController extends Controller
      */
     public function update( UserUpdateRequest $request, User $user)
     {
-        abort_unless(Gate::allows( 'user_delete'), 403);
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_edit', Auth::user());
         $user->update($request->all());
         $user-> modifyRoleById($request->input('roles'));
         $user-> modifyPermissionById($request->input('permissions'));
@@ -153,6 +168,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'user_delete', Auth::user());
         $user->delete();
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Deleted Successfully');
