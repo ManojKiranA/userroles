@@ -53,6 +53,32 @@ return [
 
     'rolePermissionsTable' => 'permission_role',
 
-    // DONT TOUCH AFTER THIS PART iy you dont know what is indented for
+    //here we are defining the superadminstrator of the application
+    'seeders' => [
+        
+        'usersTable' => [
+
+            'superUserData' => [
+                'name' => 'Super Administrator',
+                'email' => 'superuser@application.com',
+                'email_verified_at' => now(),
+            ],
+        ],
+
+        'rolesTable' => [
+
+            'superUserData' => [
+                'name' => 'ROOT_USER',
+            ],
+            
+        ],
+        'permissionsTable' => [
+            'user_access' => 'Show a user list',
+            'user_create' => 'Create New User',
+            'user_edit' => 'Edit a user',
+            'user_show' => 'Show a user',
+            'user_delete' => 'Show a user',            
+        ],
+    ],
 
 ];
