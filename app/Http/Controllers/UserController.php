@@ -57,7 +57,8 @@ class UserController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize('user_access');
         //now we are plucking the roles with place holder
-        $roleList = Role:: excludeRootRole()->pluckWithPlaceHolder('name', 'id', 'Choose Role');
+        $roleList = Role::excludeRootRole()
+                        ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are plucking the permissions with place holder
         $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
@@ -80,9 +81,12 @@ class UserController extends Controller
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
-        $user->roles()->sync(array_filter($request->input('roles', [])));
+        $user->syncRoles($request->input('roles',[]));
         //after that we need to sync the user permissions in the relation table
-        $user->permissions()->sync( $this->setUniquePermisison($request->input('roles') ?? [], $request->input('permissions') ?? [], 'STORE'));
+        //but it may leads to data duplication
+        //so we need tosync only the permsions that roles doesn't have and 
+        //assigned to user
+        $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'STORE');
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with( 'success','User Created Successfully');
@@ -138,9 +142,9 @@ class UserController extends Controller
         $this->authorize( 'user_edit');
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
-        $user->roles()->sync(array_filter($request->input('roles', [])));
+        $user->syncRoles($request->input('roles',[]));
         //after that we need to sync the user permissions in the relation table
-        $user->permissions()->sync($this->setUniquePermisison($request->input('roles') ?? [], $request->input('permissions') ?? [], 'UPDATE'));
+        $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'UPDATE');
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Updated Successfully');
