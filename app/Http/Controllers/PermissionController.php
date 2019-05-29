@@ -30,7 +30,7 @@ class PermissionController extends Controller
      * Display a listing of the Permissions.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @param   \Illuminate\Http\Request $request Current Request Instance
      * @return  \Illuminate\View\View
      */
     public function index( HttpRequest $request): IlluminateView

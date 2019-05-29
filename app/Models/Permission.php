@@ -85,13 +85,14 @@ class Permission extends BaseModel
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      **/
-    public function isDeletable()
+    public function isDeletable():bool
     {
         return $this->roles->isEmpty() && $this->users->isEmpty();
     }
     /**
      * Sync the Roles to Permission
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param array $roles Array of Role id's
      * @return void
      **/
