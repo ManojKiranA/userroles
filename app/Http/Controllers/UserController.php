@@ -55,7 +55,7 @@ class UserController extends Controller
     public function create(): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access');
+        $this->authorize( 'user_create');
         //now we are plucking the roles with place holder
         $roleList = Role::excludeRootRole()
                         ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
@@ -77,7 +77,7 @@ class UserController extends Controller
     public function store( UserStoreRequest $request)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access');
+        $this->authorize( 'user_create');
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
@@ -102,7 +102,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access');
+        $this->authorize( 'user_show');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['user' => $user];
         return ViewFacade::make('admin.access.users.show', $viewShare);
@@ -118,7 +118,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access');
+        $this->authorize( 'user_edit');
         $roleList = Role::excludeRootRole()
                         ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
