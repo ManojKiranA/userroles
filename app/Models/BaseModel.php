@@ -90,11 +90,11 @@ class BaseModel extends Model
         $arrayKeys = array_keys($extraFields);
         //get all the extra fileds array and mapping it to eack key
         $arrayValues = array_map(
-            function ($value) use ($arrayKeys) {
+            static function ($value) use ($arrayKeys) {
                 return array_combine($arrayKeys, $value);
             },
             call_user_func_array('array_map', array_merge(
-                array(function () {
+                array( static function () {
                     return func_get_args();
                 }),
                 $extraFields

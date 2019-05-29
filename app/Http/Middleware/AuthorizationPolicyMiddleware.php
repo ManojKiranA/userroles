@@ -46,7 +46,7 @@ class AuthorizationPolicyMiddleware
             {
                 $allPermissions = Permission::pluck('name')->toArray();
                 foreach ( $allPermissions as $allPermission) {
-                    Gate::define( $allPermission, function () {
+                    Gate::define( $allPermission, static function () {
                         return true;
                     });
                 }
@@ -73,7 +73,7 @@ class AuthorizationPolicyMiddleware
 
                 if (isset($uniquePermission)) {
                     foreach ($uniquePermission as $permissionName) {
-                        Gate::define($permissionName, function () {
+                        Gate::define($permissionName, static function () {
                             return true;
                         });
                     }

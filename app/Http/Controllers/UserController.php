@@ -108,7 +108,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object
@@ -128,7 +128,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified User in Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Http\Requests\UserUpdateRequest  $request Current Request Instance
@@ -148,7 +148,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified User from Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object

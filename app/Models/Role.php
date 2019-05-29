@@ -72,4 +72,26 @@ class Role extends BaseModel
     {
         return $query->where('name','!=',Config::get('useraccess.rootUserRoleName'));
     }
+
+    /**
+     * Sync the Permisisons to role
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param array $permission Array of permission
+     * @return void
+     **/
+    public function syncPermission(array $permission):void
+    {
+        $this->permissions()->sync( array_filter($permission));
+    }
+
+    /**
+     * Check if the Current Model is Root Role
+     *
+     * @return bool
+     **/
+    public function isRoot():bool
+    {
+        return $this->name === Config::get('useraccess.rootUserRoleName');
+    }
 }

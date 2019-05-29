@@ -13,7 +13,7 @@ class PermissionUpdateRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      */
-    public function authorize()
+    public function authorize():bool
     {
         return $this->user()->can( 'permission_edit');
     }
@@ -24,7 +24,7 @@ class PermissionUpdateRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function rules()
+    public function rules():array
     {
         return [
             'name' => 'bail|required|unique:permissions,name,' . $this->permission->id,
@@ -38,7 +38,7 @@ class PermissionUpdateRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function messages()
+    public function messages():array
     {
         return [
             'name.required' => ':attribute is Required',
@@ -53,7 +53,7 @@ class PermissionUpdateRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function attributes()
+    public function attributes():array
     {
         return [
             'name' => 'Permission Name',

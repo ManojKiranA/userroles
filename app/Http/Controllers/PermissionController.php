@@ -72,7 +72,7 @@ class PermissionController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Http\Requests\PermissionStoreRequest  $request Current Request Instance
-     * @return  Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function store(PermissionStoreRequest $request): RedirectResponse
     {
@@ -90,7 +90,7 @@ class PermissionController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\Permission  $permission Current Permisison Object
-     * @return  Illuminate\View\View
+     * @return  \Illuminate\View\View
      */
     public function show(Permission $permission): IlluminateView
     {
