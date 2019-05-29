@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class UserStoreRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UserStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize():bool
     {
         return $this->user()->can( 'user_create');
     }
@@ -21,7 +22,7 @@ class UserStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules():array
     {
         return [
             'name' => 'bail|required',
@@ -35,7 +36,7 @@ class UserStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages():array
     {
         return [
             'name.required' => ':attribute is Required',
@@ -51,12 +52,23 @@ class UserStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes():array
     {
         return [
             'email' => 'Email Address',
             'name' => 'Name',
             'password' => 'Password',
         ];
+    }
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function failedAuthorization():void
+    {
+        throw new AuthorizationException("You Can't Create User");
     }
 }
