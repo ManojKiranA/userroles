@@ -3,12 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class PermissionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      */
     public function authorize()
@@ -19,12 +21,13 @@ class PermissionUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function rules()
     {
         return [
-            'name' => 'bail|required|unique:permissions,name,' . $this-> permission->id,
+            'name' => 'bail|required|unique:permissions,name,' . $this->permission->id,
             'description' => 'required',
         ];
     }
@@ -32,6 +35,7 @@ class PermissionUpdateRequest extends FormRequest
     /**
      * Get the error messages for the defined validation rules.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function messages()
@@ -46,6 +50,7 @@ class PermissionUpdateRequest extends FormRequest
     /**
      * Get custom attributes for validator errors.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function attributes()
@@ -55,5 +60,16 @@ class PermissionUpdateRequest extends FormRequest
             'description' => 'Permission Description',
 
         ];
+    }
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function failedAuthorization(): void
+    {
+        throw new AuthorizationException("You Can't Update Permission");
     }
 }

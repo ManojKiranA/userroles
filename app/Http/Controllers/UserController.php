@@ -72,7 +72,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created User in storage.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Http\Requests\UserStoreRequest  $request Current Request Instance
@@ -94,7 +94,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object

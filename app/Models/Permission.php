@@ -89,4 +89,14 @@ class Permission extends BaseModel
     {
         return $this->roles->isEmpty() && $this->users->isEmpty();
     }
+    /**
+     * Sync the Roles to Permission
+     *
+     * @param array $roles Array of Role id's
+     * @return void
+     **/
+    public function syncRoles(array $roles):void
+    {
+        $this->roles()->sync(array_filter($roles));
+    }
 }
