@@ -21,9 +21,7 @@
                  <td>Email</td>
                  <td>Created At</td>  
                  <td>Created By</td>  
-                 <td class="text-center">
-                 Actions
-                 </td>
+                 @include('comman.gateactionheader',['permissionList' => ['user_force_delete','user_restore']])
                </tr>
             </thead>
             <tbody>

@@ -31,8 +31,6 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     Route::get('/users/deleted/index',  'UserController@deleted')->name('users.deleted');
     Route::delete( '/users/deleted/{user}/delete',  'UserController@forceDelete')->name( 'users.forcedelete');
     Route::patch('/users/deleted/{user}/restore',  'UserController@restore')->name( 'users.restore');
-        
-
     /*
     *End Web Routes For UserController
     */
@@ -47,6 +45,9 @@ Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static func
     Route::get( '/roles/{role}/edit',  'RoleController@edit')->name( 'roles.edit');
     Route::put( '/roles/{role}/update',  'RoleController@update')->name( 'roles.update');
     Route::delete( '/roles/{role}/delete',  'RoleController@destroy')->name( 'roles.destroy');
+    Route::get( '/roles/deleted/index',  'RoleController@deleted')->name( 'roles.deleted');
+    Route::delete( '/roles/deleted/{role}/delete',  'RoleController@forceDelete')->name( 'roles.forcedelete');
+    Route::patch( '/roles/deleted/{role}/restore',  'RoleController@restore')->name( 'roles.restore');
     /*
     *End Web Routes For RoleController
     */

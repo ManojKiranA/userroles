@@ -33,10 +33,12 @@
              <td>{{ $roleListValue->created_at }}</td>
              <td>{{ $roleListValue->created_by_name }}</td>
              <td class="text-center">
-                 @include('comman.gateactionbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['EDIT' => 'role_edit','DELETE' => 'role_delete','SHOW' => 'role_show']])
+                 @include('comman.gatetrashedbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['FORCE_DELETE' => 'role_force_delete','RESTORE' => 'role_restore']])
              </td>
           </tr>
-          @endforeach             
+          @endforeach
+
+              
 
 
                

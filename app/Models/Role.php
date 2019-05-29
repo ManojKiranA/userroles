@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\RoleRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
-use App\Models\AclManager\AclManagement;
 use Illuminate\Support\Facades\Config;
 use App\Models\Finders\RoleFinder;
 
@@ -25,7 +24,7 @@ use App\Models\Finders\RoleFinder;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons, AclManagement, RoleFinder;
+    use SoftDeletes, RoleRelation, TableActionButtons, RoleFinder;
 
     /**
      * The table associated with the model.
@@ -62,6 +61,20 @@ class Role extends BaseModel
     protected $showRoute = 'admin.access.roles.show';
 
     /**
+     * The force delete route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $forceDeleteRoute = 'admin.access.roles.forcedelete';
+
+    /**
+     * The restore route that is used for the Model.
+     *
+     * @var string
+     */
+    protected $restoreRoute = 'admin.access.roles.restore';
+
+    /**
      * Scope a query to only exclude the root user role in list
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
@@ -90,8 +103,18 @@ class Role extends BaseModel
      *
      * @return bool
      **/
-    public function isRoot():bool
+    public function isRoot()
     {
         return $this->name === Config::get('useraccess.rootUserRoleName');
+    }
+    /**
+     * Check if the permisison object can be deleted
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return bool
+     **/
+    public function isDeletable(): bool
+    {
+        return $this->permissions->isEmpty() && $this->users->isEmpty();
     }
 }

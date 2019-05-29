@@ -145,12 +145,91 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        //if the user is trying to edit the root role we need to deny that
+        abort_if($role->isRoot(), 403, "Whoops You Can't " . ucfirst(__FUNCTION__) . " that");
         //if the user dont have access abort with unauthorized
         $this->authorize( 'role_delete');
-        //if the user is trying to delete the root role we need to deny that
-        abort_if($role->isRoot(), 403, "Whoops You Can't Delete that");
-        $role->delete();
-        return Redirect::route('admin.access.roles.index')
-            ->with('success', 'Role Deleted Successfully');
+        //check if the permisison is deletable
+        if ( $role->isDeletable()) {
+            //delete the role object
+            $role->delete();
+            //now we are redirecting to the index page with message
+            return Redirect::route( 'admin.access.roles.index')
+                ->with('success', 'Role Deleted Successfully');
+        }
+        //now we are redirecting to the index page with message
+        return Redirect::route( 'admin.access.roles.index')
+            ->with('error', 'Role is Assigned to Permission or User');        
+    }
+
+    /**
+     * Show all the softdeleted Roles
+     *
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
+     **/
+    public function deleted(HttpRequest $request): IlluminateView
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'role_deleted_access');
+        //getting the list of user by latest and passing to length aware paginator instance
+
+        //getting the list of roles by latest and passing to length aware paginator instance
+        $rolesList = Role::excludeRootRole()
+                        -> onlyTrashed()
+                        ->latest()
+                        ->paginate(null, ['*'], 'roleDeletedPage')
+                        ->onEachSide(2);
+        //now we are collecting the list of variables that need to passes to view
+        $viewShare = [ 'rolesList' => $rolesList];
+        //now we are returning the view
+        return ViewFacade::make('admin.access.roles.deleted', $viewShare);
+    }
+
+    /**
+     * Force Deleted the softdeleted Permission
+     *
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @param   string $roleID The id that need to be force deleted
+     * @return  \Illuminate\Http\RedirectResponse
+     **/
+    public function forceDelete(HttpRequest $request, $roleID): RedirectResponse
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize('role_force_delete');
+        //finding the role of the id 
+        //we can't use method injection because it don't
+        //include softdeleted model
+        $role = Role::withTrashed()->findOrFail( $roleID);
+        //delete the current model object by finding it with trashed
+        $role->forceDelete();
+        //now we are redirecting to the deleted page with message
+        return Redirect::route('admin.access.roles.deleted')
+            ->with('success', 'Role Permanently Deleted Successfully');
+    }
+
+    /**
+     * Restore the softdeleted model
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param HttpRequest $request Current Request Instance
+     * @param string $roleID The id that need to be restored
+     * @return \Illuminate\Http\RedirectResponse
+     **/
+    public function restore(HttpRequest $request, $roleID): RedirectResponse
+    {
+        //if the user dont have access abort with unauthorized
+        $this->authorize( 'role_restore');
+        //finding the permission of the id 
+        //we can't use method injection because it don't
+        //include softdeleted model
+        $role = Role::withTrashed()->findOrFail( $roleID);
+        //restore the current model object by finding it with trashed
+        $role->restore();
+        //now we are redirecting to the deleted page with message
+        return Redirect::route('admin.access.roles.deleted')
+            ->with('success', 'Role Restored Successfully');
     }
 }
