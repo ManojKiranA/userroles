@@ -82,7 +82,7 @@ class UserController extends Controller
         $user->syncRoles($request->input('roles',[]));
         //after that we need to sync the user permissions in the relation table
         //but it may leads to data duplication
-        //so we need tosync only the permsions that roles doesn't have and 
+        //so we need tosync only the permsions that roles doesn't have 
         $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'STORE');
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')

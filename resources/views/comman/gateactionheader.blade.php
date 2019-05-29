@@ -5,7 +5,7 @@
             <td class="text-center">
             Actions
             </td>
-        {{ ++$viewTimes }}
+        @php ++$viewTimes @endphp
         @endif
     @endcan
 @endforeach
