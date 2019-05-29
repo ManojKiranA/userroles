@@ -7,16 +7,20 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
-use Illuminate\Support\Facades\Redirect;
+
+
 
 class UserController extends Controller
 {
     /**
      * Create a new controller instance.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return void
      */
     public function __construct()
@@ -27,9 +31,9 @@ class UserController extends Controller
     /**
      * Display a listing of the Users.
      *
-     * @param HttpRequest $request Current Request Instance
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return IlluminateView
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @return  Illuminate\View\View
      */
     public function index( HttpRequest $request): IlluminateView
     {
@@ -48,9 +52,9 @@ class UserController extends Controller
     /**
      * Show the form for creating a new User.
      *
-     * @param HttpRequest $request Current Request Instance
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return IlluminateView
+     * @param   HttpRequest $request Current Request Instance
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return  Illuminate\View\View
      */
     public function create( HttpRequest $request): IlluminateView
     {
@@ -70,11 +74,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  App\Http\Requests\UserStoreRequest  $request
-     * @return Illuminate\Support\Facades\Redirect
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Http\Requests\UserStoreRequest  $request Current Request Instance
+     * @return  Illuminate\Http\RedirectResponse
      */
-    public function store( UserStoreRequest $request)
+    public function store( UserStoreRequest $request): RedirectResponse
     {
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
@@ -92,11 +96,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User  $user Current User Object
+     * @return  Illuminate\View\View
      */
-    public function show(User $user)
+    public function show(User $user): IlluminateView
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_show');
@@ -108,11 +112,11 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User  $user Current User Object
+     * @return  Illuminate\View\View
      */
-    public function edit(User $user)
+    public function edit(User $user): IlluminateView
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_edit');
@@ -128,12 +132,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  App\Http\Requests\UserUpdateRequest  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Http\Requests\UserUpdateRequest  $request Current Request Instance
+     * @param   \App\Models\User  $user Current User Object
+     * @return  Illuminate\Http\RedirectResponse
      */
-    public function update( UserUpdateRequest $request, User $user)
+    public function update( UserUpdateRequest $request, User $user): RedirectResponse
     {
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
@@ -148,11 +152,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User  $user Current User Object
+     * @return  Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_delete');
@@ -166,11 +170,11 @@ class UserController extends Controller
     /**
      * Show all the softdeleted Model
      *
-     * @param HttpRequest $request Current Request Instance
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return \Illuminate\Http\Response
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @return  @return Illuminate\View\View
      **/
-    public function deleted(HttpRequest $request)
+    public function deleted(HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_deleted_access');
@@ -188,12 +192,12 @@ class UserController extends Controller
     /**
      * Force Deleted the softdeleted model
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param HttpRequest $request Current Request Instance
-     * @param string $userId The id that need to be force deleted
-     * @return Redirect
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @param   string $userId The id that need to be force deleted
+     * @return  Illuminate\Http\RedirectResponse
      **/
-    public function forceDelete( HttpRequest $request,$userId)
+    public function forceDelete( HttpRequest $request,$userId): RedirectResponse
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_force_delete');
@@ -211,12 +215,12 @@ class UserController extends Controller
     /**
      * Restore the softdeleted model
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param HttpRequest $request Current Request Instance
-     * @param string $userId The id that need to be restored
-     * @return Redirect
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @param   string $userId The id that need to be restored
+     * @return  Illuminate\Http\RedirectResponse
      **/
-    public function restore(HttpRequest $request, $userId)
+    public function restore(HttpRequest $request, $userId): RedirectResponse
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_restore');
