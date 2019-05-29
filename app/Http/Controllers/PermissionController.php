@@ -71,8 +71,6 @@ class PermissionController extends Controller
      */
     public function store(PermissionStoreRequest $request)
     {
-        //if the user dont have access abort with unauthorized
-        $this->authorize('permission_create');
         //create the new permission for the form request
         $permission = Permission::create($request->all());
         //syncing the roles associated with the permisisons
@@ -121,8 +119,6 @@ class PermissionController extends Controller
      */
     public function update( PermissionUpdateRequest $request, Permission $permission)
     {
-        //if the user dont have access abort with unauthorized
-        $this->authorize('permission_edit');
         $permission->update($request->all());
         $permission->roles()->sync(array_filter($request->input('roles', [])));
         return Redirect::route('admin.access.permissions.index')

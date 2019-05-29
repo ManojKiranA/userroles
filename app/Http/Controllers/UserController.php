@@ -60,7 +60,7 @@ class UserController extends Controller
         $roleList = Role::excludeRootRole()
                         ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are plucking the permissions with place holder
-        $permissionList = Permission::PluckWithPlaceHolder('name', 'id', 'Choose Permissions');
+        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList, 'permissionList' => $permissionList];
         //now we are returning the view
@@ -76,8 +76,6 @@ class UserController extends Controller
      */
     public function store( UserStoreRequest $request)
     {
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_create');
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
@@ -137,8 +135,6 @@ class UserController extends Controller
      */
     public function update( UserUpdateRequest $request, User $user)
     {
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_edit');
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
         $user->syncRoles($request->input('roles',[]));
@@ -159,7 +155,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_delete', Auth::user());
+        $this->authorize( 'user_delete');
         $user->delete();
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Deleted Successfully');
