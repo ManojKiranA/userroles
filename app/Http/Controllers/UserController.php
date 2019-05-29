@@ -85,7 +85,6 @@ class UserController extends Controller
         //after that we need to sync the user permissions in the relation table
         //but it may leads to data duplication
         //so we need tosync only the permsions that roles doesn't have and 
-        //assigned to user
         $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'STORE');
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
@@ -220,46 +219,5 @@ class UserController extends Controller
         User::withTrashed()->findOrFail($userId)-> restore();
         return Redirect::route('admin.access.users.deleted')
             ->with('success', 'User Restored Successfully');
-    }
-    
-    /**
-     * Set the Unique Permission Based on the role 
-     *
-     * If the User selects the multiple roles and permissions
-     * and if the if the user seleted permisisons exits in the
-     *  selected role then we are removing it
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param array $roles Array of Roles
-     * @param array $permissions Array of Permissions
-     * @param string $method The Method
-     * @return array
-     **/
-    private function setUniquePermisison($roles = [],$permissions = [],$method)
-    {
-        $roles = array_filter($roles);
-        $permissions = array_filter( $permissions);
-
-        if( $roles === [] && $permissions === [] || $roles !== [] && $permissions === []){
-            return [];
-        }elseif ( $roles === [] && $permissions !== []){
-            return $permissions;
-        }
-        if (is_array($roles)) {
-            foreach ($roles as $roleV) {
-                $perToEachRole = Role::findOrFail($roleV);
-                $perArrToRoles = $perToEachRole->permissions->toArray();
-                foreach ($perArrToRoles as $perArrToRoleVal) {
-                    $totPermList[] = $perArrToRoleVal['id'];
-                }
-            }
-            $dirPermToRole = array_unique($totPermList);
-        }
-        if ($method == 'STORE') {
-            $difference = array_merge(array_diff($dirPermToRole, $permissions), array_diff($permissions, $dirPermToRole));
-        } elseif ($method == 'UPDATE') {
-            $difference = array_merge(array_diff($permissions, $dirPermToRole));
-        }
-        return $difference;
     }
 }
