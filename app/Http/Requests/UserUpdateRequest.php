@@ -10,9 +10,10 @@ class UserUpdateRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
      * @return bool
      */
-    public function authorize()
+    public function authorize():bool
     {
         return $this->user()->can( 'user_edit');
     }
@@ -20,9 +21,11 @@ class UserUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
      * @return array
      */
-    public function rules()
+    public function rules():array
     {
         return [
             'name' => 'bail|required',
@@ -33,9 +36,11 @@ class UserUpdateRequest extends FormRequest
     /**
      * Get the error messages for the defined validation rules.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
      * @return array
      */
-    public function messages()
+    public function messages():array
     {
         return [
             'name.required' => ':attribute is Required',
@@ -48,14 +53,30 @@ class UserUpdateRequest extends FormRequest
     /**
      * Get custom attributes for validator errors.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
      * @return array
      */
-    public function attributes()
+    public function attributes():array
     {
         return [
             'email' => 'Email Address',
             'name' => 'Name',
             'password' => 'Password',
         ];
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * 
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function failedAuthorization(): void
+    {
+        throw new AuthorizationException("You Can't Update User");
     }
 }

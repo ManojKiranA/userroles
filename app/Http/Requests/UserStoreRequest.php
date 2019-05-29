@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UserStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      */
     public function authorize():bool
@@ -20,6 +21,7 @@ class UserStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function rules():array
@@ -34,6 +36,7 @@ class UserStoreRequest extends FormRequest
     /**
      * Get the error messages for the defined validation rules.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function messages():array
@@ -50,6 +53,7 @@ class UserStoreRequest extends FormRequest
     /**
      * Get custom attributes for validator errors.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
     public function attributes():array
@@ -60,11 +64,12 @@ class UserStoreRequest extends FormRequest
             'password' => 'Password',
         ];
     }
+
     /**
      * Handle a failed authorization attempt.
      *
      * @return void
-     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     protected function failedAuthorization():void
