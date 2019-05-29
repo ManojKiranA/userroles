@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 
-
-
 class UserController extends Controller
 {
     /**
@@ -205,9 +203,10 @@ class UserController extends Controller
         //we can't use method injection because it don't
         //include softdeleted model
         $user = User::withTrashed()
-                ->findOrFail($userId);
+                    ->findOrFail($userId);
         //delete the current model object by finding it with trashed
         $user->forceDelete();
+        //now we are redirecting to the deleted page with message
         return Redirect::route( 'admin.access.users.deleted')
             ->with('success', 'User Permanently Deleted Successfully');
     }
@@ -224,8 +223,15 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_restore');
-        User::withTrashed()->findOrFail($userId)-> restore();
+        //finding the user of the id 
+        //we can't use method injection because it don't
+        //include softdeleted model
+        $user = User::withTrashed()
+                    ->findOrFail($userId);
+        //restore the current model object by finding it with trashed
+        $user-> restore();
+        //now we are redirecting to the deleted page with message
         return Redirect::route('admin.access.users.deleted')
-            ->with('success', 'User Restored Successfully');
+                ->with('success', 'User Restored Successfully');
     }
 }

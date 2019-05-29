@@ -50,9 +50,9 @@ class PermissionController extends Controller
     /**
      * Show the form for creating a new Permisission.
      *
-     * @param   \Illuminate\Http\Request $request Current Request Instance
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return  Illuminate\View\View
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
      */
     public function create( HttpRequest $request): IlluminateView
     {
@@ -170,9 +170,9 @@ class PermissionController extends Controller
     /**
      * Show all the softdeleted Permisisons
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param HttpRequest $request Current Request Instance
-     * @return Illuminate\View\View
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
      **/
     public function deleted(HttpRequest $request): IlluminateView
     {
@@ -192,10 +192,10 @@ class PermissionController extends Controller
     /**
      * Force Deleted the softdeleted Permission
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param HttpRequest $request Current Request Instance
-     * @param string $permissionId The id that need to be force deleted
-     * @return \Illuminate\Http\RedirectResponse
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @param   string $permissionId The id that need to be force deleted
+     * @return  \Illuminate\Http\RedirectResponse
      **/
     public function forceDelete(HttpRequest $request, $permissionId): RedirectResponse
     {
@@ -209,7 +209,7 @@ class PermissionController extends Controller
         $permission->forceDelete();
         //now we are redirecting to the deleted page with message
         return Redirect::route( 'admin.access.permissions.deleted')
-                        ->with('success', 'Permissions Permanently Deleted Successfully');
+                    ->with('success', 'Permissions Permanently Deleted Successfully');
     }
 
     /**
