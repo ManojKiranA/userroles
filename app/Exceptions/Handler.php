@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,6 +35,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ( $exception instanceof MethodNotAllowedHttpException) 
+        {
+            throw new Exception("You Can't Do that By Entering the Url");
+            
+        }
         parent::report($exception);
     }
 

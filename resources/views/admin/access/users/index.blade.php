@@ -20,10 +20,8 @@
                  <td>Name</td>
                  <td>Email</td>
                  <td>Created At</td>  
-                 <td>Created By</td>  
-                 <td class="text-center">
-                 Actions
-                 </td>
+                 <td>Created By</td> 
+                 @include('comman.gateactionheader',['permissionList' => ['user_edit','user_delete','user_show']])
                </tr>
             </thead>
             <tbody>
