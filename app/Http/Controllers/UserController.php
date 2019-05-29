@@ -8,7 +8,6 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request as HttpRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 use Illuminate\Support\Facades\Redirect;
@@ -49,10 +48,11 @@ class UserController extends Controller
     /**
      * Show the form for creating a new User.
      *
+     * @param HttpRequest $request Current Request Instance
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return IlluminateView
      */
-    public function create(): IlluminateView
+    public function create( HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_create');
@@ -156,7 +156,9 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_delete');
+        //delete the current model object
         $user->delete();
+        //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Deleted Successfully');
     }
@@ -195,7 +197,13 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_force_delete');
-        User::withTrashed()->findOrFail($userId)->forceDelete();
+        //finding the user of the id 
+        //we can't use method injection because it don't
+        //include softdeleted model
+        $user = User::withTrashed()
+                ->findOrFail($userId);
+        //delete the current model object by finding it with trashed
+        $user->forceDelete();
         return Redirect::route( 'admin.access.users.deleted')
             ->with('success', 'User Permanently Deleted Successfully');
     }
