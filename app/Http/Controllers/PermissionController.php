@@ -18,8 +18,8 @@ class PermissionController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return void
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return  void
      */
     public function __construct()
     {
@@ -29,9 +29,9 @@ class PermissionController extends Controller
     /**
      * Display a listing of the Permissions.
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   Illuminate\Http\Request $request Current Request Instance
-     * @return  Illuminate\View\View
+     * @return  \Illuminate\View\View
      */
     public function index( HttpRequest $request): IlluminateView
     {
@@ -50,7 +50,7 @@ class PermissionController extends Controller
     /**
      * Show the form for creating a new Permisission.
      *
-     * @param   HttpRequest $request Current Request Instance
+     * @param   \Illuminate\Http\Request $request Current Request Instance
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @return  Illuminate\View\View
      */

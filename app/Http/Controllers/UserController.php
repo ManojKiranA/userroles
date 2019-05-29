@@ -32,8 +32,8 @@ class UserController extends Controller
      * Display a listing of the Users.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   Illuminate\Http\Request $request Current Request Instance
-     * @return  Illuminate\View\View
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
      */
     public function index( HttpRequest $request): IlluminateView
     {
@@ -52,9 +52,9 @@ class UserController extends Controller
     /**
      * Show the form for creating a new User.
      *
-     * @param   HttpRequest $request Current Request Instance
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return  Illuminate\View\View
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
      */
     public function create( HttpRequest $request): IlluminateView
     {
@@ -76,7 +76,7 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Http\Requests\UserStoreRequest  $request Current Request Instance
-     * @return  Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function store( UserStoreRequest $request): RedirectResponse
     {
@@ -98,7 +98,7 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object
-     * @return  Illuminate\View\View
+     * @return  \Illuminate\View\View
      */
     public function show(User $user): IlluminateView
     {
@@ -114,7 +114,7 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object
-     * @return  Illuminate\View\View
+     * @return  \Illuminate\View\View
      */
     public function edit(User $user): IlluminateView
     {
@@ -135,7 +135,7 @@ class UserController extends Controller
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Http\Requests\UserUpdateRequest  $request Current Request Instance
      * @param   \App\Models\User  $user Current User Object
-     * @return  Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function update( UserUpdateRequest $request, User $user): RedirectResponse
     {
@@ -154,7 +154,7 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   \App\Models\User  $user Current User Object
-     * @return  Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user): RedirectResponse
     {
@@ -171,8 +171,8 @@ class UserController extends Controller
      * Show all the softdeleted Model
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   Illuminate\Http\Request $request Current Request Instance
-     * @return  @return Illuminate\View\View
+     * @param   \Illuminate\Http\Request $request Current Request Instance
+     * @return  \Illuminate\View\View
      **/
     public function deleted(HttpRequest $request): IlluminateView
     {
@@ -193,7 +193,7 @@ class UserController extends Controller
      * Force Deleted the softdeleted model
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @param   \Illuminate\Http\Request $request Current Request Instance
      * @param   string $userId The id that need to be force deleted
      * @return  Illuminate\Http\RedirectResponse
      **/
@@ -216,9 +216,9 @@ class UserController extends Controller
      * Restore the softdeleted model
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   Illuminate\Http\Request $request Current Request Instance
+     * @param   \Illuminate\Http\Request $request Current Request Instance
      * @param   string $userId The id that need to be restored
-     * @return  Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      **/
     public function restore(HttpRequest $request, $userId): RedirectResponse
     {
