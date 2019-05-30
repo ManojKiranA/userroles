@@ -11,6 +11,7 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
+
 class RoleController extends Controller
 {
     /**
@@ -37,7 +38,7 @@ class RoleController extends Controller
         //getting the list of roles by latest and passing to length aware paginator instance
         $rolesList = Role::excludeRootRole()
                         ->latest()
-                        ->paginate(null,['*'],'rolePage')
+                        ->paginate(null, ['*'], 'rolePage')
                         ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare =[ 'rolesList' => $rolesList];
@@ -57,7 +58,7 @@ class RoleController extends Controller
         //if the user dont have access abort with unauthorized
         $this->authorize( 'role_create');
         //plucking the permisisons
-        $permissionList = Permission::pluckWithPlaceHolder('name','id','Choose Permissions');
+        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'permissionList' => $permissionList];
         //now we are returning the view
@@ -76,7 +77,7 @@ class RoleController extends Controller
         //creating new role
         $role = Role::create($request->all());
         //sync permission to roles
-        $role->syncPermission($request->input('permissions',[]));
+        $role->syncPermission($request->input('permissions', []));
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.roles.index')
                     ->with('success', 'Role Created Successfully');
@@ -159,7 +160,7 @@ class RoleController extends Controller
         }
         //now we are redirecting to the index page with message
         return Redirect::route( 'admin.access.roles.index')
-            ->with('error', 'Role is Assigned to Permission or User');        
+            ->with('error', 'Role is Assigned to Permission or User');
     }
 
     /**
@@ -199,7 +200,7 @@ class RoleController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize('role_force_delete');
-        //finding the role of the id 
+        //finding the role of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $role = Role::withTrashed()->findOrFail( $roleID);
@@ -222,7 +223,7 @@ class RoleController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'role_restore');
-        //finding the permission of the id 
+        //finding the permission of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $role = Role::withTrashed()->findOrFail( $roleID);

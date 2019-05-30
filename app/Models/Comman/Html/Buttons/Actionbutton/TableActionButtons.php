@@ -19,6 +19,7 @@ trait TableActionButtons
     /**
      * Transform the string to an Html serializable object
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param $html
      * @return \Illuminate\Support\HtmlString
      */
@@ -29,9 +30,9 @@ trait TableActionButtons
 
     /**
      * The Delete Route key of the Current Model
-     *
      * This Will Generate the Delete Route Name
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      * @throws Exception
      **/
@@ -39,7 +40,7 @@ trait TableActionButtons
     {
         return $this->getRouteKeyName();
 
-        if (is_null($this->getProperty('deleteActionField'))) 
+        if (is_null($this->getProperty('deleteActionField')))
         {
             return 'id';
         }
@@ -48,9 +49,9 @@ trait TableActionButtons
 
     /**
      * The Force Delete Route key of the Current Model
-     *
      * This Will Generate the Force Delete Route Name
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      * @throws Exception
      **/
@@ -58,7 +59,7 @@ trait TableActionButtons
     {
         return $this->getRouteKeyName();
 
-        if (is_null($this->getProperty( 'forceDeleteActionField'))) 
+        if (is_null($this->getProperty( 'forceDeleteActionField')))
         {
             return 'id';
         }
@@ -67,9 +68,9 @@ trait TableActionButtons
 
     /**
      * The Restore Route key of the Current Model
-     *
      * This Will Generate the Restore Route Name
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      * @throws Exception
      **/
@@ -85,9 +86,9 @@ trait TableActionButtons
 
     /**
      * The Edit Route Action Filed of the Current Model
-     *
      * This Will Generate the Delete Route Name
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      * @throws Exception
      **/
@@ -103,16 +104,16 @@ trait TableActionButtons
 
     /**
      * The Edit Route Action Filed of the Current Model
-     *
      * This Will Generate the Delete Route Name
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      * @throws Exception
      **/
     public function showActionFieldName(): string
     {
         return $this->getRouteKeyName();
-        
+
         if (is_null($this->getProperty('showActionField'))) {
             return 'id';
         }
@@ -121,10 +122,9 @@ trait TableActionButtons
     /**
      * Get the Property from the object
      *
-     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param string $var Object Property
      * @return mixed
-     * @throws Exception
      **/
     public function getProperty($var)
     {
@@ -133,6 +133,7 @@ trait TableActionButtons
     /**
      * This Is used To determine the base route name of the Model
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return string
      **/
     public function routeName(): string

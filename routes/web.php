@@ -16,57 +16,141 @@ Route::get('/', static function () {
 });
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-Route::prefix('admin/')->middleware(['auth'])->name('admin.')->group(static function(){
-    Route::prefix('access/')->name('access.')->group( static function () {
-    /*
-    *Start Web Routes For UserController
-    */
-    Route::get('/users/index',  'UserController@index')->name('users.index');
-    Route::get('/users/create',  'UserController@create')->name('users.create');
-    Route::post('/users/store',  'UserController@store')->name('users.store');
-    Route::get('/users/{user}/show',  'UserController@show')->name('users.show');
-    Route::get('/users/{user}/edit',  'UserController@edit')->name('users.edit');
-    Route::put('/users/{user}/update',  'UserController@update')->name('users.update');
-    Route::delete('/users/{user}/delete',  'UserController@destroy')->name('users.destroy');
-    Route::get('/users/deleted/index',  'UserController@deleted')->name('users.deleted');
-    Route::delete( '/users/deleted/{user}/delete',  'UserController@forceDelete')->name( 'users.forcedelete');
-    Route::patch('/users/deleted/{user}/restore',  'UserController@restore')->name( 'users.restore');
-    /*
-    *End Web Routes For UserController
-    */
 
-    /*
-    *Start Web Routes For RoleController  
-    */
-    Route::get( '/roles/index',  'RoleController@index')->name( 'roles.index');
-    Route::get('/roles/create',  'RoleController@create')->name( 'roles.create');
-    Route::post( '/roles/store',  'RoleController@store')->name( 'roles.store');
-    Route::get('/roles/{role}/show',  'RoleController@show')->name( 'roles.show');
-    Route::get( '/roles/{role}/edit',  'RoleController@edit')->name( 'roles.edit');
-    Route::put( '/roles/{role}/update',  'RoleController@update')->name( 'roles.update');
-    Route::delete( '/roles/{role}/delete',  'RoleController@destroy')->name( 'roles.destroy');
-    Route::get( '/roles/deleted/index',  'RoleController@deleted')->name( 'roles.deleted');
-    Route::delete( '/roles/deleted/{role}/delete',  'RoleController@forceDelete')->name( 'roles.forcedelete');
-    Route::patch( '/roles/deleted/{role}/restore',  'RoleController@restore')->name( 'roles.restore');
-    /*
-    *End Web Routes For RoleController
-    */
-    
-    /*
-    *Start Web Routes For PermissionController  
-    */
-    Route::get( '/permissions/index',   'PermissionController@index')->name( 'permissions.index');
-    Route::get('/permissions/create',  'PermissionController@create')->name( 'permissions.create');
-    Route::post( '/permissions/store',  'PermissionController@store')->name( 'permissions.store');
-    Route::get('/permissions/{permission}/show',  'PermissionController@show')->name( 'permissions.show');
-    Route::get( '/permissions/{permission}/edit',  'PermissionController@edit')->name( 'permissions.edit');
-    Route::put( '/permissions/{permission}/update',  'PermissionController@update')->name( 'permissions.update');
-    Route::delete( '/permissions/{permission}/delete',  'PermissionController@destroy')->name( 'permissions.destroy');
-    Route::get( '/permissions/deleted/index',  'PermissionController@deleted')->name( 'permissions.deleted');
-    Route::delete( '/permissions/deleted/{permission}/delete',  'PermissionController@forceDelete')->name( 'permissions.forcedelete');
-    Route::patch( '/permissions/deleted/{permission}/restore',  'PermissionController@restore')->name( 'permissions.restore');
-    /*
-    *End Web Routes For RoleController
-    */
-    });
+Route::prefix('/admin/')
+    ->middleware(['auth'])
+    ->name('admin.')
+    ->group(static function () {
+
+        Route::prefix('/access/')
+            ->name('access.')
+            ->group(static function () {
+
+            /*
+            *Start Web Routes For UserController
+            */
+            Route::prefix('/users/')->name('users.')->group(static function () {
+                Route::get('/index/')
+                    ->uses('UserController@index')
+                    ->name('index');
+                Route::get('/create/')
+                    ->uses('UserController@create')
+                    ->name('create');
+                Route::post('/store/')
+                    ->uses('UserController@store')
+                    ->name('store');
+                Route::get('/{user}/show/')
+                    ->uses('UserController@show')
+                    ->name('show');
+                Route::get('/{user}/edit/')
+                    ->uses('UserController@edit')
+                    ->name('edit');
+                Route::put('/{user}/update/')
+                    ->uses('UserController@update')
+                    ->name('update');
+                Route::delete('/{user}/delete/')
+                    ->uses('UserController@destroy')
+                    ->name('destroy');
+                Route::group(['prefix' => '/deleted/'], static function () {
+                    Route::get('/index/')
+                        ->uses('UserController@deleted')
+                        ->name('deleted');
+                    Route::delete('/{user}/delete/')
+                        ->uses('UserController@forceDelete')
+                        ->name('forcedelete');
+                    Route::patch('/{user}/restore/')
+                        ->uses('UserController@restore')
+                        ->name('restore');
+                });
+            });
+            /*
+            *End Web Routes For UserController
+            */
+
+            /*
+            *Start Web Routes For RoleController
+            */
+            Route::prefix('/roles/')
+                ->name('roles.')
+                ->group(static function () {
+                    Route::get('/index/')
+                        ->uses('RoleController@index')
+                        ->name('index');
+                    Route::get('/create/')
+                        ->uses('RoleController@create')
+                        ->name('create');
+                    Route::post('/store/')
+                        ->uses('RoleController@store')
+                        ->name('store');
+                    Route::get('/{role}/show/')
+                        ->uses('RoleController@show')
+                        ->name('show');
+                    Route::get('/{role}/edit/')
+                        ->uses('RoleController@edit')
+                        ->name('edit');
+                    Route::put('/{role}/update/')
+                        ->uses('RoleController@update')
+                        ->name('update');
+                    Route::delete('/{role}/delete/')
+                        ->uses('RoleController@destroy')
+                        ->name('destroy');
+                    Route::group(['prefix' => '/deleted/'], static function () {
+                        Route::get('/index/')
+                            ->uses('RoleController@deleted')
+                            ->name('deleted');
+                        Route::delete('/{role}/delete/')
+                            ->uses('RoleController@forceDelete')
+                            ->name('forcedelete');
+                        Route::patch('/{role}/restore/')
+                            ->uses('RoleController@restore')
+                            ->name('restore');
+                    });
+            });
+            /*
+            *End Web Routes For RoleController
+            */
+
+            /*
+            *Start Web Routes For PermissionController
+            */
+            Route::prefix('/permissions/')
+                ->name('permissions.')
+                ->group(static function () {
+                    Route::get('/index/')
+                        ->uses('PermissionController@index')
+                        ->name('index');
+                    Route::get('/create/')
+                        ->uses('PermissionController@create')
+                        ->name('create');
+                    Route::post('/store/')
+                        ->uses('PermissionController@store')
+                        ->name('store');
+                    Route::get('/{permission}/show/')
+                        ->uses('PermissionController@show')
+                        ->name('show');
+                    Route::get('/{permission}/edit/')
+                        ->uses('PermissionController@edit')
+                        ->name('edit');
+                    Route::put('/{permission}/update/')
+                        ->uses('PermissionController@update')
+                        ->name('update');
+                    Route::delete('/{permission}/delete/')
+                        ->uses('PermissionController@destroy')
+                        ->name('destroy');
+                    Route::group(['prefix' => '/deleted/'], static function () {
+                        Route::get('/index/')
+                            ->uses('PermissionController@deleted')
+                            ->name('deleted');
+                        Route::delete('/{permission}/delete/')
+                            ->uses('PermissionController@forceDelete')
+                            ->name('forcedelete');
+                        Route::patch('/{permission}/restore/')
+                            ->uses('PermissionController@restore')
+                            ->name('restore');
+                    });
+            });
+            /*
+            *End Web Routes For PermissionController
+            */
+        });
 });

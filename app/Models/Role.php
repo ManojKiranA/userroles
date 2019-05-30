@@ -83,7 +83,7 @@ class Role extends BaseModel
      */
     public function scopeExcludeRootRole($query)
     {
-        return $query->where('name','!=',Config::get('useraccess.rootUserRoleName'));
+        return $query->where('name', '!=', Config::get('useraccess.rootUserRoleName'));
     }
 
     /**
@@ -93,7 +93,7 @@ class Role extends BaseModel
      * @param array $permission Array of permission
      * @return void
      **/
-    public function syncPermission(array $permission):void
+    public function syncPermission(array $permission): void
     {
         $this->permissions()->sync( array_filter($permission));
     }

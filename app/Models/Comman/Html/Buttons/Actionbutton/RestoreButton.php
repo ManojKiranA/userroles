@@ -36,7 +36,7 @@ trait RestoreButton
         $forceDeleteButtonTooltopPostion = 'top'; //here you can specify the position of tooltip
         $delteButtonVal = $alternateParms + ['routeMethod' => $forceDeleteButtonRoute, 'routeMethodValue' => $actionId, 'popUpDialog' => $deleteConfirmationDialog, 'buttonIcon' => $forceDeleteButtonIcon, 'buttonText' => $forceDeleteButtonText, 'buttonClass' => $forceDeleteButtonClass, 'toolTipPosition' => $forceDeleteButtonTooltopPostion, 'toolTipValue' => $forceDeleteFunctionTitle, 'parmEncryption' => false];
 
-        if ($delteButtonVal['parmEncryption'] === true) 
+        if ($delteButtonVal['parmEncryption'] === true)
         {
             $actionId = Crypt::encrypt($this->$actionFiled);
         }

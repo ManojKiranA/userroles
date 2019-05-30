@@ -40,7 +40,7 @@ class UserController extends Controller
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
                         ->paginate(null, ['*'], 'userPage')
-                        ->onEachSide(2);       
+                        ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
         $viewShare = ['usersList' => $usersList];
         //now we are returning the view
@@ -81,14 +81,14 @@ class UserController extends Controller
         //now we are creating the user from the form parameters
         $user = User::create($request->all());
         //after that we need to sync the user roles in the relation table
-        $user->syncRoles($request->input('roles',[]));
+        $user->syncRoles($request->input('roles', []));
         //after that we need to sync the user permissions in the relation table
         //but it may leads to data duplication
-        //so we need tosync only the permsions that roles doesn't have 
+        //so we need tosync only the permsions that roles doesn't have
         $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'STORE');
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
-                        ->with( 'success','User Created Successfully');
+                        ->with( 'success', 'User Created Successfully');
     }
 
     /**
@@ -139,7 +139,7 @@ class UserController extends Controller
     {
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
-        $user->syncRoles($request->input('roles',[]));
+        $user->syncRoles($request->input('roles', []));
         //after that we need to sync the user permissions in the relation table
         $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'UPDATE');
         //now we are redirecting to the index page with message
@@ -199,7 +199,7 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_force_delete');
-        //finding the user of the id 
+        //finding the user of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $user = User::withTrashed()
@@ -223,7 +223,7 @@ class UserController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_restore');
-        //finding the user of the id 
+        //finding the user of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $user = User::withTrashed()

@@ -81,7 +81,7 @@ class User extends BaseModel implements
      * @var string
      */
     protected $restoreRoute = 'admin.access.users.restore';
-    
+
     /**
     * The attributes that are mass assignable.
     *
@@ -120,7 +120,7 @@ class User extends BaseModel implements
     /**
      * Sync The Roles to User
      *
-     * While Creating the new User We need to assign 
+     * While Creating the new User We need to assign
      * the role for them so the relation table needs
      * to be filled
      *
@@ -128,7 +128,7 @@ class User extends BaseModel implements
      * @return $this
      * @throws conditon
      **/
-    public function syncRoles(array $roles):void
+    public function syncRoles(array $roles): void
     {
         $this->roles()
             ->sync( array_filter($roles));
@@ -137,14 +137,14 @@ class User extends BaseModel implements
     /**
      * Sync The Permisions to User
      *
-     * While Creating the new User We may need to assign 
+     * While Creating the new User We may need to assign
      * the permissions for them so the relation table needs
      * to be filled
      *
      * @param array $var Description
      * @return void
      **/
-    public function syncPermissions(array $permisions):void
+    public function syncPermissions(array $permisions): void
     {
         $this->permissions()
             ->sync(array_filter($permisions));
@@ -153,7 +153,7 @@ class User extends BaseModel implements
     /**
      * Sync The Permisions to User
      *
-     * While Creating the new User We may need to assign 
+     * While Creating the new User We may need to assign
      * the permissions for them so the relation table needs
      * to be filled.
      * But While You are selecting the roles and permissions
@@ -169,11 +169,11 @@ class User extends BaseModel implements
     public function syncUniquePermissions(array $permisions,array $roles,string $method): void
     {
         $this->permissions()
-            ->sync($this->setUniquePermisison($roles, $permisions, $method));
+            ->sync($this->assignUniquePermisison($roles, $permisions, $method));
     }
 
     /**
-     * Set the Unique Permission Based on the role 
+     * Set the Unique Permission Based on the role
      *
      * If the User selects the multiple roles and permissions
      * and if the if the user seleted permisisons exits in the
@@ -185,7 +185,7 @@ class User extends BaseModel implements
      * @param string $method The Method
      * @return array
      **/
-    private function setUniquePermisison($roles = [], $permissions = [], $method)
+    private function assignUniquePermisison($roles = [], $permissions = [], $method): array
     {
         $roles = array_filter($roles);
         $permissions = array_filter($permissions);
@@ -205,9 +205,9 @@ class User extends BaseModel implements
             }
             $dirPermToRole = array_unique($totPermList);
         }
-        if ($method == 'STORE') {
+        if ($method === 'STORE') {
             $difference = array_merge(array_diff($dirPermToRole, $permissions), array_diff($permissions, $dirPermToRole));
-        } elseif ($method == 'UPDATE') {
+        } elseif ($method === 'UPDATE') {
             $difference = array_merge(array_diff($permissions, $dirPermToRole));
         }
         return $difference;

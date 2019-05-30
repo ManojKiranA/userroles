@@ -7,7 +7,6 @@ use App\Models\Relations\BaseRelation;
 use App\Models\Accessors\BaseAccessor;
 use App\Models\Finders\BaseFinder;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class BaseModel extends Model
 {
@@ -15,9 +14,9 @@ class BaseModel extends Model
     /**
      * Shows All the columns of the Corresponding Table of Model
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * If You need to get all the Columns of the Model Table.
      * Useful while including the columns in search
-     *
      * @return array
      **/
     public function getTableColumns()
@@ -28,6 +27,7 @@ class BaseModel extends Model
     /**
      * Scope a query to Disable EagerLoading
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -39,6 +39,7 @@ class BaseModel extends Model
     /**
      * Scope a query to order by `created_at` ASC"
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @param string $fieldName The filed Name of the Model
      * @return \Illuminate\Database\Eloquent\Builder
@@ -51,6 +52,7 @@ class BaseModel extends Model
     /**
      * Scope a query to get the sql Query with value
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -79,7 +81,7 @@ class BaseModel extends Model
         $keyColumnPluck = $query->pluck($keyColumn)->toArray();
 
         //iterating Through All Other Fileds and Plucking it each Time
-        foreach ((array)$extraFileds as  $eachFiled) {
+        foreach ((array) $extraFileds as  $eachFiled) {
                 $extraFields[$eachFiled] =   $query->pluck($eachFiled)->toArray();
             }
 
@@ -107,33 +109,34 @@ class BaseModel extends Model
     /**
      * Scope a query to pluck the Column Value with placeHolder
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePluckWithPlaceHolder($query,string $filedOne,string $filedTwo,string $defaultNullText = null)
     {
         //if the default placehoder text is not passes write our own
-        if ($this->isNotPassed($defaultNullText)) 
+        if ($this->isNotPassed($defaultNullText))
         {
             $classNameSpace = explode('\\', get_class());
             $className = end($classNameSpace);
             $defaultNullText = 'Choose Your ' . $className;
         }
         $pluckedCollection = $query->pluck($filedOne, $filedTwo);
-        return  [null => $defaultNullText] + $pluckedCollection->toArray();
+        $arrayWithNull = [null => $defaultNullText] + $pluckedCollection->toArray();
+        return $arrayWithNull;
     }
 
     /**
      * Check if the Value is passes in function parameter
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param string $variable The Varibale that needs to be checked
      * @return bool
-     * @throws conditon
      **/
     public function isNotPassed(string $variable = null)
     {
-        //setting the default to SERIES 
-        if (!isset($variable) || is_null($variable) || $variable === "") {
+        if (! isset($variable) || is_null($variable) || $variable === "") {
             return true;
         }
         return false;

@@ -19,7 +19,8 @@ trait BaseFinder
      **/
     public static function findByColumn(string $columnName, string $value)
     {
-        return self::where($columnName, $value)->first();
+        return self::where($columnName, $value)
+                ->first();
     }
 
     /**
@@ -36,7 +37,8 @@ trait BaseFinder
      **/
     public static function findOrFailByColumn(string $columnName, string $value)
     {
-        return self::where($columnName, $value)->firstOrFail();
+        return self::where($columnName, $value)
+                ->firstOrFail();
     }
 
     /**
@@ -52,7 +54,9 @@ trait BaseFinder
      **/
     public static function findByColumnWithTrashed(string $columnName, string $value)
     {
-        return self::withTrashed()->where($columnName, $value)->first();
+        return self::withTrashed()
+                ->where($columnName, $value)
+                ->first();
     }
 
     /**
@@ -69,6 +73,8 @@ trait BaseFinder
      **/
     public static function findOrFailByColumnWithTrashed(string $columnName, string $value)
     {
-        return self::withTrashed()->where($columnName, $value)->firstOrFail();;
+        return self::withTrashed()
+                ->where($columnName, $value)
+                ->firstOrFail();
     }
 }

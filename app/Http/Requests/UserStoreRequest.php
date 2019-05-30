@@ -13,7 +13,7 @@ class UserStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      */
-    public function authorize():bool
+    public function authorize(): bool
     {
         return $this->user()->can( 'user_create');
     }
@@ -24,7 +24,7 @@ class UserStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function rules():array
+    public function rules(): array
     {
         return [
             'name' => 'bail|required',
@@ -39,7 +39,7 @@ class UserStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function messages():array
+    public function messages(): array
     {
         return [
             'name.required' => ':attribute is Required',
@@ -56,7 +56,7 @@ class UserStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function attributes():array
+    public function attributes(): array
     {
         return [
             'email' => 'Email Address',
@@ -72,7 +72,7 @@ class UserStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    protected function failedAuthorization():void
+    protected function failedAuthorization(): void
     {
         throw new AuthorizationException("You Can't Create User");
     }

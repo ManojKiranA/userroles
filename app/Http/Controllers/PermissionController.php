@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 
-
 class PermissionController extends Controller
 {
     /**
@@ -60,7 +59,7 @@ class PermissionController extends Controller
         $this->authorize( 'permission_create');
         //plucking the role name and id with place holder
         $roleList = Role::excludeRootRole()
-                        ->pluckWithPlaceHolder('name','id','Choose Role');
+                        ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         //now we are collecting the list of variables that need to passes to view
         $viewShare = [ 'roleList' => $roleList];
         //now we are returning the view
@@ -79,7 +78,7 @@ class PermissionController extends Controller
         //create the new permission for the form request
         $permission = Permission::create($request->all());
         //syncing the roles associated with the permisisons
-        $permission->syncRoles( $request->input('roles',[]));
+        $permission->syncRoles( $request->input('roles', []));
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.permissions.index')
                     ->with('success', 'Permissions Created Successfully');
@@ -162,8 +161,8 @@ class PermissionController extends Controller
         }
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.permissions.index')
-                    ->with('error', 'Permission is Assigned to Role or User');        
-        
+                    ->with('error', 'Permission is Assigned to Role or User');
+
     }
 
 
@@ -201,7 +200,7 @@ class PermissionController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'permission_force_delete');
-        //finding the permission of the id 
+        //finding the permission of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $permission = Permission::withTrashed()->findOrFail($permissionId);
@@ -224,7 +223,7 @@ class PermissionController extends Controller
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'permission_restore');
-        //finding the permission of the id 
+        //finding the permission of the id
         //we can't use method injection because it don't
         //include softdeleted model
         $permission = Permission::withTrashed()->findOrFail($permissionId);

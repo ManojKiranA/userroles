@@ -18,7 +18,7 @@ trait UserAccessor
      **/
     public function setPasswordAttribute(string $password = null)
     {
-        if (!is_null($password)) 
+        if (! is_null($password))
         {
             $this->attributes['password'] = Hash::make($password);
         }

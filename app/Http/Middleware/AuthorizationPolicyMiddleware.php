@@ -21,7 +21,7 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this-> setPermissionToRole();
+        $this-> assignPermissionToRole();
         return $next($request);
     }
 
@@ -30,10 +30,10 @@ class AuthorizationPolicyMiddleware
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      **/
-    public function setPermissionToRole()
+    public function assignPermissionToRole()
     {
         $rootUserRoleName = Config::get( 'useraccess.rootUserRoleName');
-        
+
         $authorizedUser = Auth::user();
 
         if ($this->checkApplicationState()) {
@@ -78,7 +78,7 @@ class AuthorizationPolicyMiddleware
                         });
                     }
                 }
-            }            
+            }
         }
     }
 
@@ -91,7 +91,7 @@ class AuthorizationPolicyMiddleware
     public function checkApplicationState()
     {
         $authorizedUser = Auth::user();
-        return !App::runningInConsole() && !is_null($authorizedUser);
+        return ! App::runningInConsole() && ! is_null($authorizedUser);
     }
 
 }

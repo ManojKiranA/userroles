@@ -35,10 +35,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ( $exception instanceof MethodNotAllowedHttpException) 
+        if ( $exception instanceof MethodNotAllowedHttpException)
         {
             throw new Exception("You Can't Do that By Entering the Url");
-            
         }
         parent::report($exception);
     }

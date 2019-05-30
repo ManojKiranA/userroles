@@ -13,7 +13,7 @@ class PermissionStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
      */
-    public function authorize():bool
+    public function authorize(): bool
     {
         return $this->user()->can( 'permission_create');
     }
@@ -24,7 +24,7 @@ class PermissionStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function rules():array
+    public function rules(): array
     {
         return [
             'name' => 'bail|required|unique:permissions',
@@ -38,7 +38,7 @@ class PermissionStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function messages():array
+    public function messages(): array
     {
         return [
             'name.required' => ':attribute is Required',
@@ -53,7 +53,7 @@ class PermissionStoreRequest extends FormRequest
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return array
      */
-    public function attributes():array
+    public function attributes(): array
     {
         return [
             'name' => 'Permission Name',
