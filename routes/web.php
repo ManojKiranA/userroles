@@ -27,7 +27,7 @@ Route::prefix('/admin/')
             ->group(static function () {
 
             /*
-            *Start Web Routes For UserController
+            *Start  Routes For User
             */
             Route::prefix('/users/')->name('users.')->group(static function () {
                 Route::get('/index/')
@@ -53,22 +53,22 @@ Route::prefix('/admin/')
                     ->name('destroy');
                 Route::group(['prefix' => '/deleted/'], static function () {
                     Route::get('/index/')
-                        ->uses('UserController@deleted')
+                        ->uses('UserDeletedController@deleted')
                         ->name('deleted');
                     Route::delete('/{user}/delete/')
-                        ->uses('UserController@forceDelete')
+                        ->uses('UserDeletedController@forceDelete')
                         ->name('forcedelete');
                     Route::patch('/{user}/restore/')
-                        ->uses('UserController@restore')
+                        ->uses('UserDeletedController@restore')
                         ->name('restore');
                 });
             });
             /*
-            *End Web Routes For UserController
+            *End  Routes For User
             */
 
             /*
-            *Start Web Routes For RoleController
+            *Start Routes For Role
             */
             Route::prefix('/roles/')
                 ->name('roles.')
@@ -96,22 +96,22 @@ Route::prefix('/admin/')
                         ->name('destroy');
                     Route::group(['prefix' => '/deleted/'], static function () {
                         Route::get('/index/')
-                            ->uses('RoleController@deleted')
+                            ->uses('RoleDeletedController@deleted')
                             ->name('deleted');
                         Route::delete('/{role}/delete/')
-                            ->uses('RoleController@forceDelete')
+                            ->uses('RoleDeletedController@forceDelete')
                             ->name('forcedelete');
                         Route::patch('/{role}/restore/')
-                            ->uses('RoleController@restore')
+                            ->uses('RoleDeletedController@restore')
                             ->name('restore');
                     });
             });
             /*
-            *End Web Routes For RoleController
+            *End Routes For Role
             */
 
             /*
-            *Start Web Routes For PermissionController
+            *Start Routes For Permission
             */
             Route::prefix('/permissions/')
                 ->name('permissions.')
@@ -139,18 +139,18 @@ Route::prefix('/admin/')
                         ->name('destroy');
                     Route::group(['prefix' => '/deleted/'], static function () {
                         Route::get('/index/')
-                            ->uses('PermissionController@deleted')
+                            ->uses('PermisisonDeletedController@deleted')
                             ->name('deleted');
                         Route::delete('/{permission}/delete/')
-                            ->uses('PermissionController@forceDelete')
+                            ->uses('PermisisonDeletedController@forceDelete')
                             ->name('forcedelete');
                         Route::patch('/{permission}/restore/')
-                            ->uses('PermissionController@restore')
+                            ->uses('PermisisonDeletedController@restore')
                             ->name('restore');
                     });
             });
             /*
-            *End Web Routes For PermissionController
+            *End Routes For Permission
             */
         });
 });
