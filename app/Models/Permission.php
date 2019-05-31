@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
+use App\Models\Aclsync\PermissionRoleSync;
 
 /**
  * Class App\Models\Permission
@@ -22,7 +23,7 @@ use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 class Permission extends BaseModel
 {
-    use SoftDeletes, PermissionRelation, TableActionButtons;
+    use SoftDeletes, PermissionRelation, TableActionButtons, PermissionRoleSync;
 
     /**
      * The table associated with the model.
@@ -88,16 +89,5 @@ class Permission extends BaseModel
     public function isDeletable(): bool
     {
         return $this->roles->isEmpty() && $this->users->isEmpty();
-    }
-    /**
-     * Sync the Roles to Permission
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param array $roles Array of Role id's
-     * @return void
-     **/
-    public function syncRoles(array $roles): void
-    {
-        $this->roles()->sync(array_filter($roles));
     }
 }

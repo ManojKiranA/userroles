@@ -20,7 +20,7 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this-> assignPermissionToRole();
+        $this-> assignPermissionToUser();
         return $next($request);
     }
     /**
@@ -28,7 +28,7 @@ class AuthorizationPolicyMiddleware
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      **/
-    public function assignPermissionToRole()
+    public function assignPermissionToUser()
     {
         $rootUserRoleName = Config::get('useraccess.rootUserRoleName');
 
@@ -89,11 +89,10 @@ class AuthorizationPolicyMiddleware
     public function permissionOfUser(): array
     {
         $authorizedUser = Auth::user();
-        $permissionsOfUser = Permission::with('users')
+        return Permission::with('users')
                                 ->whereIn('id', $authorizedUser->permissions->pluck('id'))
                                 ->pluck('name')
                                 ->toArray();
-        return $permissionsOfUser;
     }
 
     /**

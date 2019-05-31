@@ -7,6 +7,8 @@ use App\Models\Relations\RoleRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use Illuminate\Support\Facades\Config;
 use App\Models\Finders\RoleFinder;
+use App\Models\Scopes\RoleScope;
+use App\Models\Aclsync\RolePermissionSync;
 
 /**
  * Class App\Models\Role
@@ -24,7 +26,7 @@ use App\Models\Finders\RoleFinder;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons, RoleFinder;
+    use SoftDeletes, RoleRelation, TableActionButtons, RoleFinder, RoleScope, RolePermissionSync;
 
     /**
      * The table associated with the model.
@@ -74,29 +76,6 @@ class Role extends BaseModel
      */
     protected $restoreRoute = 'admin.access.roles.restore';
 
-    /**
-     * Scope a query to only exclude the root user role in list
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeExcludeRootRole($query)
-    {
-        return $query->where('name', '!=', Config::get('useraccess.rootUserRoleName'));
-    }
-
-    /**
-     * Sync the Permisisons to role
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param array $permission Array of permission
-     * @return void
-     **/
-    public function syncPermission(array $permission): void
-    {
-        $this->permissions()->sync( array_filter($permission));
-    }
 
     /**
      * Check if the Current Model is Root Role
