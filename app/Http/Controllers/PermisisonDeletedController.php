@@ -68,7 +68,7 @@ class PermisisonDeletedController extends Controller
     public function restore(HttpRequest $request, $permissionId): RedirectResponse
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'permission_restore');
+        $this->authorize( 'permission_restore',$request);
         //finding the permission of the id
         //we can't use method injection because it don't
         //include softdeleted model

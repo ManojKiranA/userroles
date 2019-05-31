@@ -36,7 +36,7 @@ class UserController extends Controller
     public function index( HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize('user_access');
+        $this->authorize('user_access',$request->user());
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
                         ->paginate(null, ['*'], 'userPage')
@@ -57,7 +57,7 @@ class UserController extends Controller
     public function create( HttpRequest $request): IlluminateView
     {
         //if the user dont have access abort with unauthorized
-        $this->authorize( 'user_create');
+        $this->authorize( 'user_create',$request->user());
         //now we are plucking the roles with place holder
         $roleList = Role::excludeRootRole()
                         ->pluckWithPlaceHolder('name', 'id', 'Choose Role');

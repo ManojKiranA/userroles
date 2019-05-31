@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -24,7 +23,6 @@ class AuthorizationPolicyMiddleware
         $this-> assignPermissionToRole();
         return $next($request);
     }
-
     /**
      * Set the Permission to user via role
      *
@@ -32,54 +30,147 @@ class AuthorizationPolicyMiddleware
      **/
     public function assignPermissionToRole()
     {
-        $rootUserRoleName = Config::get( 'useraccess.rootUserRoleName');
+        $rootUserRoleName = Config::get('useraccess.rootUserRoleName');
 
-        $authorizedUser = Auth::user();
+        if ($this->checkApplicationState()) 
+        {
+            $rolesOfUser = $this->assignedRolesToUser();
 
-        if ($this->checkApplicationState()) {
-
-            $rolesOfUser = Role::with('permissions')
-                                ->whereIn('id', $authorizedUser->roles->pluck('id'))
-                                ->get();
-
-            if( $rolesOfUser->pluck('name')->contains($rootUserRoleName))
+            if ($rolesOfUser->pluck('name')->contains($rootUserRoleName)) 
             {
-                $allPermissions = Permission::pluck('name')->toArray();
-                foreach ( $allPermissions as $allPermission) {
-                    Gate::define( $allPermission, static function () {
-                        return true;
-                    });
-                }
+                $allPermissions = $this->allPermission();
 
-            }else {
+                $this->defineGate($allPermissions);
 
-                $permissionsOfUser = Permission::with('users')
-                    ->whereIn('id', $authorizedUser->permissions->pluck('id'))
-                    ->pluck('name');
+            } else 
+            {
+                $permissionsOfUser = $this->permissionOfUser();
 
-                $permissionsRole = $specialAccess = [];
+                $permissionsRole = $this->permissionViaRole($rolesOfUser);
 
-                if ($rolesOfUser->isNotEmpty()) {
-                    foreach ($rolesOfUser as  $userRole) {
-                        if ($userRole->permissions->pluck('name')->toArray() !== []) {
-                            $permissionsRole[] =  $userRole->permissions->pluck('name')->toArray();
-                        }
-                    }
-                }
+                $uniquePermission = $this->uniQuePermission($permissionsOfUser, $permissionsRole);
 
-                $specialAccess = $permissionsOfUser->toArray();
-                $permissionsRole = array_unique(array_reduce($permissionsRole, 'array_merge', []));
-                $uniquePermission = array_unique(array_merge($specialAccess, $permissionsRole));
-
-                if (isset($uniquePermission)) {
-                    foreach ($uniquePermission as $permissionName) {
-                        Gate::define($permissionName, static function () {
-                            return true;
-                        });
-                    }
+                if (isset($uniquePermission)) 
+                {
+                    $this->defineGate($uniquePermission);
                 }
             }
         }
+    }
+
+    /**
+     * Gets all the permisison names that is assigned via
+     * role
+     *
+     * @return array
+     **/
+    public function permissionViaRole($rolesOfUser): array
+    {
+
+        $permissionsRole = [];
+
+        if ($rolesOfUser->isNotEmpty()) {
+            foreach ($rolesOfUser as  $userRole) {
+                $permisisonOnRole = $userRole->permissions->pluck('name')->toArray();
+                if ($permisisonOnRole !== []) {
+                    $permissionsRole[] =  $permisisonOnRole;
+                }
+            }
+            return $permissionsRole;
+        }
+    }
+
+    /**
+     * Returns all the direct Permisison to
+     * the current User as a Collection
+     *
+     * @return array
+     **/
+    public function permissionOfUser(): array
+    {
+        $authorizedUser = Auth::user();
+        $permissionsOfUser = Permission::with('users')
+                                ->whereIn('id', $authorizedUser->permissions->pluck('id'))
+                                ->pluck('name')
+                                ->toArray();
+        return $permissionsOfUser;
+    }
+
+    /**
+     * Returns the root role name of the application
+     *
+     * @return string
+     **/
+    public function rootRole()
+    {
+        return Config::get('useraccess.rootUserRoleName');
+    }
+
+    /**
+     * Returns all the Permission Name in array
+     *
+     *
+     * @param Type $var Description
+     * @return array
+     **/
+    public function allPermission(): array
+    {
+        return Permission::pluck('name')->toArray();
+    }
+
+
+
+    /**
+     * Get All the Roles Of the User
+     * 
+     * It Gets All the Roles of User
+     * and plucks id and Name 
+     *
+     * @param string $selectFiled The Filed Need to Sele
+     * @return Illuminate\Database\Eloquent\Collection
+     **/
+    public function assignedRolesToUser()
+    {
+        $authorizedUser = Auth::user();
+
+        $rolesOfUser = Role::with('permissions')
+                        ->whereIn('id', $authorizedUser->roles->pluck('id'))
+                        ->get();
+
+        return $rolesOfUser;
+
+    }
+
+    /**
+     * Defines the Array of the Gates
+     *
+     *
+     * @param array $gatArray Array of Permisisons
+     * @return void
+     **/
+    public function defineGate(array $allPermissions): void
+    {
+        foreach ($allPermissions as $allPermission) {
+            Gate::define($allPermission, static function () {
+                return true;
+            });
+        }
+    }
+
+    /**
+     * Return only the unique permisison on the
+     * role and permisison
+     *
+     *
+     * @param array $dirPer Direct Permisison to user
+     * @param array $permViaRole Permisison Via Role
+     * @return array
+     **/
+    public function uniQuePermission(array $dirPer = [] ,array $permViaRole = []): array
+    {
+        $singleLevelArray = array_unique(array_reduce($permViaRole, 'array_merge', []));
+        $uniquePermission = array_unique(array_merge($dirPer, $singleLevelArray));
+        return $uniquePermission;
     }
 
     /**
@@ -93,5 +184,4 @@ class AuthorizationPolicyMiddleware
         $authorizedUser = Auth::user();
         return ! App::runningInConsole() && ! is_null($authorizedUser);
     }
-
 }
