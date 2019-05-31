@@ -1,5 +1,9 @@
 @extends('layouts.app')
+
+@inject('connfigObject','Illuminate\Support\Facades\Config')
+
 @push('title') Permissions List @endpush
+
 @section('content')
 <div class="card-box">
    <div class="card-block">
@@ -18,6 +22,7 @@
                   <td>#</td>
                   <td>Name</td>
                   <td>Description</td>
+                  <td>Roles</td>
                   <td>Created At</td>
                   <td class="text-center">Actions</td>
                </tr>
@@ -28,6 +33,13 @@
                   <td>@include('comman.serialnumber', ['serNo' => $permissionList])</td>
                   <td>{{ $permissionValue->name }}</td>
                   <td>{{ $permissionValue->description }}</td>
+                  <td>
+                     @foreach($permissionValue->roles->filter(function($eachRole) use ($connfigObject){
+                        return $eachRole->name !== $connfigObject::get('useraccess.rootUserRoleName');
+                     }) as $role)
+                        <span class="badge badge-info">{{ $role->name }}</span>
+                     @endforeach
+                  </td>
                   <td>{{ $permissionValue->created_at }}</td>
                   <td class="text-center">
                      @include('comman.gateactionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT' => 'permission_edit','DELETE' => 'permission_delete','SHOW' => 'permission_show']])

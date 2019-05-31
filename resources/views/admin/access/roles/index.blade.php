@@ -16,30 +16,32 @@
             <thead>
                <tr>
                   <td>#</td>
-                 <td>Name</td>
-                 <td>Desc</td>
-                 <td>Created At</td>  
-                 <td>Created By</td>  
-                 @include('comman.gateactionheader',['permissionList' => ['role_edit','role_delete','role_show']])
+                  <td>Name</td>
+                  <td>Desc</td>
+                  <td>Permisisons</td>
+                  <td>Created At</td>
+                  <td>Created By</td>
+                  @include('comman.gateactionheader',['permissionList' => ['role_edit','role_delete','role_show']])
                </tr>
             </thead>
             <tbody>
-
-            @foreach($rolesList as $roleListKey =>  $roleListValue)
-          <tr>
-             <td>@include('comman.serialnumber', ['serNo' => $rolesList])</td>
-             <td>{{ $roleListValue->name }}</td>
-             <td>{{ $roleListValue->description }}</td>
-             <td>{{ $roleListValue->created_at }}</td>
-             <td>{{ $roleListValue->created_by_name }}</td>
-             <td class="text-center">
-                 @include('comman.gateactionbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['EDIT' => 'role_edit','DELETE' => 'role_delete','SHOW' => 'role_show']])
-             </td>
-          </tr>
-          @endforeach             
-
-
-               
+               @foreach($rolesList as $roleListKey =>  $roleListValue)
+               <tr>
+                  <td>@include('comman.serialnumber', ['serNo' => $rolesList])</td>
+                  <td>{{ $roleListValue->name }}</td>
+                  <td>{{ $roleListValue->description }}</td>
+                  <td>
+                     @foreach($roleListValue->permissions as $permisison)
+                        <span class="badge badge-info">{{ $permisison->name }}</span>
+                     @endforeach
+                  </td>
+                  <td>{{ $roleListValue->created_at }}</td>
+                  <td>{{ $roleListValue->created_by_name }}</td>
+                  <td class="text-center">
+                     @include('comman.gateactionbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['EDIT' => 'role_edit','DELETE' => 'role_delete','SHOW' => 'role_show']])
+                  </td>
+               </tr>
+               @endforeach             
             </tbody>
          </table>
       </div>
@@ -49,4 +51,3 @@
    </div>
 </div>
 @endsection
-

@@ -2,6 +2,8 @@
 
 namespace App\Models\Scopes;
 
+use Illuminate\Support\Facades\Config;
+
 /**
  * Contains all the Scopes of the Role Model
  */

@@ -16,8 +16,13 @@ class PermissionRoleTableSeeder extends Seeder
     public function run()
     {
         $allPermisisons = Permission::pluck('id')->toArray();
+
         $rootUserRoleName = Config::get('useraccess.rootUserRoleName');
         $rootRole = Role::findByname( $rootUserRoleName);
         $rootRole->permissions()->sync( $allPermisisons);
+
+        $adminRole = Role::findByname('ADMIN');
+        $adminRole->permissions()->sync($allPermisisons);
+
     }
 }

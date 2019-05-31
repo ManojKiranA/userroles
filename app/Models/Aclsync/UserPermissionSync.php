@@ -71,15 +71,20 @@ trait UserPermissionSync
         }
         if (is_array($roles)) 
         {
-            foreach ($roles as $roleV) {
+            foreach ($roles as $roleV) 
+            {
                 $perToEachRole = Role::findOrFail($roleV);
-                $perArrToRoles = $perToEachRole->permissions->toArray();
-                foreach ($perArrToRoles as $perArrToRoleVal) {
-                    $totPermList[] = $perArrToRoleVal['id'];
+                
+                $idPluck = $perToEachRole->permissions->pluck('id')->toArray();
+
+                if($idPluck !== [])
+                {
+                    $totPermList[$roleV] = $perToEachRole->permissions->pluck('id')->toArray();
                 }
             }
-            $dirPermToRole = array_unique($totPermList);
+            $dirPermToRole = array_unique(array_reduce($totPermList, 'array_merge', []));
         }
+
         if ($type === 'STORE') {
             $difference = array_merge(array_diff($dirPermToRole, $permissions), array_diff($permissions, $dirPermToRole));
         } elseif ($type === 'UPDATE') {
@@ -87,4 +92,19 @@ trait UserPermissionSync
         }
         return $difference;
     }
+
+    /**
+     * undocumented function summary
+     *
+     * Undocumented function long description
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function fooBat(Role $role)
+    {
+        dd($role);
+    }
+
 }
