@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Role;
+use App\Models\Accessors\UserAccessor;
+use App\Models\Aclsync\UserPermissionSync;
+use App\Models\Aclsync\UserRoleSync;
+use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Finders\UserFinder;
+use App\Models\Relations\UserRelation;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
-use App\Models\Accessors\UserAccessor;
-use App\Models\Relations\UserRelation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\Models\Aclsync\UserRoleSync;
-use App\Models\Aclsync\UserPermissionSync;
+
 
 /**
  * Class App\Models\User
