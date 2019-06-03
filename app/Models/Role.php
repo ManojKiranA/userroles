@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Relations\RoleRelation;
-use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
-use Illuminate\Support\Facades\Config;
-use App\Models\Finders\RoleFinder;
 use App\Models\Scopes\RoleScope;
+use App\Models\Traits\Auditable;
+use App\Models\Finders\RoleFinder;
+use App\Models\Relations\RoleRelation;
+use Illuminate\Support\Facades\Config;
 use App\Models\Aclsync\RolePermissionSync;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 /**
  * Class App\Models\Role
@@ -27,6 +28,7 @@ use App\Models\Aclsync\RolePermissionSync;
 class Role extends BaseModel
 {
     use SoftDeletes, RoleRelation, TableActionButtons, RoleFinder, RoleScope, RolePermissionSync;
+    use Auditable;
 
     /**
      * The table associated with the model.

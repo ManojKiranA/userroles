@@ -7,6 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class AuditLog extends Model
 {
     /**
+     * Sets the constant for created event
+     **/
+    const CREATED = 'created';
+
+    /**
+     * Sets the constant for updated event
+     **/
+    const UPDATED = 'updated';
+
+    /**
+     * Sets the constant for deleted event
+     **/
+
+    const DELETED = 'deleted';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
