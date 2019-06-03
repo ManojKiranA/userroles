@@ -3,24 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mutators\AuditLogMutator;
 
 class AuditLog extends Model
 {
+    use AuditLogMutator;
     /**
      * Sets the constant for created event
      **/
-    protected const CREATED = 'created';
+    public const CREATED = 'created';
 
     /**
      * Sets the constant for updated event
      **/
-    protected const UPDATED = 'updated';
+    public const UPDATED = 'updated';
 
     /**
      * Sets the constant for deleted event
      **/
 
-    protected const DELETED = 'deleted';
+    public const DELETED = 'deleted';
 
     /**
      * The attributes that are mass assignable.

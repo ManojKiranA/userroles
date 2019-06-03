@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Accessors\UserAccessor;
 use App\Models\Aclsync\UserPermissionSync;
 use App\Models\Aclsync\UserRoleSync;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
@@ -17,6 +16,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Traits\Auditable;
+use App\Models\Mutators\UserMutator;
 
 /**
  * Class App\Models\User
@@ -40,7 +40,7 @@ class User extends BaseModel implements
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
-    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserAccessor;
+    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserMutator;
     use UserPermissionSync, UserRoleSync;
     use Auditable;
 

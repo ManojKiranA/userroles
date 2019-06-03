@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Accessors;
+namespace App\Models\Mutators;
 
 use Illuminate\Support\Facades\Hash;
 
 /**
  *  Handle all the User Accessor across the application
  */
-trait UserAccessor
+trait UserMutator
 {
     /**
      * Set Accessor for the password Attribute

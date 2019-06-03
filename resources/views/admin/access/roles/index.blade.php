@@ -31,8 +31,8 @@
                   <td>{{ $roleListValue->name }}</td>
                   <td>{{ $roleListValue->description }}</td>
                   <td>
-                     @foreach($roleListValue->permissions as $permisison)
-                        <span class="badge badge-info">{{ $permisison->name }}</span>
+                     @foreach($roleListValue->permissions->pluck('name') as $permisison)
+                        <span class="badge badge-info">{{ $permisison }}</span>
                      @endforeach
                   </td>
                   <td>{{ $roleListValue->created_at }}</td>

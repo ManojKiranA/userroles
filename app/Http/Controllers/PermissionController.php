@@ -38,6 +38,7 @@ class PermissionController extends Controller
         $this->authorize( 'permission_access');
         //getting the list of user by latest and passing to length aware paginator instance
         $permissionList = Permission::latest()
+                            ->with(['roles'])
                             ->paginate(null, ['*'], 'permissionPage')
                             ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view

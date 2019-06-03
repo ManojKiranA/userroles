@@ -37,6 +37,7 @@ class RoleController extends Controller
         $this->authorize( 'role_access');
         //getting the list of roles by latest and passing to length aware paginator instance
         $rolesList = Role::excludeRootRole()
+                        ->with(['permissions'])
                         ->latest()
                         ->paginate(null, ['*'], 'rolePage')
                         ->onEachSide(2);

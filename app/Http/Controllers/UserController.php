@@ -39,6 +39,7 @@ class UserController extends Controller
         $this->authorize('user_access',$request->user());
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
+                        ->with(['roles','permissions'])
                         ->paginate(null, ['*'], 'userPage')
                         ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
@@ -85,7 +86,7 @@ class UserController extends Controller
         //after that we need to sync the user permissions in the relation table
         //but it may leads to data duplication
         //so we need tosync only the permsions that roles doesn't have
-        $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'STORE');
+        $user->syncPermissions($request->input('permissions', []));
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with( 'success', 'User Created Successfully');
@@ -141,7 +142,7 @@ class UserController extends Controller
         //after that we need to sync the user roles in the relation table
         $user->syncRoles($request->input('roles', []));
         //after that we need to sync the user permissions in the relation table
-        $user->syncUniquePermissions($request->input('permissions', []), $request->input('roles', []), 'UPDATE');
+        $user->syncPermissions($request->input('permissions', []));
         //now we are redirecting to the index page with message
         return Redirect::route('admin.access.users.index')
                         ->with('success', 'User Updated Successfully');
