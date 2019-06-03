@@ -27,7 +27,8 @@ use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons, RoleFinder, RoleScope, RolePermissionSync;
+    use SoftDeletes, RoleRelation, TableActionButtons;
+    use RoleFinder, RoleScope, RolePermissionSync;
     use Auditable;
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Aclsync\PermissionRoleSync;
+use App\Models\Traits\Auditable;
 
 /**
  * Class App\Models\Permission
@@ -24,6 +25,8 @@ use App\Models\Aclsync\PermissionRoleSync;
 class Permission extends BaseModel
 {
     use SoftDeletes, PermissionRelation, TableActionButtons, PermissionRoleSync;
+    use Auditable;
+
 
     /**
      * The table associated with the model.

@@ -92,19 +92,4 @@ trait UserPermissionSync
         }
         return $difference;
     }
-
-    /**
-     * undocumented function summary
-     *
-     * Undocumented function long description
-     *
-     * @param Type $var Description
-     * @return void
-     * @throws conditon
-     **/
-    public function fooBat(Role $role)
-    {
-        dd($role);
-    }
-
 }
