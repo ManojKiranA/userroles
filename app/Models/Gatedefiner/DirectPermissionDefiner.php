@@ -19,10 +19,11 @@ trait DirectPermissionDefiner
     public function permissionOfUser(): array
     {
         $authorizedUser = Auth::user();
-        return Permission::with('users')
+        $permissionOfUser = Permission::with('users')
                                 ->whereIn('id', $authorizedUser->permissions->pluck('id'))
                                 ->pluck('name')
                                 ->toArray();
+        return $permissionOfUser;
     }
 
     /**

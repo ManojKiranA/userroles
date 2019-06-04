@@ -102,6 +102,8 @@ class UserController extends Controller
      */
     public function show(User $user): IlluminateView
     {
+        //if the user is trying to show the root user we need to deny that
+        abort_if($user->isRoot(), 403, "Whoops You Can't ".ucfirst(__FUNCTION__)." that");
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_show');
         //now we are collecting the list of variables that need to passes to view
@@ -118,6 +120,8 @@ class UserController extends Controller
      */
     public function edit(User $user): IlluminateView
     {
+        //if the user is trying to show the root user we need to deny that
+        abort_if($user->isRoot(), 403, "Whoops You Can't ".ucfirst(__FUNCTION__)." that");
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_edit');
         $roleList = Role::excludeRootRole()
@@ -139,6 +143,9 @@ class UserController extends Controller
      */
     public function update( UserUpdateRequest $request, User $user): RedirectResponse
     {
+        //if the user is trying to show the root user we need to deny that
+        abort_if($user->isRoot(), 403, "Whoops You Can't ".ucfirst(__FUNCTION__)." that");
+
         $user->update($request->all());
         //after that we need to sync the user roles in the relation table
         $user->syncRoles($request->input('roles', []));
@@ -158,6 +165,9 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
+        //if the user is trying to show the root user we need to deny that
+        abort_if($user->isRoot(), 403, "Whoops You Can't ".ucfirst(__FUNCTION__)." that");
+
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_delete');
         //delete the current model object

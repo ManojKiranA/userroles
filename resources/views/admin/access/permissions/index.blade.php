@@ -24,6 +24,7 @@
                   <td>Description</td>
                   <td>Roles</td>
                   <td>User(s) Count</td>
+                  <td>Roles(s) Count</td>
                   <td>Created At</td>
                   <td class="text-center">Actions</td>
                </tr>
@@ -42,6 +43,9 @@
                      @endforeach
                   </td>
                   <td>{{ $permissionValue->users->count() }}</td>
+                  <td>{{ $permissionValue->roles->filter(function($eachRole) use ($connfigObject){
+                     return $eachRole->name !== $connfigObject::get('useraccess.rootUserRoleName');
+                  })->count() }}</td>
                   <td>{{ $permissionValue->created_at }}</td>
                   <td class="text-center">
                      @include('comman.gateactionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT' => 'permission_edit','DELETE' => 'permission_delete','SHOW' => 'permission_show']])

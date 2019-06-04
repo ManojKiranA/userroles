@@ -58,6 +58,7 @@ trait RolePermissionDefiner
     {
         $roleIdsOfUser = Auth::user()->roles->pluck('id')->toArray();
         $rolesOfUser = Role::with('permissions')
+                        ->select('name','id')
                         ->get()
                         ->filter(function($eachRole) use ($roleIdsOfUser)
                         {
