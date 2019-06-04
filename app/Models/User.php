@@ -2,19 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Config;
 use App\Models\Aclsync\UserPermissionSync;
 use App\Models\Aclsync\UserRoleSync;
 use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Traits\Auditable;
 use App\Models\Mutators\UserMutator;
 use App\Models\Scopes\UserScope;
@@ -35,15 +29,11 @@ use App\Models\Scopes\UserScope;
  * @property    string  $updated_at
  * @property    string  $deleted_at
  */
-class User extends BaseModel implements
-    AuthenticatableContract,
-    AuthorizableContract,
-    CanResetPasswordContract
+class User extends UserExtender
 {
-    use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
     use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserMutator;
     use UserPermissionSync, UserRoleSync;
-    use Auditable ,UserScope;
+    use Auditable, UserScope;
 
     /**
      * The table associated with the model.
@@ -121,4 +111,14 @@ class User extends BaseModel implements
      * @var int
      */
     protected $perPage = 20;
+
+    /**
+     * Check if the Current Model is Root Role
+     *
+     * @return bool
+     **/
+    public function isRoot()
+    {
+        return $this->email === Config::get('useraccess.seeders.usersTable.superUserData.email');
+    }
 }
