@@ -36,7 +36,7 @@ Here's the plan for what's coming:
 - Run __php artisan migrate --seed__ (it has some seeded data for your testing)
 - That's it: launch the main URL or go to __/login__ and login with default credentials
 
--   __superuser@application.com__ - __Generated Password While Seeding__  for the administrator
+-   __superuser@application.com__ - __Generated Password While Seeding__  for the super user
 -  __admin@admin.com__ - __password__  for the administrator
 
 
