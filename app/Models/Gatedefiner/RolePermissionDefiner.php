@@ -56,11 +56,13 @@ trait RolePermissionDefiner
      **/
     public function assignedRolesToUser()
     {
-        $authorizedUser = Auth::user();
-
+        $roleIdsOfUser = Auth::user()->roles->pluck('id')->toArray();
         $rolesOfUser = Role::with('permissions')
-                        ->whereIn('id', $authorizedUser->roles->pluck('id'))
-                        ->get();
+                        ->get()
+                        ->filter(function($eachRole) use ($roleIdsOfUser)
+                        {
+                            return in_array($eachRole->id,$roleIdsOfUser);
+                        });
 
         return $rolesOfUser;
     }

@@ -19,6 +19,7 @@
                   <td>Name</td>
                   <td>Desc</td>
                   <td>Permisisons</td>
+                  <td>User(s) Count</td>
                   <td>Created At</td>
                   <td>Created By</td>
                   @include('comman.gateactionheader',['permissionList' => ['role_edit','role_delete','role_show']])
@@ -35,6 +36,8 @@
                         <span class="badge badge-info">{{ $permisison }}</span>
                      @endforeach
                   </td>
+                  <td>{{ $roleListValue->users->count() }}</td>
+                  
                   <td>{{ $roleListValue->created_at }}</td>
                   <td>{{ $roleListValue->created_by_name }}</td>
                   <td class="text-center">

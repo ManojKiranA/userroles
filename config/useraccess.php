@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Str;
+
+
 //kindly Change this configuration
 
 //determines the root user  name
@@ -9,7 +12,7 @@ $rootUserName = 'Root';
 $rootUserEmail = 'superuser@application.com';
 
 //determines the root user password
-$rootUserPassword = 'superuser@welcome123';
+$rootUserPassword = Str::random(15);
 
 
 //if You are not developer don't change this
@@ -80,7 +83,13 @@ return [
                 'name' => $rootUserName,
                 'email' => $rootUserEmail,
                 'email_verified_at' => now(),
-                'password' => $rootUserPassword,
+                'password' => ($rootUserPassword),
+            ],
+            'adminUserData' => [
+                'name' => 'Administrator',
+                'email' => 'admin@admin.com',
+                'email_verified_at' => now(),
+                'password' => 'secret',
             ],
         ],
 

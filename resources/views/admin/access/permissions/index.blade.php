@@ -23,6 +23,7 @@
                   <td>Name</td>
                   <td>Description</td>
                   <td>Roles</td>
+                  <td>User(s) Count</td>
                   <td>Created At</td>
                   <td class="text-center">Actions</td>
                </tr>
@@ -40,6 +41,7 @@
                         <span class="badge badge-info">{{ $role->name }}</span>
                      @endforeach
                   </td>
+                  <td>{{ $permissionValue->users->count() }}</td>
                   <td>{{ $permissionValue->created_at }}</td>
                   <td class="text-center">
                      @include('comman.gateactionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT' => 'permission_edit','DELETE' => 'permission_delete','SHOW' => 'permission_show']])

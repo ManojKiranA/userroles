@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@inject('connfigObject','Illuminate\Support\Facades\Config')
 @push('title') Users List @endpush
 @section('content')
 <div class="card-box">
@@ -19,6 +20,8 @@
                   <td>#</td>
                  <td>Name</td>
                  <td>Email</td>
+                 <td>Role(s)</td>
+                 <td>Permisison(s)</td>
                  <td>Created At</td>  
                  <td>Created By</td> 
                  @include('comman.gateactionheader',['permissionList' => ['user_edit','user_delete','user_show']])
@@ -31,6 +34,18 @@
                   <td>@include('comman.serialnumber', ['serNo' => $usersList])</td>
                   <td>{{ $userValue->name }}</td>
                   <td>{{ $userValue->email }}</td>
+                  <td>
+                     @foreach($userValue->roles->pluck('name') as $role)
+                        <span class="badge badge-info">{{ $role }}</span>
+                     @endforeach
+                  </td>
+
+                  <td>
+                     @foreach($userValue->permissions->pluck('name') as $permission)
+                        <span class="badge badge-info">{{ $permission }}</span>
+                     @endforeach
+                  </td>
+
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
                   <td class="text-center">
