@@ -10,10 +10,12 @@ class RoleUserTableSeeder extends Seeder
 {
 
     /**
-     * Auto generated seed file
+     * Run the database seeds.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return void
      */
+
     public function run()
     {
         $rootRoleName = Config::get('useraccess.rootUserRoleName');
@@ -29,6 +31,5 @@ class RoleUserTableSeeder extends Seeder
         $adminUserEmail = 'admin@admin.com';
         $adminUserObject = User::findByemail($adminUserEmail);
         $adminUserObject->roles()->sync([$adminRoleObject->id]);       
-        
     }
 }
