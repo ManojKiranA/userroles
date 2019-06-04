@@ -17,6 +17,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Traits\Auditable;
 use App\Models\Mutators\UserMutator;
+use App\Models\Scopes\UserScope;
 
 /**
  * Class App\Models\User
@@ -42,7 +43,7 @@ class User extends BaseModel implements
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
     use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserMutator;
     use UserPermissionSync, UserRoleSync;
-    use Auditable;
+    use Auditable ,UserScope;
 
     /**
      * The table associated with the model.

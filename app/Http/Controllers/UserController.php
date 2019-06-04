@@ -40,6 +40,7 @@ class UserController extends Controller
         //getting the list of user by latest and passing to length aware paginator instance
         $usersList = User::latest()
                         ->with(['roles','permissions'])
+                        ->excludeRootUser()
                         ->paginate(null, ['*'], 'userPage')
                         ->onEachSide(2);
         //now we are collecting the list of variables that need to passes to view
