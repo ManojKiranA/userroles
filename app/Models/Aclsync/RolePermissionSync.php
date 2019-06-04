@@ -17,6 +17,6 @@ trait RolePermissionSync
      **/
     public function syncPermission(array $permission): void
     {
-        $this->permissions()->sync( array_filter($permission));
+        $this->permissions()->sync(array_filter($permission));
     }
 }

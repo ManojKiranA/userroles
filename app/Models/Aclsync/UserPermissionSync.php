@@ -1,5 +1,7 @@
 <?php
-namespace App\Models\Aclsync;/**
+namespace App\Models\Aclsync;
+
+/**
  * Used to Sync Roles for User
  */
 trait UserPermissionSync
