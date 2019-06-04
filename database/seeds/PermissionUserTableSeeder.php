@@ -6,14 +6,13 @@ class PermissionUserTableSeeder extends Seeder
 {
 
     /**
-     * Auto generated seed file
+     * Run the database seeds.
      *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return void
      */
     public function run()
     {
-        
-        \DB::table('permission_user')->delete();
-        
+                
     }
 }
