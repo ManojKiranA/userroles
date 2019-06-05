@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@push('title') Permissions List @endpush
+@push('title') Deleted Permissions List @endpush
 @section('content')
 <div class="card-box">
    <div class="card-block">

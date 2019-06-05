@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@push('title') Roles List @endpush
+@push('title') Deleted Roles List @endpush
 @section('content')
 <div class="card-box">
    <div class="card-block">
