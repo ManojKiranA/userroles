@@ -26,7 +26,7 @@
             'titleData' => [
                   'title' => 'Users List',
                   'buttonText' => 'Create User',
-                  'route' => 'admin.access.users.index',
+                  'route' => 'admin.access.users.create',
                   'icon' => 'fas fa-plus',
                   'class' => 'btn btn-primary btn-sm'
                   ]
@@ -67,11 +67,6 @@
                </tr>
             @empty
 
-                  {{-- <tr class="text-center">
-                     <td>
-                  <p>No replies</p>
-                     </td>
-                  </tr> --}}
                   <tr>
                      <td valign="top" colspan="3">
                         No data available in table
