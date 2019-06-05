@@ -1,6 +1,20 @@
 @extends('layouts.app')
+
 @inject('connfigObject','Illuminate\Support\Facades\Config')
+
 @push('title') Users List @endpush
+
+@push('breadCrumb')
+@include('comman.breadCrumb',
+   [
+      'breadData' =>[
+               'Admin' => ['route' => null ,'icon' => 'fas fa-user-shield'],
+               'User Management' => ['route' => null ,'icon' => 'fas fa-user-lock'],
+               'User List' => ['route' => 'admin.access.users.index' ,'icon' => 'fas fa-users'],
+               ]
+      ])
+@endpush
+
 @section('content')
 <div class="card-box">
    <div class="card-block">

@@ -32,7 +32,7 @@ trait EditButton
         // Start Edit Button Arguments
         $editFunctionTitle = 'Edit';//title for Edit functions
         $editButtonClass = 'btn btn-primary btn-circle';//class for Edit functions
-        $editButtonIcon = 'fa fa-pencil';//Icon for the Edit Button
+        $editButtonIcon = 'fas fa-pen';//Icon for the Edit Button
         $editButtonText  = '';//text for the Edit button
         $editButtonTooltopPostion = 'top';//tooltipPosition of the Edit Button
         // End Edit Button Arguments

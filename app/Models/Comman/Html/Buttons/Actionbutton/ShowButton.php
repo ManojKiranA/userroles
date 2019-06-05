@@ -29,7 +29,7 @@ trait ShowButton
         $showButtonRoute = $this->showRouteName();//determines the Current Route Name of the Delete Method
         $actionFiled = $this->showActionFieldName();//gets the action Filed
         $actionId = $this->$actionFiled;//the filed that is used for the current action
-        $showFunctionTitle = 'View';//title for Edit functions
+        $showFunctionTitle = 'Show';//title for Edit functions
         $showButtonClass = 'btn btn-success btn-circle';//Class for the Show Button
         $showButtonIcon = 'fa fa-eye';//Text for the Show button
         $showButtonText = '';//Icon for the Show Button

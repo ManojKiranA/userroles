@@ -30,7 +30,7 @@ trait DeleteButton
         $actionId = $this->$actionFiled;//the filed that is used for the current action
         $deleteFunctionTitle = 'Delete';//title for delete functions
         $deleteButtonClass = 'btn btn-danger btn-circle';//class name for the deletebutton
-        $deleteButtonIcon = 'fa fa-trash';//Icon for the delete Button
+        $deleteButtonIcon = 'fas fa-trash';//Icon for the delete Button
         $deleteButtonText  = '';//text for the delete button
         $deleteConfirmationDialog = 'Are You Sure you wnat to delete it ??';//dialog Which needs to be displayes while deleting the record
         $deleteButtonTooltopPostion = 'top';//here you can specify the position of tooltip
@@ -40,7 +40,7 @@ trait DeleteButton
         }
         $deleteButton = Form::open(['route' => [$delteButtonVal['routeMethod'], $actionId], 'style' => 'display: inline', 'onSubmit' => 'return confirm("' . $delteButtonVal['popUpDialog'] . '")']);
         $deleteButton .= method_field('DELETE').csrf_field();
-        $deleteButton .= Form::button('<i class="' . $delteButtonVal['buttonIcon'] . '"></i>' . $delteButtonVal['buttonText'] . '', ['type' => 'submit', 'class' => $delteButtonVal['buttonClass'], 'data-toggle' => 'tooltip', 'data-placement' => $delteButtonVal['toolTipPosition'], 'title' => $delteButtonVal['toolTipValue']]);
+        $deleteButton .= Form::button('<i class="' . $delteButtonVal['buttonIcon'] .'"></i> ' . $delteButtonVal['buttonText'] . '', ['type' => 'submit', 'class' => $delteButtonVal['buttonClass'], 'data-toggle' => 'tooltip', 'data-placement' => $delteButtonVal['toolTipPosition'], 'title' => $delteButtonVal['toolTipValue']]);
         $deleteButton .= Form::close();
         return $this->toHtmlString($deleteButton);
     }

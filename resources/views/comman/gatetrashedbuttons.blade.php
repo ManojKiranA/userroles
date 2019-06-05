@@ -1,5 +1,3 @@
-
-                     
 @foreach ($buttonsList as $buttonName => $gateAccess)
     @if ($buttonName === 'FORCE_DELETE' )
         @can($gateAccess)
