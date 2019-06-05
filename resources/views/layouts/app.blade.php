@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}--@if($__env->yieldPushContent('title')==''||is_null( $__env->yieldPushContent('title'))){{collect(explode('/',\Illuminate\Support\Facades\Url::current()))->last()}}@else {{$__env->yieldPushContent('title')}} @endif</title>
+    <title>{{ config('app.name', 'Laravel') }} @stack('title')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
