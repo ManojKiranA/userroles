@@ -22,8 +22,8 @@
             @endphp
 
         <li class="breadcrumb-item">
-            <i class="{{$icon}}"></i>
-            <a href="{{$route}}">{{$breadTitle}}</a>
+            <i class="{!!$icon!!}"></i>
+            <a href="{!!$route!!}">{!!$breadTitle!!}</a>
         </li>
         @endif
         @if ($loop->last)
@@ -34,7 +34,7 @@
                     $icon = '';
                 }
 @endphp
-        <li class="breadcrumb-item active" aria-current="page"><i class="{{$icon}}"></i> {{$breadTitle}}</li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="{!!$icon!!}"></i> {!!$breadTitle!!}</li>
         @endif
       @endforeach
    </ol>

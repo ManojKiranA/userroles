@@ -29,9 +29,9 @@ function checkAndSet($data,$key,$default)
 @endphp
 <div class="row">
          <div class="col-md-5">
-            <h4 class="card-title">{{$title}}</h4>
+            <h4 class="card-title">{!!$title!!}</h4>
          </div>
          <div class="col-md-7 page-action text-right">
-         <a href="{{ $actionUrl }}" class="{{$class}}"> <i class="{{$icon}}"></i>  {{$buttonText}}</a>
+         <a href="{!! $actionUrl !!}" class="{!!$class!!}"> <i class="{!!$icon!!}"></i>  {!!$buttonText!!}</a>
          </div>
       </div>
