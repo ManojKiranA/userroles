@@ -26,27 +26,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item active">
-                     <a class="nav-link" href="#">Home
-                     <span class="sr-only">(current)</span>
-                     </a>
-                  </li>
+                  @can('user_access')
                   <li class="nav-item">
-                     <a class="nav-link" href="#">About</a>
-                  </li>
+                     <a class="nav-link" href="{{route('admin.access.users.index')}}"> <i class="fas fa-users"></i> Users</a>
+                  </li>   
+                  @endcan
+
+                  @can('role_access')
                   <li class="nav-item">
-                     <a class="nav-link" href="#">Services</a>
-                  </li>
+                     <a class="nav-link" href="{{route('admin.access.roles.index')}}"><i class="fas fa-user-shield"></i> Roles</a>
+                  </li>   
+                  @endcan
+                  
+                  @can('permission_access')
                   <li class="nav-item">
-                     <a class="nav-link" href="#">Contact</a>
-                  </li>
+                     <a class="nav-link" href="{{route('admin.access.permissions.index')}}"> <i class="fas fa-key"></i> Permissions</a>
+                  </li>   
+                  @endcan
                </ul>
             </div>
          </div>
       </nav>
       <!-- Page Content -->
       <div class="container">
-@stack('breadCrumb')
+         @stack('breadCrumb')
          @yield('content')
       </div>
       <!-- Bootstrap core JavaScript -->
