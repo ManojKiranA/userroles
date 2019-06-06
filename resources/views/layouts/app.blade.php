@@ -49,7 +49,9 @@
       </nav>
       <!-- Page Content -->
       <div class="container">
+
          @stack('breadCrumb')
+         @include('comman.flashmessage')
          @yield('content')
       </div>
       <!-- Bootstrap core JavaScript -->
