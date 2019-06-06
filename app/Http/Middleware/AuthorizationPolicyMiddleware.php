@@ -2,11 +2,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Gatedefiner\AssignPermission;
+use App\Models\Gatedefiner\AssignGate;
 
 class AuthorizationPolicyMiddleware
 {
-    use AssignPermission;
+    use AssignGate;
     /**
      * Handle an incoming request.
      *
@@ -16,8 +16,10 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this->assignPermissionToUser();
+        if ($this->checkApplicationState()) 
+        {
+            $this->assignGates();
+        }        
         return $next($request);
-    }
-    
+    }    
 }
