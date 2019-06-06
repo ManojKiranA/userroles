@@ -110,7 +110,7 @@ class User extends UserExtender
      *
      * @var int
      */
-    protected $perPage = 20;
+    protected $perPage = 15;
 
     /**
      * Check if the Current Model is Root Role

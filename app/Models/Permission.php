@@ -81,7 +81,7 @@ class Permission extends BaseModel
      *
      * @var int
      */
-    protected $perPage = 20;
+    protected $perPage = 15;
 
     /**
      * Check if the permisison object can be deleted
