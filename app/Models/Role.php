@@ -79,7 +79,6 @@ class Role extends BaseModel
      */
     protected $restoreRoute = 'admin.access.roles.restore';
 
-
     /**
      * Check if the Current Model is Root Role
      *

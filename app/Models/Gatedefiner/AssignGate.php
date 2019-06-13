@@ -26,16 +26,22 @@ trait AssignGate
 
         if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
-            $relationSelectCallBack = function ($query) {
-                $query->select('id', 'name');
+            $roleRelationCallBack = function ($query) {
+                $query->select('roles.id as role_table_id', 'name');
             };
 
-            //$authorizedUser = $authorizedUser->load(['roles','permissions']);
-            $authorizedUser = $authorizedUser->load(['roles' => $relationSelectCallBack,'permissions' => $relationSelectCallBack]);
+            $permissionRelationCallBack = function ($query) {
+                $query->select('permissions.id as permission_table_id', 'name');
+            };
 
-            $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
+            $authorizedUser = $authorizedUser->load(['roles' => $roleRelationCallBack,'permissions' => $permissionRelationCallBack]);
 
-            $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
+            $roleIdUser = $authorizedUser->roles->pluck('role_table_id')->toArray();
+
+            
+
+            $permissionIdUser = $authorizedUser->permissions->pluck('permission_table_id')->toArray();
+
 
             $allRoles = Role::select('name', 'id')
                                 ->get();

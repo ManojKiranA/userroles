@@ -38,11 +38,11 @@ class UsersTableSeeder extends Seeder
                 $this->command->info('Kindly Copy email and Passsword to login');
                 $this->command->info(' ');
                 $this->command->info(' ');
-                if($this->command->confirm('Do You Need to Store the SuperAdmin User Password(IN ENCRYPTED FORMAT) in the Storage Path', true))
-                {
-                    $this->command->info('Storing the Password in the encrypted format');
-                    $this->storePassword($userData['password']);
-                }
+                // if($this->command->confirm('Do You Need to Store the SuperAdmin User Password(IN ENCRYPTED FORMAT) in the Storage Path', true))
+                // {
+                //     $this->command->info('Storing the Password in the encrypted format');
+                //     $this->storePassword($userData['password']);
+                // }
             }
 
             User::create($userData);
