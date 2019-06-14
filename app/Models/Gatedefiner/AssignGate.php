@@ -56,6 +56,7 @@ trait AssignGate
                 $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
 
                 foreach ($rolesOfUser as $key => $eachUserRole) {
+                    // $eachUserRole->load('permissions');
                     $permissionsOfRole[$key] = $eachUserRole->permissions->pluck('name')->toArray();
                 }
 
