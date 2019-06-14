@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -26,43 +27,36 @@ trait AssignGate
 
         if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
-            $roleRelationCallBack = function ($query) {
-                $query->select('roles.id as role_table_id', 'name');
+            $relationCallBack = function ($query) {
+                $query->select('id', 'name');
             };
 
-            $permissionRelationCallBack = function ($query) {
-                $query->select('permissions.id as permission_table_id', 'name');
-            };
+            $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
 
-            $authorizedUser = $authorizedUser->load(['roles' => $roleRelationCallBack,'permissions' => $permissionRelationCallBack]);
+            $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
 
-            $roleIdUser = $authorizedUser->roles->pluck('role_table_id')->toArray();
+            $rolesOfUser = Role::with(['permissions' => $relationCallBack,'users' => $relationCallBack])
+                            ->select('name', 'id')
+                            ->whereIn('id',$roleIdUser)
+                            ->get();
 
-            
-
-            $permissionIdUser = $authorizedUser->permissions->pluck('permission_table_id')->toArray();
-
-
-            $allRoles = Role::select('name', 'id')
+            if($permissionIdUser !== [])
+            {
+                $permissionsOfUser = Permission::with(['roles' => $relationCallBack,'users' => $relationCallBack])
+                                ->select('name', 'id')
+                                ->whereIn('id',$permissionIdUser)
                                 ->get();
-            
-            $allPermissions = Permission::select('name', 'id')
-                                ->get();
-
-            $rolesOfUser = $allRoles->filter(function ($eachRole) use ($roleIdUser) {
-                return in_array($eachRole->id, $roleIdUser);
-            });
-
-            $permissionsOfUser = $allPermissions->filter(function ($eachPermission) use ($permissionIdUser) {
-                return in_array($eachPermission->id, $permissionIdUser);
-            });
+            }else
+            {
+                $permissionsOfUser =   new Collection();
+            }
 
 
-            if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty()) {
+            if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty() ) {
                 $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
 
-                foreach ($rolesOfUser as $key => $eachRole) {
-                    $permissionsOfRole[$key] = $eachRole->permissions->pluck('name')->toArray();
+                foreach ($rolesOfUser as $key => $eachUserRole) {
+                    $permissionsOfRole[$key] = $eachUserRole->permissions->pluck('name')->toArray();
                 }
 
                 $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
