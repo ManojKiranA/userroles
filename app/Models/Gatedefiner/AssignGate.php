@@ -32,7 +32,7 @@ trait AssignGate
             };
 
             $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
-
+            
             $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
 
             $rolesOfUser = Role::with(['permissions' => $relationCallBack,'users' => $relationCallBack])
@@ -51,12 +51,10 @@ trait AssignGate
                 $permissionsOfUser =   new Collection();
             }
 
-
             if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty() ) {
                 $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
 
                 foreach ($rolesOfUser as $key => $eachUserRole) {
-                    // $eachUserRole->load('permissions');
                     $permissionsOfRole[$key] = $eachUserRole->permissions->pluck('name')->toArray();
                 }
 
