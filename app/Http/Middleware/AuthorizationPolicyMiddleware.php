@@ -3,6 +3,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Gatedefiner\AssignGate;
+use Illuminate\Support\Facades\Log;
 
 class AuthorizationPolicyMiddleware
 {
@@ -16,10 +17,7 @@ class AuthorizationPolicyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->checkApplicationState()) 
-        {
-            $this->assignGates();
-        }        
+        $this->assignGates();
         return $next($request);
-    }    
+    }
 }

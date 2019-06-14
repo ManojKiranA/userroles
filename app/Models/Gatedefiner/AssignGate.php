@@ -22,41 +22,55 @@ trait AssignGate
      **/
     public function assignGates()
     {
-        $authorizedUser = Auth::user()->load(['roles','permissions']);
+        $authorizedUser = Auth::user();
 
-        $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
-
-        $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
-
-        $allRoles = Role::select('name', 'id')
-                            ->get();
-        
-        $allPermissions = Permission::select('name', 'id')
-                            ->get();
-
-        $rolesOfUser = $allRoles->filter(function ($eachRole) use ($roleIdUser) {
-            return in_array($eachRole->id, $roleIdUser);
-        });
-
-        $permissionsOfUser = $allPermissions->filter(function ($eachPermission) use ($permissionIdUser) {
-            return in_array($eachPermission->id, $permissionIdUser);
-        });         
-
-
-        if($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty())
+        if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
+            $roleRelationCallBack = function ($query) {
+                $query->select('roles.id as role_table_id', 'name');
+            };
 
-            $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
+            $permissionRelationCallBack = function ($query) {
+                $query->select('permissions.id as permission_table_id', 'name');
+            };
 
-            foreach ($rolesOfUser as $key => $eachRole) {
-                $permissionsOfRole[$key] = $eachRole->permissions->pluck('name')->toArray();
+            $authorizedUser = $authorizedUser->load(['roles' => $roleRelationCallBack,'permissions' => $permissionRelationCallBack]);
+
+            $roleIdUser = $authorizedUser->roles->pluck('role_table_id')->toArray();
+
+            
+
+            $permissionIdUser = $authorizedUser->permissions->pluck('permission_table_id')->toArray();
+
+
+            $allRoles = Role::select('name', 'id')
+                                ->get();
+            
+            $allPermissions = Permission::select('name', 'id')
+                                ->get();
+
+            $rolesOfUser = $allRoles->filter(function ($eachRole) use ($roleIdUser) {
+                return in_array($eachRole->id, $roleIdUser);
+            });
+
+            $permissionsOfUser = $allPermissions->filter(function ($eachPermission) use ($permissionIdUser) {
+                return in_array($eachPermission->id, $permissionIdUser);
+            });
+
+
+            if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty()) {
+                $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
+
+                foreach ($rolesOfUser as $key => $eachRole) {
+                    $permissionsOfRole[$key] = $eachRole->permissions->pluck('name')->toArray();
+                }
+
+                $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
+
+                $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
+
+                $this->defineGate($allUniqued);
             }
-
-            $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
-
-            $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
-
-            $this->defineGate($allUniqued);
         }
     }
 
@@ -76,15 +90,4 @@ trait AssignGate
         }
     }
 
-    /**
-     * Check the Current State to map the Permission
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @return bool
-     **/
-    public function checkApplicationState()
-    {
-        $authorizedUser = Auth::user();
-        return ! App::runningInConsole() && ! is_null($authorizedUser);
-    }
 }
