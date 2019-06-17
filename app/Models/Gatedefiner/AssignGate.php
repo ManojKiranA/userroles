@@ -8,7 +8,8 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Collection;
-
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Arr;
 
 /**
  * Check the Current Application State
@@ -23,10 +24,16 @@ trait AssignGate
      **/
     public function assignGates()
     {
+        
         $authorizedUser = Auth::user();
-
+        
         if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
+            if(! Session::has('_authUser'))
+            {
+                
+            Session::put('_authUser', array_merge(Arr::only($authorizedUser->getOriginal(), ['id','email','name']),['logged_in_at' => now()]));
+
             $relationCallBack = function ($query) {
                 $query->select('id', 'name');
             };
@@ -37,21 +44,19 @@ trait AssignGate
 
             $rolesOfUser = Role::with(['permissions' => $relationCallBack,'users' => $relationCallBack])
                             ->select('name', 'id')
-                            ->whereIn('id',$roleIdUser)
+                            ->whereIn('id', $roleIdUser)
                             ->get();
 
-            if($permissionIdUser !== [])
-            {
+            if ($permissionIdUser !== []) {
                 $permissionsOfUser = Permission::with(['roles' => $relationCallBack,'users' => $relationCallBack])
                                 ->select('name', 'id')
-                                ->whereIn('id',$permissionIdUser)
+                                ->whereIn('id', $permissionIdUser)
                                 ->get();
-            }else
-            {
+            } else {
                 $permissionsOfUser =   new Collection();
             }
 
-            if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty() ) {
+            if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty()) {
                 $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
 
                 foreach ($rolesOfUser as $key => $eachUserRole) {
@@ -62,9 +67,28 @@ trait AssignGate
 
                 $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
 
-                $this->defineGate($allUniqued);
+                Session::put('_authUserRole', $rolesOfUser->pluck('name')->toArray());
+                Session::put('_authUserPermissionViaRole', $permissionsOfRole);
+                Session::put('_authUserDirectPermision', $permissionsOfUser);
             }
+            
+            }else {
+
+                $permissionsOfRole = Session::get('_authUserPermissionViaRole');
+
+                $permissionsOfUser = Session::get('_authUserDirectPermision');
+                
+                $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
+
+                $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
+
+            }
+
+            $this->defineGate($allUniqued);
+
         }
+
+        
     }
 
     /**

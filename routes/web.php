@@ -15,6 +15,7 @@ use App\Services\Route\CrudSoftRoute;
 Route::get('/', static function () {
     return view('welcome');
 });
+
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -41,7 +42,7 @@ Route::prefix('/admin/')
             /*
             *End Routes For Role
             */
-            
+
             /*
             *Start Routes For Permission
             */
