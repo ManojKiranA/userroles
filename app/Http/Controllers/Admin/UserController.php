@@ -36,7 +36,6 @@ class UserController extends Controller
      */
     public function index( HttpRequest $request): IlluminateView
     {
-        
         //if the user dont have access abort with unauthorized
         $this->authorize('user_access',$request->user());
         //getting the list of user by latest and passing to length aware paginator instance
