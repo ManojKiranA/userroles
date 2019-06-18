@@ -24,46 +24,94 @@ trait AssignGate
      **/
     public function assignGates()
     {
-        
         $authorizedUser = Auth::user();
         
         if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
             if(! Session::has('_authUser'))
             {
-    
-            Session::put('_authUser', array_merge(Arr::only($authorizedUser->getOriginal(), ['id','email','name']),['logged_in_at' => now()]));
-            Session::put('_authUserLoggedIn', ['logged_in_at' => now()]);
+                $this->assignPermissionOnFirstTime($authorizedUser);
+            }elseif(Session::has('_authUserLoggedIn')){
 
-            $relationCallBack = function ($query) {
-                $query->select('id', 'name');
-            };
+                $loggedInTime = Session::get('_authUserLoggedIn')['logged_in_at']->toDateTimeString();
 
-            $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
-            
-            $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
+                $loggegInSince = now()->diffInMinutes($loggedInTime);
 
-            $rolesOfUser = Role::with(['permissions' => $relationCallBack,'users' => $relationCallBack])
-                            ->select('name', 'id')
-                            ->whereIn('id', $roleIdUser)
-                            ->get();
-
-            if ($permissionIdUser !== []) {
-                $permissionsOfUser = Permission::with(['roles' => $relationCallBack,'users' => $relationCallBack])
-                                ->select('name', 'id')
-                                ->whereIn('id', $permissionIdUser)
-                                ->get();
-            } else {
-                $permissionsOfUser =   new Collection();
+                if ($loggegInSince >= 5) 
+                {
+                    $this->assignPermissionOnFirstTime($authorizedUser);
+                }else {
+                    $this->assignPermisisonFromSession();
+                }
             }
+
+        }        
+    }
+
+    /**
+     * Assign the Permisison from the session
+     *
+     *
+     * @param mixed $authorizedUser
+     * @return void
+     **/
+    public function assignPermisisonFromSession()
+    {
+        $permissionsOfRole = Session::get('_authUserPermissionViaRole');
+
+        $permissionsOfUser = Session::get('_authUserDirectPermision');
+        
+        $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
+
+        $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
+
+        $this->defineGate($allUniqued);
+    }
+ 
+
+    /**
+     * Assign the Permisison on the first Time Login
+     *
+     *
+     * @param mixed $authorizedUser
+     * @return void
+     **/
+    public function assignPermissionOnFirstTime($authorizedUser)
+    {
+        $this->removeSession();
+        Session::put('_authUser', array_merge(Arr::only($authorizedUser->getOriginal(), ['id','email','name']), ['logged_in_at' => now()]));
+        Session::put('_authUserLoggedIn', ['logged_in_at' => now()]);
+        $relationCallBack = function ($query) {
+            $query->select('id', 'name');
+        };
+
+        $roleIdUser = $authorizedUser->roles->pluck('id')->toArray();
+        
+        $permissionIdUser = $authorizedUser->permissions->pluck('id')->toArray();
+
+        $rolesOfUser = Role::with(['permissions' => $relationCallBack,'users' => $relationCallBack])
+                        ->select('name', 'id')
+                        ->whereIn('id', $roleIdUser)
+                        ->get();
+
+        if ($permissionIdUser !== []) {
+            $permissionsOfUser = Permission::with(['roles' => $relationCallBack,'users' => $relationCallBack])
+                            ->select('name', 'id')
+                            ->whereIn('id', $permissionIdUser)
+                            ->get();
+        } else {
+            $permissionsOfUser =   new Collection();
+        }
 
             if ($rolesOfUser->isNotempty() || $permissionsOfUser->isNotempty()) {
                 $permissionsOfUser = $permissionsOfUser->pluck('name')->toArray();
 
                 foreach ($rolesOfUser as $key => $eachUserRole) {
-                    $permissionsOfRole[$key] = $eachUserRole->permissions->pluck('name')->toArray();
+                    $erolPerm = $eachUserRole->permissions->pluck('name')->toArray();
+                    if ($erolPerm !== []) {
+                        $permissionsOfRole[$key] = $erolPerm;
+                    }
                 }
-
                 $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
 
                 $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
@@ -72,21 +120,24 @@ trait AssignGate
                 Session::put('_authUserPermissionViaRole', $permissionsOfRole);
                 Session::put('_authUserDirectPermision', $permissionsOfUser);
             }
-            
-            }else {
-
-                $permissionsOfRole = Session::get('_authUserPermissionViaRole');
-
-                $permissionsOfUser = Session::get('_authUserDirectPermision');
-                
-                $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
-
-                $allUniqued = array_unique(array_merge($uniquePermissionOnRole, $permissionsOfUser));
-
-            }
 
             $this->defineGate($allUniqued);
-        }        
+    }
+
+    /**
+     * Forget all the Session
+     *
+     * @return void
+     **/
+    public function removeSession()
+    {
+        Session::forget([
+                '_authUser',
+                '_authUserLoggedIn',
+                '_authUserRole',
+                '_authUserPermissionViaRole',
+                '_authUserDirectPermision'
+                        ]);
     }
 
     /**
