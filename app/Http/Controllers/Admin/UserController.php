@@ -16,11 +16,18 @@ use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
-    protected $userRepo;
     /**
-     * Create a new controller instance.
+     * User Repository Property.
+     *
+     * @var string
+     */
+    protected $userRepo;
+
+    /**
+     * Create a new UserController instance.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param App\Repositories\UserRepository $userRepo
      * @return void
      */
     public function __construct(UserRepository $userRepo)
