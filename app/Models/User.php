@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Support\Facades\Config;
 use App\Models\Aclsync\UserPermissionSync;
 use App\Models\Aclsync\UserRoleSync;
-use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Finders\UserFinder;
 use App\Models\Relations\UserRelation;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Traits\Auditable;
 use App\Models\Mutators\UserMutator;
 use App\Models\Scopes\UserScope;
 
@@ -31,9 +29,10 @@ use App\Models\Scopes\UserScope;
  */
 class User extends UserExtender
 {
-    use SoftDeletes, UserFinder, UserRelation, TableActionButtons, UserMutator;
+    use SoftDeletes;
+    use UserFinder, UserRelation,UserMutator;
     use UserPermissionSync, UserRoleSync;
-    use Auditable, UserScope;
+    use UserScope;
 
     /**
      * The table associated with the model.
