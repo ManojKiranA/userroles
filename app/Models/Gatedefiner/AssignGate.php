@@ -25,27 +25,16 @@ trait AssignGate
     public function assignGates()
     {
         $authorizedUser = Auth::user();
-        
+
         if(! App::runningInConsole() && ! is_null($authorizedUser))
         {
             if(! Session::has('_authUser'))
             {
                 $this->assignPermissionOnFirstTime($authorizedUser);
-            }elseif(Session::has('_authUserLoggedIn')){
-
-                $loggedInTime = Session::get('_authUserLoggedIn')['logged_in_at']->toDateTimeString();
-
-                $loggegInSince = now()->diffInMinutes($loggedInTime);
-
-                if ($loggegInSince >= 5) 
-                {
-                    $this->assignPermissionOnFirstTime($authorizedUser);
-                }else {
-                    $this->assignPermisisonFromSession();
-                }
+            }else {
+                $this->assignPermisisonFromSession();
             }
-
-        }        
+        }       
     }
 
     /**

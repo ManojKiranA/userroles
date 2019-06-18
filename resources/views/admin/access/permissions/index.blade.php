@@ -41,7 +41,7 @@
                   <td>Description</td>
                   <td>Created At</td>
                   <td>Created By</td>
-                  <td class="text-center">Actions</td>
+                  @include('comman.gateactionheader',['permissionList' => ['permission_edit','permission_delete','permission_show']])
                </tr>
             </thead>
             <tbody>
@@ -53,7 +53,13 @@
                   <td>{{ $permissionValue->created_at }}</td>
                   <td>{{ $permissionValue->created_by_name }}</td>
                   <td class="text-center">
-                     @include('comman.gateactionbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['EDIT' => 'permission_edit','DELETE' => 'permission_delete','SHOW' => 'permission_show']])
+                     @include('comman.buttons.actionbutton.gateaction', [
+                        'modelObject' => $permissionValue,
+                        'buttonsList' => [
+                           'EDIT' =>   ['permission' => 'permission_edit','route' => 'admin.access.permissions.edit'],
+                           'DELETE' => ['permission' => 'permission_delete','route' => 'admin.access.permissions.destroy'],
+                           'SHOW' =>   ['permission' => 'permission_show','route' => 'admin.access.permissions.show'],
+                           ]])
                   </td>
                </tr>
                @endforeach

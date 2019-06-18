@@ -63,7 +63,7 @@
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
                   <td class="text-center">
-                  @include('comman.buttons.actionbutton.action', [
+                  @include('comman.buttons.actionbutton.gateaction', [
                         'modelObject' => $userValue,
                         'buttonsList' => [
                            'EDIT' =>   ['permission' => 'user_edit','route' => 'admin.access.users.edit'],

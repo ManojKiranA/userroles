@@ -50,7 +50,13 @@
                   <td>{{ $roleListValue->created_at }}</td>
                   <td>{{ $roleListValue->created_by_name }}</td>
                   <td class="text-center">
-                     @include('comman.gateactionbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['EDIT' => 'role_edit','DELETE' => 'role_delete','SHOW' => 'role_show']])
+                     @include('comman.buttons.actionbutton.gateaction', [
+                        'modelObject' => $roleListValue,
+                        'buttonsList' => [
+                           'EDIT' =>   ['permission' => 'role_edit','route' => 'admin.access.roles.edit'],
+                           'DELETE' => ['permission' => 'role_delete','route' => 'admin.access.roles.destroy'],
+                           'SHOW' =>   ['permission' => 'role_show','route' => 'admin.access.roles.show'],
+                           ]])
                   </td>
                </tr>
                @endforeach             
