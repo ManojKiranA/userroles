@@ -59,10 +59,17 @@
                         <span class="badge badge-info">{{ $role }}</span>
                      @endforeach
                   </td>
+                  
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
                   <td class="text-center">
-                  @include('comman.gateactionbuttons', ['modelObject' => $userValue,'buttonsList' => ['EDIT' => 'user_edit','DELETE' => 'user_delete','SHOW' => 'user_show']])
+                  @include('comman.buttons.actionbutton.action', [
+                        'modelObject' => $userValue,
+                        'buttonsList' => [
+                           'EDIT' =>   ['permission' => 'user_edit','route' => 'admin.access.users.edit'],
+                           'DELETE' => ['permission' => 'user_delete','route' => 'admin.access.users.destroy'],
+                           'SHOW' =>   ['permission' => 'user_show','route' => 'admin.access.users.show'],
+                           ]])
                   </td>
                </tr>
             @empty

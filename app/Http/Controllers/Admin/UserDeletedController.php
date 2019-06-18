@@ -45,14 +45,17 @@ class UserDeletedController extends Controller
      * @param   string $userId The id that need to be force deleted
      * @return  Illuminate\Http\RedirectResponse
      **/
-    public function forceDelete( HttpRequest $request,User $forceDeletedUser): RedirectResponse
+    public function forceDelete( HttpRequest $request,$userId): RedirectResponse
     {
         //if the user dont have access abort with unauthorized
         $this->authorize( 'user_force_delete');
         //finding the user of the id
         //we can't use method injection because it don't
         //include softdeleted model
-        $forceDeletedUser->forceDelete();
+        $user = User::withTrashed()
+                    ->findOrFail($userId);
+        //restore the current model object by finding it with trashed
+        $user-> forceDelete();
         
         return Redirect::route( 'admin.access.users.deleted')
             ->with('success', 'User Permanently Deleted Successfully');

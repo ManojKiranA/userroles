@@ -41,42 +41,7 @@ class User extends UserExtender
      * @var string
      */
     protected $table = 'users';
-
-    /**
-     * The edit route that is used for the Model.
-     *
-     * @var string
-     */
-    protected $editRoute = 'admin.access.users.edit';
-
-    /**
-     * The delete route that is used for the Model.
-     *
-     * @var string
-     */
-    protected $deleteRoute = 'admin.access.users.destroy';
-
-    /**
-     * The show route that is used for the Model.
-     *
-     * @var string
-     */
-    protected $showRoute = 'admin.access.users.show';
-
-    /**
-     * The force delete route that is used for the Model.
-     *
-     * @var string
-     */
-    protected $forceDeleteRoute = 'admin.access.users.forcedelete';
-
-    /**
-     * The restore route that is used for the Model.
-     *
-     * @var string
-     */
-    protected $restoreRoute = 'admin.access.users.restore';
-
+    
     /**
     * The attributes that are mass assignable.
     *

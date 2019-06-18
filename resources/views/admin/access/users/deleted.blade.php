@@ -33,8 +33,18 @@
                   <td>{{ $userValue->email }}</td>
                   <td>{{ $userValue->created_at }}</td>
                   <td>{{ $userValue->name }}</td>
+                  
                   <td class="text-center">
-                  @include('comman.gatetrashedbuttons', ['modelObject' => $userValue,'buttonsList' => ['FORCE_DELETE' => 'user_force_delete','RESTORE' => 'user_restore']])
+
+
+                  @include('comman.buttons.actionbutton.softgateaction', [
+                        'modelObject' => $userValue,
+                        'buttonsList' => [
+                           'FORCE_DELETE' =>   ['permission' => 'user_edit','route' => 'admin.access.users.forcedelete'],
+                           'RESTORE' => ['permission' => 'user_delete','route' => 'admin.access.users.restore'],
+                           ]])
+
+                     
                   </td>
                </tr>
             @empty
