@@ -150,6 +150,56 @@ class UserRepository
 
         $user->delete();
     }
-
     
+
+    /**
+     * Gets all the SoftDeleted Model
+     * from Database
+     * 
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @return array
+     **/
+    public function showDeletedRecords(): array
+    {
+
+        $this->authorize('user_deleted_access');
+
+        $usersList = User::onlyTrashed()
+                        ->latest()
+                        ->paginate(null, ['*'], 'userDeletedPage')
+                        ->onEachSide(2);
+
+        $returnables = ['usersList' => $usersList];
+
+        return $returnables;
+    }
+
+    /**
+     * Deletes the Soft Deleted Model
+     *
+     *
+     * @param User $user
+     * @return void
+     **/
+    public function deleteRecord($user): void
+    {
+        $this->authorize('user_force_delete');
+
+        $user-> forceDelete();
+    }
+
+    /**
+     * Deletes the Soft Deleted Model
+     *
+     *
+     * @param User $user
+     * @return void
+     **/
+    public function restoreRecord($user): void
+    {
+        $this->authorize('user_restore');
+        
+        $user-> restore();
+
+    }
 }
