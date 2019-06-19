@@ -33,7 +33,12 @@
              <td>{{ $roleListValue->created_at }}</td>
              <td>{{ $roleListValue->created_by_name }}</td>
              <td class="text-center">
-                 @include('comman.gatetrashedbuttons', ['modelObject' => $roleListValue,'buttonsList' => ['FORCE_DELETE' => 'role_force_delete','RESTORE' => 'role_restore']])
+                 @include('comman.buttons.actionbutton.softgateaction', [
+                        'modelObject' => $roleListValue,
+                        'buttonsList' => [
+                           'FORCE_DELETE' =>   ['permission' => 'role_force_delete','route' => 'admin.access.roles.forcedelete'],
+                           'RESTORE' => ['permission' => 'role_restore','route' => 'admin.access.roles.restore'],
+                           ]])
              </td>
           </tr>
           @endforeach

@@ -17,6 +17,7 @@ Route::get('/', static function () {
 });
 
 Auth::routes();
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/admin/')
@@ -31,7 +32,7 @@ Route::prefix('/admin/')
             /*
             *Start  Routes For User
             */
-           new CrudSoftRoute('users', 'user', ['UserController','UserDeletedController']);
+           new CrudSoftRoute('users', ['user','deletedUser'], ['UserController','UserDeletedController']);
             /*
             *End  Routes For User
             */

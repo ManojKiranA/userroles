@@ -9,7 +9,6 @@ use App\Models\Relations\RoleRelation;
 use Illuminate\Support\Facades\Config;
 use App\Models\Aclsync\RolePermissionSync;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 /**
  * Class App\Models\Role
@@ -27,7 +26,7 @@ use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation, TableActionButtons;
+    use SoftDeletes, RoleRelation;
     use RoleFinder, RoleScope, RolePermissionSync;
     use Auditable;
 

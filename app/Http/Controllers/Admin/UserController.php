@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
 use App\Repositories\UserRepository;
+use \Exception;
 
 
 class UserController extends Controller
@@ -115,6 +116,7 @@ class UserController extends Controller
      * Remove the specified User from Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @throws Exception
      * @param   User  $user
      * @return  RedirectResponse
      */

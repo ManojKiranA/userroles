@@ -31,7 +31,12 @@
              <td>{{ $permissionValue->description }}</td>
              <td>{{ $permissionValue->created_at }}</td>
              <td class="text-center">
-                 @include('comman.gatetrashedbuttons', ['modelObject' => $permissionValue,'buttonsList' => ['FORCE_DELETE' => 'permission_force_delete','RESTORE' => 'permission_restore']])
+                 @include('comman.buttons.actionbutton.softgateaction', [
+                        'modelObject' => $permissionValue,
+                        'buttonsList' => [
+                           'FORCE_DELETE' =>   ['permission' => 'permission_force_delete','route' => 'admin.access.permissions.forcedelete'],
+                           'RESTORE' => ['permission' => 'permission_restore','route' => 'admin.access.permissions.restore'],
+                           ]])
              </td>
           </tr>
           @endforeach

@@ -25,6 +25,10 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Route::bind('deletedUser',function($routingParm){
+            return \App\Models\User::onlyTrashed()->where((new \App\Models\User)->getRouteKeyName(),'=',$routingParm)->first();
+        });
     }
 
     /**

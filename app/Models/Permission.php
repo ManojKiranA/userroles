@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
-use App\Models\Comman\Html\Buttons\Actionbutton\TableActionButtons;
 use App\Models\Aclsync\PermissionRoleSync;
 use App\Models\Traits\Auditable;
 
@@ -24,7 +23,7 @@ use App\Models\Traits\Auditable;
 
 class Permission extends BaseModel
 {
-    use SoftDeletes, PermissionRelation, TableActionButtons, PermissionRoleSync;
+    use SoftDeletes, PermissionRelation, PermissionRoleSync;
     use Auditable;
 
 

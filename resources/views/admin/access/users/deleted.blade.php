@@ -40,8 +40,8 @@
                   @include('comman.buttons.actionbutton.softgateaction', [
                         'modelObject' => $userValue,
                         'buttonsList' => [
-                           'FORCE_DELETE' =>   ['permission' => 'user_edit','route' => 'admin.access.users.forcedelete'],
-                           'RESTORE' => ['permission' => 'user_delete','route' => 'admin.access.users.restore'],
+                           'FORCE_DELETE' =>   ['permission' => 'user_force_delete','route' => 'admin.access.users.forcedelete'],
+                           'RESTORE' => ['permission' => 'user_restore','route' => 'admin.access.users.restore'],
                            ]])
 
                      
