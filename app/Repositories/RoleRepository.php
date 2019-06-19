@@ -126,21 +126,6 @@ class RoleRepository
 
         return $role;
     }
-
-    /**
-     * Deletes the User Record
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @throws Exception
-     * @return void
-     **/
-    public function removeRecord($user)
-    {
-        abort_if(Gate::denies('user_delete') || $user->isRoot(), 403);
-
-        $user->delete();
-    }
     
 
     /**

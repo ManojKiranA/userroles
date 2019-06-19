@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\View as ViewFacade;
 class RoleController extends Controller
 {
     /**
-     * User Repository Property.
+     * Role Repository Property.
      *
      * @var string
      */
     protected $roleRepo;
 
     /**
-     * Create a new UserController instance.
+     * Create a new RoleController instance.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param  RoleRepository $roleRepo
@@ -116,19 +116,16 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //if the user is trying to edit the root role we need to deny that
-        abort_if($role->isRoot(), 403, "Whoops You Can't " . ucfirst(__FUNCTION__) . " that");
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'role_delete');
-        //check if the permisison is deletable
+        abort_if(Gate::denies('role_delete') || $role->isRoot(), 403);
+     
         if ( $role->isDeletable()) {
-            //delete the role object
+     
             $role->delete();
-            //now we are redirecting to the index page with message
+     
             return Redirect::route( 'admin.access.roles.index')
                 ->with('success', 'Role Deleted Successfully');
         }
-        //now we are redirecting to the index page with message
+
         return Redirect::route( 'admin.access.roles.index')
             ->with('error', 'Role is Assigned to Permission or User');
     }
