@@ -7,7 +7,6 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
@@ -27,7 +26,7 @@ class UserController extends Controller
      * Create a new UserController instance.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param App\Repositories\UserRepository $userRepo
+     * @param  UserRepository $userRepo
      * @return void
      */
     public function __construct(UserRepository $userRepo)
@@ -40,8 +39,7 @@ class UserController extends Controller
      * Display a listing of the Users.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \Illuminate\Http\Request $request Current Request Instance
-     * @return  \Illuminate\View\View
+     * @return  IlluminateView
      */
     public function index(): IlluminateView
     {
@@ -52,10 +50,9 @@ class UserController extends Controller
      * Show the form for creating a new User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \Illuminate\Http\Request $request Current Request Instance
-     * @return  \Illuminate\View\View
+     * @return  IlluminateView
      */
-    public function create( HttpRequest $request): IlluminateView
+    public function create(): IlluminateView
     {
         return ViewFacade::make('admin.access.users.create',$this->userRepo->createRecord());
     }
@@ -64,8 +61,8 @@ class UserController extends Controller
      * Store a newly created User in storage.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Http\Requests\UserStoreRequest  $request Current Request Instance
-     * @return  \Illuminate\Http\RedirectResponse
+     * @param   UserStoreRequest  $request
+     * @return  RedirectResponse
      */
     public function store( UserStoreRequest $request): RedirectResponse
     {
@@ -78,8 +75,8 @@ class UserController extends Controller
      * Display the specified User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Models\User  $user Current User Object
-     * @return  \Illuminate\View\View
+     * @param   User  $user
+     * @return  IlluminateView
      */
     public function show(User $user): IlluminateView
     {
@@ -90,8 +87,8 @@ class UserController extends Controller
      * Show the form for editing the specified User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Models\User  $user Current User Object
-     * @return  \Illuminate\View\View
+     * @param   User  $user
+     * @return  IlluminateView
      */
     public function edit(User $user): IlluminateView
     {
@@ -102,9 +99,9 @@ class UserController extends Controller
      * Update the specified User in Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Http\Requests\UserUpdateRequest  $request Current Request Instance
-     * @param   \App\Models\User  $user Current User Object
-     * @return  \Illuminate\Http\RedirectResponse
+     * @param   UserUpdateRequest  $request
+     * @param   User  $user
+     * @return  RedirectResponse
      */
     public function update( UserUpdateRequest $request, User $user): RedirectResponse
     {
@@ -118,8 +115,8 @@ class UserController extends Controller
      * Remove the specified User from Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Models\User  $user Current User Object
-     * @return  \Illuminate\Http\RedirectResponse
+     * @param   User  $user
+     * @return  RedirectResponse
      */
     public function destroy(User $user): RedirectResponse
     {

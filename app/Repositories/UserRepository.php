@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Gate;
+use \Exception;
 
 class UserRepository
 {
@@ -53,9 +54,9 @@ class UserRepository
     /**
      * Store the New User into Database
      *
-     *
-     * @param App\Http\Requests\UserStoreRequest $request
-     * @return void
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param UserStoreRequest $request
+     * @return User
      **/
     public function storeRecord($request): User
     {
@@ -72,8 +73,8 @@ class UserRepository
     /**
      * Shows the Specific Record
      *
-     *
-     * @param App\Models\User $user
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param User $user
      * @return array
      **/
     public function showRecord($user): array
@@ -97,8 +98,8 @@ class UserRepository
      * Return the Required Data that is required 
      * for editing the user
      *
-     *
-     * @param App\Models\User $user
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param User $user
      * @return array
      **/
     public function editRecord($user): array
@@ -117,9 +118,10 @@ class UserRepository
     /**
      * Update the User With Current Request
      *
-     *
-     * @param App\Models\User $user
-     * @return App\Models\User
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param UserUpdateRequest $request
+     * @param User $user
+     * @return User
      **/
     public function updateRecord($request,$user): User
     {
@@ -137,8 +139,9 @@ class UserRepository
     /**
      * Deletes the User Record
      *
-     *
-     * @param App\Models\User $user
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param User $user
+     * @throws Exception
      * @return void
      **/
     public function removeRecord($user)
@@ -147,4 +150,6 @@ class UserRepository
 
         $user->delete();
     }
+
+    
 }
