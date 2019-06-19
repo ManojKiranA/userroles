@@ -39,7 +39,7 @@ Route::prefix('/admin/')
             /*
             *Start Routes For Role
             */
-            new CrudSoftRoute('roles', 'role', ['RoleController','RoleDeletedController']);
+            new CrudSoftRoute('roles',[ 'role','deletedRole'], ['RoleController','RoleDeletedController']);
             /*
             *End Routes For Role
             */

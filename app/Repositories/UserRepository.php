@@ -161,8 +161,7 @@ class UserRepository
      **/
     public function showDeletedRecords(): array
     {
-
-        $this->authorize('user_deleted_access');
+        abort_if(Gate::denies('user_deleted_access'), 403);
 
         $usersList = User::onlyTrashed()
                         ->latest()
@@ -183,7 +182,7 @@ class UserRepository
      **/
     public function deleteRecord($user): void
     {
-        $this->authorize('user_force_delete');
+        abort_if(Gate::denies('user_force_delete'), 403);
 
         $user-> forceDelete();
     }
@@ -197,7 +196,7 @@ class UserRepository
      **/
     public function restoreRecord($user): void
     {
-        $this->authorize('user_restore');
+        abort_if(Gate::denies('user_restore'), 403);
 
         $user-> restore();
     }

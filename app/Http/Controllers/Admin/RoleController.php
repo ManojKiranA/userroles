@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Repositories\RoleRepository;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;

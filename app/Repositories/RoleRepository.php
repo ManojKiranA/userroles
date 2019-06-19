@@ -127,7 +127,6 @@ class RoleRepository
         return $role;
     }
     
-
     /**
      * Gets all the SoftDeleted Model
      * from Database
@@ -137,14 +136,15 @@ class RoleRepository
      **/
     public function showDeletedRecords(): array
     {
-        $this->authorize('user_deleted_access');
+        abort_if(Gate::denies('role_deleted_access'), 403);
 
-        $usersList = User::onlyTrashed()
+        $rolesList = Role::excludeRootRole()
+                        -> onlyTrashed()
                         ->latest()
-                        ->paginate(null, ['*'], 'userDeletedPage')
+                        ->paginate(null, ['*'], 'roleDeletedPage')
                         ->onEachSide(2);
 
-        $returnables = ['usersList' => $usersList];
+        $returnables = [ 'rolesList' => $rolesList];
 
         return $returnables;
     }
@@ -156,11 +156,11 @@ class RoleRepository
      * @param User $user
      * @return void
      **/
-    public function deleteRecord($user): void
+    public function deleteRecord($role): void
     {
-        $this->authorize('user_force_delete');
+        abort_if(Gate::denies('role_force_delete'), 403);
 
-        $user-> forceDelete();
+        $role->forceDelete();
     }
 
     /**
@@ -170,10 +170,10 @@ class RoleRepository
      * @param User $user
      * @return void
      **/
-    public function restoreRecord($user): void
+    public function restoreRecord($role): void
     {
-        $this->authorize('user_restore');
+        $this->authorize('role_restore');
 
-        $user-> restore();
+        $role-> restore();
     }
 }

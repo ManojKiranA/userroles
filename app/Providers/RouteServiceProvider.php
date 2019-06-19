@@ -29,6 +29,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('deletedUser',function($routingParm){
             return \App\Models\User::onlyTrashed()->where((new \App\Models\User)->getRouteKeyName(),'=',$routingParm)->first();
         });
+        Route::bind('deletedRole',function($routingParm){
+            return \App\Models\Role::onlyTrashed()->where((new \App\Models\Role)->getRouteKeyName(),'=',$routingParm)->first();
+        });
+        
     }
 
     /**
