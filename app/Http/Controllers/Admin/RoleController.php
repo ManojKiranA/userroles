@@ -2,85 +2,70 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Repositories\RoleRepository;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
-use App\Models\Permission;
-use App\Models\Role;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
+use Illuminate\Support\Facades\View as ViewFacade;
 
 class RoleController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * User Repository Property.
+     *
+     * @var string
+     */
+    protected $roleRepo;
+
+    /**
+     * Create a new UserController instance.
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param  RoleRepository $roleRepo
      * @return void
      */
-    public function __construct()
+    public function __construct(RoleRepository $roleRepo)
     {
         $this->middleware('auth');
+        $this->roleRepo = $roleRepo;
     }
     /**
      * Display a listing of the Users.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \Illuminate\Http\Request $request Current Request Instance
-     * @return  \Illuminate\View\View
+     * @return  IlluminateView
      */
-    public function index( HttpRequest $request): IlluminateView
+    public function index(): IlluminateView
     {
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'role_access');
-        //getting the list of roles by latest and passing to length aware paginator instance
-        $rolesList = Role::excludeRootRole()
-                        ->with(['permissions','users'])
-                        ->latest()
-                        ->paginate(null, ['*'], 'rolePage')
-                        ->onEachSide(2);
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare =[ 'rolesList' => $rolesList];
-        //now we are returning the view
-        return ViewFacade::make('admin.access.roles.index', $viewShare);
+        return ViewFacade::make('admin.access.roles.index', $this->roleRepo->showRecords());
     }
 
     /**
      * Show the form for creating a new User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \Illuminate\Http\Request $request Current Request Instance
-     * @return  \Illuminate\View\View
+     * @return  IlluminateView
      */
-    public function create( HttpRequest $request): IlluminateView
-    {
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'role_create');
-        //plucking the permisisons
-        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare = [ 'permissionList' => $permissionList];
-        //now we are returning the view
-        return ViewFacade::make('admin.access.roles.create', $viewShare);
+    public function create(): IlluminateView
+    {    
+        return ViewFacade::make('admin.access.roles.create', $this->roleRepo->createRecord());
     }
 
     /**
      * Store a newly created User in storage.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Http\Requests\RoleStoreRequest  $request Current Request Instance
-     * @return  \Illuminate\Http\RedirectResponse
+     * @param   RoleStoreRequest  $request
+     * @return  RedirectResponse
      */
     public function store( RoleStoreRequest $request): RedirectResponse
     {
-        //creating new role
-        $role = Role::create($request->all());
-        //sync permission to roles
-        $role->syncPermission($request->input('permissions', []));
-        //now we are redirecting to the index page with message
+        $this->roleRepo->storeRecord($request);
+
         return Redirect::route('admin.access.roles.index')
                     ->with('success', 'Role Created Successfully');
     }
@@ -89,19 +74,12 @@ class RoleController extends Controller
      * Display the specified Role.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param   \App\Models\Role  $role Current Role Object
-     * @return  \Illuminate\View\View
+     * @param   Role  $role
+     * @return  IlluminateView
      */
     public function show(Role $role): IlluminateView
     {
-        //if the user is trying to show the root role we need to deny that
-        abort_if($role->isRoot(), 403, "Whoops You Can't ".ucfirst(__FUNCTION__)." that");
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'role_show');
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare = [ 'role' => $role];
-        //now we are returning the view
-        return ViewFacade::make('admin.access.roles.show', $viewShare);
+        return ViewFacade::make('admin.access.roles.show', $this->roleRepo->showRecord($role));
     }
 
     /**
@@ -112,30 +90,20 @@ class RoleController extends Controller
      */
     public function edit(Role $role): IlluminateView
     {
-        //if the user is trying to edit the root role we need to deny that
-        abort_if($role->isRoot(), 403, "Whoops You Can't " . ucfirst(__FUNCTION__) . " that");
-        //if the user dont have access abort with unauthorized
-        $this->authorize( 'role_edit');
-        $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
-        //now we are collecting the list of variables that need to passes to view
-        $viewShare = [ 'role' => $role, 'permissionList' => $permissionList];
-        //now we are returning the view
-        return ViewFacade::make('admin.access.roles.edit', $viewShare);
+        return ViewFacade::make('admin.access.roles.edit', $this->roleRepo->editRecord($role));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param  RoleUpdateRequest  $request
+     * @param  Role  $role
+     * @return RedirectResponse
      */
-    public function update( RoleUpdateRequest $request, Role $role)
+    public function update( RoleUpdateRequest $request, Role $role): RedirectResponse
     {
-        //if the user is trying to delete the root role we need to deny that
-        abort_if($role->isRoot(), 403, "Whoops You Can't Delete that");
-        $role->update($request->all());
-        $role->syncPermission($request->input('permissions', []));
+        $this->roleRepo->updateRecord($request,$role);
+
         return Redirect::route('admin.access.roles.index')
                         ->with('success', 'Role Updated Successfully');
     }

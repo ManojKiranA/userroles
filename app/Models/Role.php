@@ -88,7 +88,7 @@ class Role extends BaseModel
         return $this->name === Config::get('useraccess.rootUserRoleName');
     }
     /**
-     * Check if the permisison object can be deleted
+     * Check if the role object can be deleted
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @return bool
