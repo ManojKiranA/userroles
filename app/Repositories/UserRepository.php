@@ -177,7 +177,7 @@ class UserRepository
     /**
      * Deletes the Soft Deleted Model
      *
-     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param User $user
      * @return void
      **/
@@ -191,15 +191,14 @@ class UserRepository
     /**
      * Deletes the Soft Deleted Model
      *
-     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
      * @param User $user
      * @return void
      **/
     public function restoreRecord($user): void
     {
         $this->authorize('user_restore');
-        
-        $user-> restore();
 
+        $user-> restore();
     }
 }

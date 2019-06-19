@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use \Exception;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
-use App\Repositories\UserRepository;
-use \Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\View as ViewFacade;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 
 class UserController extends Controller
@@ -40,6 +43,7 @@ class UserController extends Controller
      * Display a listing of the Users.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @throws  AuthorizationException
      * @return  IlluminateView
      */
     public function index(): IlluminateView
@@ -51,6 +55,7 @@ class UserController extends Controller
      * Show the form for creating a new User.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @throws  AuthorizationException
      * @return  IlluminateView
      */
     public function create(): IlluminateView
@@ -63,6 +68,7 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   UserStoreRequest  $request
+     * @throws  AuthorizationException
      * @return  RedirectResponse
      */
     public function store( UserStoreRequest $request): RedirectResponse
@@ -77,6 +83,8 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   User  $user
+     * @throws  ModelNotFoundException
+     * @throws  AuthorizationException
      * @return  IlluminateView
      */
     public function show(User $user): IlluminateView
@@ -89,6 +97,8 @@ class UserController extends Controller
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   User  $user
+     * @throws  ModelNotFoundException
+     * @throws  AuthorizationException
      * @return  IlluminateView
      */
     public function edit(User $user): IlluminateView
@@ -102,6 +112,7 @@ class UserController extends Controller
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
      * @param   UserUpdateRequest  $request
      * @param   User  $user
+     * @throws  AuthorizationException
      * @return  RedirectResponse
      */
     public function update( UserUpdateRequest $request, User $user): RedirectResponse
@@ -116,7 +127,8 @@ class UserController extends Controller
      * Remove the specified User from Database.
      *
      * @author  Manojkiran.A <manojkiran10031998@gmail.com>
-     * @throws Exception
+     * @throws  Exception
+     * @throws  MethodNotAllowedHttpException
      * @param   User  $user
      * @return  RedirectResponse
      */
