@@ -5,6 +5,7 @@ namespace App\Providers;
 use Laravel\Telescope\Telescope;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
+use Illuminate\Support\Facades\Config;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
@@ -61,10 +62,14 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewTelescope', static function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
+        $allowedUsers = [
+            Config::get('useraccess.seeders.usersTable.superUserData.email'),
+            'admin@admin.com',
+        ];
+        Gate::define('viewTelescope', function ($user) use ($allowedUsers) {
+            return in_array($user->email, 
+                $allowedUsers
+            );
         });
     }
 }

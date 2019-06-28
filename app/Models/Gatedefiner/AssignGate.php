@@ -46,9 +46,9 @@ trait AssignGate
      **/
     public function assignPermisisonFromSession()
     {
-        $permissionsOfRole = Session::get('_authUserPermissionViaRole');
+        $permissionsOfRole = Session::get('_authUserPermissionViaRole',[]);
 
-        $permissionsOfUser = Session::get('_authUserDirectPermision');
+        $permissionsOfUser = Session::get('_authUserDirectPermision',[]);
         
         $uniquePermissionOnRole = array_unique(array_reduce($permissionsOfRole, 'array_merge', []));
 
