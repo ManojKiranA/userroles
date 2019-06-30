@@ -68,8 +68,10 @@ trait AssignGate
     public function assignPermissionOnFirstTime($authorizedUser)
     {
         $this->removeSession();
+
         Session::put('_authUser', array_merge(Arr::only($authorizedUser->getOriginal(), ['id','email','name']), ['logged_in_at' => now()]));
         Session::put('_authUserLoggedIn', ['logged_in_at' => now()]);
+        
         $relationCallBack = function ($query) {
             $query->select('id', 'name');
         };
