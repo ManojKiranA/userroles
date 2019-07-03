@@ -13,7 +13,7 @@ trait UserMutator
      * Set Accessor for the password Attribute
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param string $password The Password Filed Value
+     * @param string|null $password The Password Filed Value
      * @return void
      **/
     public function setPasswordAttribute(string $password = null)

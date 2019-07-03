@@ -104,4 +104,5 @@ class Role extends BaseModel
      * @var int
      */
     protected $perPage = 15;
+
 }

@@ -1,6 +1,10 @@
 <?php
 
 use App\Services\Route\CrudSoftRoute;
+use Faker\Generator as Faker;
+use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +56,8 @@ Route::prefix('/admin/')
             *End Routes For Permission
             */
         });
+});
+
+Route::any('/test/', function () {
+    
 });

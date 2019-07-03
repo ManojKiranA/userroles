@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\{Config,Schema};
 use App\Models\Aclsync\UserPermissionSync;
 use App\Models\Aclsync\UserRoleSync;
 use App\Models\Finders\UserFinder;
@@ -10,6 +10,7 @@ use App\Models\Relations\UserRelation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Mutators\UserMutator;
 use App\Models\Scopes\UserScope;
+use Illuminate\Support\Str;
 
 /**
  * Class App\Models\User
@@ -67,14 +68,14 @@ class User extends UserExtender
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The number of models to return for pagination.
      *
      * @var int
      */
-    protected $perPage = 15;
+    protected $perPage = 20;
 
     /**
      * Check if the Current Model is Root Role
@@ -85,4 +86,5 @@ class User extends UserExtender
     {
         return $this->email === Config::get('useraccess.seeders.usersTable.superUserData.email');
     }
+
 }
