@@ -1,10 +1,9 @@
 <?php
 
 use App\Services\Route\CrudSoftRoute;
-use Faker\Generator as Faker;
-use Illuminate\Support\Str;
+use Illuminate\Database\Query\Builder;
 use App\Models\User;
-use App\Models\Role;
+use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +57,20 @@ Route::prefix('/admin/')
         });
 });
 
-Route::any('/test/', function () {
+
+
+Route::any('/queryTest/', function () {
+
+    Cache::set('name','manoj');
+    Cache::forget('name');
+
+    $fileds = ['email','name'];
+
+    $values = [ 'example.net', 'Taylor Otwell'];
+
     
+    $query = User:: Search($fileds, $values)->select('name as foo','email')->get();
+    
+    
+    dump(( $query));
 });

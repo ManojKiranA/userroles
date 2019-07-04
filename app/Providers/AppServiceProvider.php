@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use App\Services\Gate\GateCache;
 use Debugbar;
+use Illuminate\Database\Eloquent\Builder;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,5 +39,34 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Bootstrap any application services.
+        Builder::macro('search', function ($tableFields, $searchValues, $splitOn = null, $addOwnWildCard = true) {
+
+            $tableFields = (array) $tableFields;
+            $searchValues = (array) $searchValues;
+
+            if ($splitOn !== null && array_filter($splitOn) !== []) {
+                foreach ($searchValues as  $searchTerm) {
+                    $splitOnSpaceArray[] = explode(chr(1), str_replace($splitOn, chr(1), $searchTerm));
+                }
+                $searchValues = \Illuminate\Support\Arr::collapse($splitOnSpaceArray);
+            }
+            if ($addOwnWildCard) {
+                foreach ($searchValues as  $searchTerm) {
+                    $addWildOnEach[] = "%{$searchTerm}%";
+                }
+                $searchValues = $addWildOnEach;
+            }
+            $this->where(function ($query) use ($tableFields, $searchValues) {
+                foreach ($tableFields as $attribute) {
+                    $query->orWhere(function ($query) use ($attribute, $searchValues) {
+                        foreach ($searchValues as $searchTerm) {
+                            $query->orWhere($attribute, 'LIKE', $searchTerm);
+                        }
+                    });
+                }
+            });
+
+            return $this;
+        });
     }
 }

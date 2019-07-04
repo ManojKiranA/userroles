@@ -7,7 +7,7 @@ use App\Models\Relations\BaseRelation;
 use App\Models\Accessors\BaseAccessor;
 use App\Models\Finders\BaseFinder;
 use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Builder;
 class BaseModel extends Model
 {
     use BaseRelation,BaseAccessor, BaseFinder;
@@ -140,5 +140,46 @@ class BaseModel extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Scope a query for Wild Card Search
+     *
+     * @author Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param  \Illuminate\Database\Eloquent\Builder $builderQuery
+     * @param string|array $tableFields
+     * @param string|array $searchValues
+     * @param array|null $splitOn
+     * @see https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($builderQuery, $tableFields, $searchValues, $splitOn = null, $addOwnWildCard = true)
+    {
+        $tableFields = (array) $tableFields;
+        $searchValues = (array) $searchValues;
+
+        if ($splitOn !== null && array_filter($splitOn) !== []) {
+            foreach ($searchValues as  $searchTerm) {
+                $splitOnSpaceArray[] = explode(chr(1), str_replace($splitOn, chr(1), $searchTerm));
+            }
+            $searchValues = \Illuminate\Support\Arr::collapse($splitOnSpaceArray);
+        }
+        if ($addOwnWildCard) {
+            foreach ($searchValues as  $searchTerm) {
+                $addWildOnEach[] = "%{$searchTerm}%";
+            }
+            $searchValues = $addWildOnEach;
+        }
+        $builderQuery->where(function ($query) use ($tableFields, $searchValues) {
+            foreach ($tableFields as $attribute) {
+                $query->orWhere(function ($query) use ($attribute, $searchValues) {
+                    foreach ($searchValues as $searchTerm) {
+                        $query->orWhere($attribute, 'LIKE', $searchTerm);
+                    }
+                });
+            }
+        });
+
+        return $builderQuery;
     }
 }

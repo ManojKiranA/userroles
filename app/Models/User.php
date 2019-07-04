@@ -10,8 +10,6 @@ use App\Models\Relations\UserRelation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Mutators\UserMutator;
 use App\Models\Scopes\UserScope;
-use Illuminate\Support\Str;
-
 /**
  * Class App\Models\User
  *
