@@ -7,7 +7,6 @@ use App\Models\Relations\BaseRelation;
 use App\Models\Accessors\BaseAccessor;
 use App\Models\Finders\BaseFinder;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
 class BaseModel extends Model
 {
     use BaseRelation,BaseAccessor, BaseFinder;
