@@ -56,21 +56,3 @@ Route::prefix('/admin/')
             */
         });
 });
-
-
-
-Route::any('/queryTest/', function () {
-
-    Cache::set('name','manoj');
-    Cache::forget('name');
-
-    $fileds = ['email','name'];
-
-    $values = [ 'example.net', 'Taylor Otwell'];
-
-    
-    $query = User:: Search($fileds, $values)->select('name as foo','email')->get();
-    
-    
-    dump(( $query));
-});
