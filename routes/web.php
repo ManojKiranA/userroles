@@ -58,15 +58,3 @@ Route::prefix('/admin/')
             */
         });
 });
-Route::any('/test/',function(){
-    $siteUrl = 'https://google.com/mrwhale/smart-sprinklers-php/blob/master/lib/forecast.io.php';
-
-//    $ser = file_get_contents('https://raw.githubusercontent.com/charlesabarnes/SPFtoolbox/master/operations/phpwhois/npdata.ser');
-//    dump(unserialize($ser));
-$mxLookObject = (new MxLookUp)->lookUpFor( $siteUrl);
-
-    $whoIsLookup = (new WhoIsLookUp)-> lookUpFor( $siteUrl);
-
-@dump( $mxLookObject, $whoIsLookup);
-});
-
