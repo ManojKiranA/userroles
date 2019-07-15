@@ -5,22 +5,6 @@ namespace App\Models\Relations;
 use App\Models\User;
 use App\Models\Role;
 
-/**
- * Class User
- *
- * @package     App\Models
- * @property    int     $id
- * @property    string  $name
- * @property    string  $email
- * @property    string  $email_verified_at
- * @property    string  $password
- * @property    string  $remember_token
- * @property    int     $created_by
- * @property    int     $updated_by
- * @property    string  $created_at
- * @property    string  $updated_at
- * @property    string  $deleted_at
- */
 trait PermissionRelation
 
 {
