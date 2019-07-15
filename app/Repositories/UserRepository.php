@@ -25,7 +25,7 @@ class UserRepository
                         ->paginate(null, ['*'], 'userPage')
                         ->onEachSide(2);
 
-        $returnables = ['usersList' => $usersList]; 
+        $returnables = compact('usersList');
 
         return $returnables;
     }
@@ -46,7 +46,7 @@ class UserRepository
         
         $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
 
-        $returnables = ['roleList' => $roleList,'permissionList' => $permissionList];
+        $returnables = compact('roleList', 'permissionList');
 
         return $returnables;        
     }
@@ -55,12 +55,11 @@ class UserRepository
      * Store the New User into Database
      *
      * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param UserStoreRequest $request
-     * @return User
+     * @param \App\Http\Requests\UserStoreRequest $request
+     * @return \App\Models\User
      **/
     public function storeRecord($request): User
     {
-
         $user = User::create($request->all());
 
         $user->syncRoles($request->input('roles', []));
@@ -73,9 +72,9 @@ class UserRepository
     /**
      * Shows the Specific Record
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @return array
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User $user
+     * @return  array
      **/
     public function showRecord($user): array
     {
@@ -87,8 +86,7 @@ class UserRepository
 
         $user = $user->load(['roles' => $relationCallBack,'permissions' => $relationCallBack]);
 
-
-        $returnables = ['user' => $user];
+        $returnables = compact('user');
 
         return $returnables;
 
@@ -98,9 +96,9 @@ class UserRepository
      * Return the Required Data that is required 
      * for editing the user
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @return array
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User $user
+     * @return  array
      **/
     public function editRecord($user): array
     {
@@ -110,7 +108,7 @@ class UserRepository
                         ->pluckWithPlaceHolder('name', 'id', 'Choose Role');
         $permissionList = Permission::pluckWithPlaceHolder('name', 'id', 'Choose Permissions');
 
-        $returnables = ['roleList' => $roleList,'permissionList' => $permissionList,'user' => $user];
+        $returnables = compact('roleList', 'permissionList', 'user');;
 
         return $returnables;
     }
@@ -118,10 +116,10 @@ class UserRepository
     /**
      * Update the User With Current Request
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param UserUpdateRequest $request
-     * @param User $user
-     * @return User
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Http\Requests\UserStoreRequest $request
+     * @param   \App\Models\User $user
+     * @return  \App\Models\User
      **/
     public function updateRecord($request,$user): User
     {
@@ -139,9 +137,9 @@ class UserRepository
     /**
      * Deletes the User Record
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @throws Exception
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User $user
+     * @throws \Exception
      * @return void
      **/
     public function removeRecord($user)
@@ -168,7 +166,7 @@ class UserRepository
                         ->paginate(null, ['*'], 'userDeletedPage')
                         ->onEachSide(2);
 
-        $returnables = ['usersList' => $usersList];
+        $returnables = compact('usersList');
 
         return $returnables;
     }
@@ -176,9 +174,9 @@ class UserRepository
     /**
      * Deletes the Soft Deleted Model
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @return void
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User $user
+     * @return  void
      **/
     public function deleteRecord($user): void
     {
@@ -190,9 +188,9 @@ class UserRepository
     /**
      * Deletes the Soft Deleted Model
      *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @param User $user
-     * @return void
+     * @author  Manojkiran.A <manojkiran10031998@gmail.com>
+     * @param   \App\Models\User $user
+     * @return  void
      **/
     public function restoreRecord($user): void
     {
