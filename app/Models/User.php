@@ -10,6 +10,9 @@ use App\Models\Relations\UserRelation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Mutators\UserMutator;
 use App\Models\Scopes\UserScope;
+use App\Services\Model\CascadeSoftDeletes;
+use App\Observers\UserObserver;
+
 /**
  * Class App\Models\User
  *
@@ -28,10 +31,22 @@ use App\Models\Scopes\UserScope;
  */
 class User extends UserExtender
 {
-    use SoftDeletes;
+    use SoftDeletes, CascadeSoftDeletes;
     use UserFinder, UserRelation,UserMutator;
     use UserPermissionSync, UserRoleSync;
     use UserScope;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     // static::observe(UserObserver::class);
+    // }
 
     /**
      * The table associated with the model.
@@ -84,5 +99,7 @@ class User extends UserExtender
     {
         return $this->email === Config::get('useraccess.seeders.usersTable.superUserData.email');
     }
+
+    // protected $cascadeDeletes = ['roles','permissions'];
 
 }

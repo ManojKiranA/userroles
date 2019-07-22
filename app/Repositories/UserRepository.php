@@ -145,7 +145,7 @@ class UserRepository
     public function removeRecord($user)
     {
         abort_if(Gate::denies('user_delete') || $user->isRoot(), 403);
-
+        $user->roles()->detach();
         $user->delete();
     }
     

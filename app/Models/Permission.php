@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Relations\PermissionRelation;
 use App\Models\Aclsync\PermissionRoleSync;
 use App\Models\Traits\Auditable;
+use App\Services\Model\CascadeSoftDeletes;
 
 /**
  * Class App\Models\Permission
@@ -23,7 +24,7 @@ use App\Models\Traits\Auditable;
 
 class Permission extends BaseModel
 {
-    use SoftDeletes, PermissionRelation, PermissionRoleSync;
+    use SoftDeletes, PermissionRelation, PermissionRoleSync, CascadeSoftDeletes;
     use Auditable;
 
 

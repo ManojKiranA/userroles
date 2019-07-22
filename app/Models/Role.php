@@ -9,6 +9,7 @@ use App\Models\Relations\RoleRelation;
 use Illuminate\Support\Facades\Config;
 use App\Models\Aclsync\RolePermissionSync;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Services\Model\CascadeSoftDeletes;
 
 /**
  * Class App\Models\Role
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends BaseModel
 {
-    use SoftDeletes, RoleRelation;
+    use SoftDeletes, RoleRelation, CascadeSoftDeletes;
     use RoleFinder, RoleScope, RolePermissionSync;
     use Auditable;
 

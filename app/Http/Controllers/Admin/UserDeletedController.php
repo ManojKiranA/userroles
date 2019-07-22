@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View as IlluminateView;
+use App\Repositories\UserRepository;
 
 class UserDeletedController extends Controller
 {
