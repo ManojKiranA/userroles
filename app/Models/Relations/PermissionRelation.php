@@ -18,7 +18,7 @@ trait PermissionRelation
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'permission_role', 'permission_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'permission_role', 'permission_id', 'role_id')->withTimestamps();
     }
     /**
      * The users that belongs to the permissions.
@@ -30,6 +30,6 @@ trait PermissionRelation
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'permission_user', 'permission_id', 'user_id');
+        return $this->belongsToMany(User::class, 'permission_user', 'permission_id', 'user_id')->withTimestamps();
     }
 }
